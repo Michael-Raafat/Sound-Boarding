@@ -3,6 +3,7 @@ package studios.kdc.soundboarding.models.imp;
 import java.util.ArrayList;
 import java.util.List;
 
+import studios.kdc.soundboarding.DataServiceSingleton;
 import studios.kdc.soundboarding.models.Group;
 import studios.kdc.soundboarding.models.GroupContainer;
 
@@ -21,6 +22,7 @@ public class GroupContainerImp implements GroupContainer {
     @Override
     public void addGroup(Group group) {
         groups.add(group);
+        DataServiceSingleton.getInstance().addGroup(group);
     }
 
     @Override
@@ -40,5 +42,6 @@ public class GroupContainerImp implements GroupContainer {
                 groups.remove(i);
             }
         }
+        DataServiceSingleton.getInstance().removeGroup(name);
     }
 }
