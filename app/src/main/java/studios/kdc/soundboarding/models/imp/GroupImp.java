@@ -73,10 +73,20 @@ public class GroupImp implements Group {
     @Override
     public void removeTrackByName(String name) {
         for (int i = 0; i < tracks.size(); i++) {
-            if (tracks.get(i).getName() == name) {
+            if (tracks.get(i).getName().equals(name)) {
                 tracks.remove(i);
             }
         }
+    }
+
+    @Override
+    public Track getTrackByName(String name) {
+        for (int i = 0; i < tracks.size(); i++) {
+            if (tracks.get(i).getName().equals(name)) {
+                return tracks.get(i);
+            }
+        }
+        return null;
     }
 
     @Override

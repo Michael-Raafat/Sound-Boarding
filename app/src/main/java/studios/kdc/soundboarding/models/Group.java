@@ -49,6 +49,11 @@ public interface Group {
     void removeTrackByName(String name);
 
     /**
+     * get a track in the group using name.
+     * @param name of the track needed.
+     */
+    Track getTrackByName(String name);
+    /**
      * sort tracks in group by name.
      */
     void sortTracksByName();

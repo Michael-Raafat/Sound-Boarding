@@ -41,5 +41,16 @@ public interface Track extends Comparable<Track> {
      */
     String getPath();
 
+    /**
+     * sets time of the track.
+     * @param duration of the track.
+     */
+    void setTrackDuration(int duration);
+
+    /**
+     * gets duration of the track.
+     * @return time which is taken by the track.
+     */
+    int getTrackDuration();
 
 }

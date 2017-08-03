@@ -11,6 +11,10 @@ import studios.kdc.soundboarding.models.Track;
 
 public class TrackImp implements Track{
     /**
+     * time of the track
+     */
+    private int trackDuration;
+    /**
      * name of track.
      */
     private String name;
@@ -27,12 +31,21 @@ public class TrackImp implements Track{
         this.name = name;
         this.group = group;
         this.path = "";
+        this.trackDuration = 0;
     }
 
-    public TrackImp(String name, String path, Group group) {
+    public TrackImp(String name, Group group, int trackDuration) {
+        this.name = name;
+        this.group = group;
+        this.path = "";
+        this.trackDuration = trackDuration;
+    }
+
+    public TrackImp(String name, String path, Group group, int trackDuration) {
         this.name = name;
         this.path = path;
         this.group = group;
+        this.trackDuration = trackDuration;
     }
     @Override
     public void setName(String name) {
@@ -62,6 +75,16 @@ public class TrackImp implements Track{
     @Override
     public String getPath() {
         return path;
+    }
+
+    @Override
+    public void setTrackDuration(int duration) {
+        this.trackDuration = trackDuration;
+    }
+
+    @Override
+    public int getTrackDuration() {
+        return trackDuration;
     }
 
     @Override
