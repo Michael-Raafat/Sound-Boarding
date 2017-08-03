@@ -1,5 +1,7 @@
 package studios.kdc.soundboarding.models.imp;
 
+import android.graphics.Color;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -19,7 +21,7 @@ public class GroupImp implements Group {
     /**
      * color of the group.
      */
-    private String color;
+    private int color;
 
     /**
      * name of the group.
@@ -27,7 +29,7 @@ public class GroupImp implements Group {
     private String name;
 
 
-    public GroupImp(String color, String name){
+    public GroupImp(int color, String name){
         tracks = new ArrayList<Track>();
         this.color = color;
         this.name = name;
@@ -35,7 +37,7 @@ public class GroupImp implements Group {
 
     public GroupImp(String name){
         tracks = new ArrayList<Track>();
-        this.color = "#41494c";
+        this.color = Color.parseColor("#41494c");
         this.name = name;
     }
 
@@ -51,12 +53,12 @@ public class GroupImp implements Group {
     }
 
     @Override
-    public void setColor(String color) {
+    public void setColor(int color) {
         this.color = color;
     }
 
     @Override
-    public String getColor() {
+    public int getColor() {
         return this.color;
     }
 

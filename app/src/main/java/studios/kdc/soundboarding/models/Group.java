@@ -23,13 +23,13 @@ public interface Group {
      * set color of the group in the form of string.
      * @param color of the group.
      */
-    void setColor(String color);
+    void setColor(int color);
 
     /**
      * gets color in form of string.
      * @return color in the form of string of the group
      */
-    String getColor();
+    int getColor();
 
     /**
      * gets list of tracks in this group
