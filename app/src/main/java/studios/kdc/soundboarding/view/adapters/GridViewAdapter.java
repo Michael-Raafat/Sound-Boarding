@@ -52,7 +52,6 @@ public class GridViewAdapter extends BaseAdapter {
         if (view == null) {
             view = inflater.inflate(R.layout.track_content, parent, false);
             holder = new ViewHolder(view);
-            assert view != null;
 
             holder.getTextView().setTextColor(this.color);
             GradientDrawable drawable = (GradientDrawable) holder.getColor().getBackground();
@@ -79,7 +78,7 @@ public class GridViewAdapter extends BaseAdapter {
             return textView;
         }
 
-        public RelativeLayout getColor() {
+        private RelativeLayout getColor() {
             return color;
         }
 

@@ -8,14 +8,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.GridView;
+import android.widget.SearchView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -33,6 +31,8 @@ import studios.kdc.soundboarding.view.adapters.TimeLineAdapter;
 public class MainActivity extends AppCompatActivity {
 
     private DataController dataController;
+    private RecyclerView recyclerView;
+    private MainAdapter mainAdapter;
 
 
     @Override
@@ -43,28 +43,20 @@ public class MainActivity extends AppCompatActivity {
 
         //////////////////////////////////MO2KATAN//////////////
         SharedPreferences  sharedPreferences = this.getSharedPreferences("studios.kdc.soundboarding", MODE_PRIVATE);
-        this.deleteDatabase("Data");
         SQLiteDatabase  tracksDatabase = this.openOrCreateDatabase("Data", MODE_PRIVATE, null);
-        if (sharedPreferences.getBoolean("Creation", false)) {
+        DataServiceSingleton.getInstance(tracksDatabase);
+        if (!sharedPreferences.getBoolean("Start", false)) {
             DataServiceSingleton.getInstance(tracksDatabase).loadDefaultDatabase();
-            sharedPreferences.edit().putBoolean("Creation", true).apply();
+            sharedPreferences.edit().putBoolean("Start", true).apply();
         }
         ///////////////////////////////////////////////////////
-
-
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         dataController = new DataController();
         new DatabaseGetter().execute();
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+
         TableLayout table = (TableLayout) findViewById(R.id.table);
         table.setOnDragListener(new Dragger());
-
-
-        MainAdapter mainAdapter = new MainAdapter(this);
-        dataController.setMainAdapterList(mainAdapter);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(mainAdapter);
 
 
         RecyclerView timeline_view = (RecyclerView) findViewById(R.id.timeline_view);
@@ -72,12 +64,28 @@ public class MainActivity extends AppCompatActivity {
         TimeLineAdapter timeLineAdapter = new TimeLineAdapter();
         timeline_view.setAdapter(timeLineAdapter);
 
-/////////////////////CHECKII MAWDOO3  V7 w WIDGET  /////////////////////////
-//TODO FEE 3'alta hnaa lma t3melii comment leeh hatla2ii l bytl3 kol 7aga ma3da l names bta3et l 7agat.
+
+
         SearchView searchView = (SearchView) findViewById(R.id.search_view);
-        ((EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text)).setTextColor(Color.WHITE);
+        //((EditText) searchView.findViewById(R.id.search_src_text)).setTextColor(Color.WHITE);
+        setSearchBoxClickListener(searchView);
 
+    }
+    private void setSearchBoxClickListener(SearchView searchView) {
 
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                dataController.searchTracksInGroups(s);
+                mainAdapter.notifyDataSetChanged();
+                return true;
+            }
+        });
     }
 
 
@@ -86,6 +94,16 @@ public class MainActivity extends AppCompatActivity {
         protected Void doInBackground(Void... voids) {
             dataController.importDatabase();
             return null;
+        }
+        @Override
+        protected void onPostExecute(Void v) {
+
+            mainAdapter = new MainAdapter(getApplicationContext());
+            dataController.setMainAdapterList(mainAdapter);
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+            recyclerView.setLayoutManager(layoutManager);
+            recyclerView.setAdapter(mainAdapter);
+
         }
 
     }

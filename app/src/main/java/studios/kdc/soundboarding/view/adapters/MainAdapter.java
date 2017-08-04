@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,7 +45,8 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        if(!this.groups.get(position).getTracks().isEmpty()) {
+
+       if(!this.groups.get(position).getTracks().isEmpty()) {
             GridViewAdapter gridViewAdapter = new GridViewAdapter(this.context, this.groups.get(position).getTracks(), this.groups.get(position).getColor() ,position);
             holder.getGridView().setNumColumns(this.groups.get(position).getTracks().size());
             holder.getGridView().setAdapter(gridViewAdapter);
@@ -66,7 +68,6 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
 
         private GridView gridView;
         private  CardView cardView;
-
         private TextView getGroupName() {
             return groupName;
         }
