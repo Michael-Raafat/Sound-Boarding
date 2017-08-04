@@ -1,10 +1,11 @@
 package studios.kdc.soundboarding;
 
-import android.app.Activity;
 import android.util.Pair;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import studios.kdc.soundboarding.models.Group;
 import studios.kdc.soundboarding.models.GroupContainer;
@@ -12,7 +13,9 @@ import studios.kdc.soundboarding.models.Track;
 import studios.kdc.soundboarding.models.TracksContainer;
 import studios.kdc.soundboarding.models.imp.GroupContainerImp;
 import studios.kdc.soundboarding.models.imp.GroupImp;
+import studios.kdc.soundboarding.models.imp.TrackContainerImp;
 import studios.kdc.soundboarding.models.imp.TrackImp;
+import studios.kdc.soundboarding.view.adapters.MainAdapter;
 
 /**
  * Created by Michael on 8/4/2017.
@@ -24,7 +27,11 @@ public class DataController {
 
     public DataController() {
         groupContainer = new GroupContainerImp();
+        tracksContainer = new TrackContainerImp();
 
+    }
+    public void setMainAdapterList(MainAdapter adapter) {
+        adapter.setGroups(this.groupContainer.getGrps());
     }
 
     public void importDatabase() {
@@ -64,7 +71,16 @@ public class DataController {
         groupContainer.clearAndAddGroups(newGroups);
     }
 
-
+    public Map<String , String> selectTrackToMix(String trackName , int groupPosition) {
+        Track selected =  groupContainer.popTrack(groupPosition , trackName);
+        tracksContainer.addTrack(selected);
+        Map<String , String> trackInfo =  new HashMap<>();
+        trackInfo.put("name" , selected.getName());
+        trackInfo.put("path" , selected.getPath());
+        trackInfo.put("duration" , String.valueOf(selected.getTrackDuration()));
+        trackInfo.put("grpName" , selected.getGroup().getName());
+        return trackInfo;
+    }
 
 
 }

@@ -11,7 +11,7 @@ public interface TracksContainer {
 
     Track getTrackByName(String name);
 
-    void removeTrackByName(String name);
+    Track removeTrackByName(String name);
 
     void clearAndaddGroups(List<Track> tracks);
 

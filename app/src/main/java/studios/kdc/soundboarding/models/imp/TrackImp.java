@@ -79,7 +79,7 @@ public class TrackImp implements Track{
 
     @Override
     public void setTrackDuration(int duration) {
-        this.trackDuration = trackDuration;
+        this.trackDuration = duration;
     }
 
     @Override

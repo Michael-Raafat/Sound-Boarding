@@ -6,6 +6,7 @@ import java.util.List;
 import studios.kdc.soundboarding.DataServiceSingleton;
 import studios.kdc.soundboarding.models.Group;
 import studios.kdc.soundboarding.models.GroupContainer;
+import studios.kdc.soundboarding.models.Track;
 
 /**
  * Created by Michael on 8/3/2017.
@@ -55,5 +56,19 @@ public class GroupContainerImp implements GroupContainer {
     @Override
     public int getNumberOfGroups() {
         return groups.size();
+    }
+
+    @Override
+    public List<Group> getGrps() {
+        return this.groups;
+    }
+
+    @Override
+    public Track popTrack(int position, String trackName) {
+        Track temp = groups.get(position).getTrackByName(trackName);
+        groups.get(position).removeTrackByName(trackName);
+        if(groups.get(position).getTracks().isEmpty())
+            groups.remove(position);
+        return temp;
     }
 }

@@ -18,4 +18,8 @@ public interface GroupContainer {
 
     int getNumberOfGroups();
 
+    List<Group> getGrps();
+
+    Track popTrack(int position, String trackName);
+
 }
