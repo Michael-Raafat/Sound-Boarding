@@ -1,5 +1,6 @@
 package studios.kdc.soundboarding;
 
+import android.graphics.Color;
 import android.util.Pair;
 
 import java.util.ArrayList;
@@ -35,11 +36,12 @@ public class DataController {
     }
 
     public void importDatabase() {
-        List<Pair<String, Integer>> groups = DataServiceSingleton.getInstance().getGroupsInDatabase();
+        List<List<String>> groups = DataServiceSingleton.getInstance().getGroupsInDatabase();
         for (int i = 0; i < groups.size(); i++) {
-            String groupName = groups.get(i).first;
-            int groupColor = groups.get(i).second;
-            Group group = new GroupImp(groupColor, groupName);
+            String groupName = groups.get(i).get(0);
+            int groupColor = Color.parseColor(groups.get(i).get(1));
+            String imagePath = groups.get(i).get(2);
+            Group group = new GroupImp(groupColor, groupName, imagePath);
             groupContainer.addGroup(group);
             List<String[]> tracks = DataServiceSingleton.getInstance().getTracksInTable(groupName);
             for(int j = 0; j < tracks.size(); j++) {

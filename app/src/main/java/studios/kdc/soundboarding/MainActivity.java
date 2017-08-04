@@ -43,11 +43,12 @@ public class MainActivity extends AppCompatActivity {
 
         //////////////////////////////////MO2KATAN//////////////
         SharedPreferences  sharedPreferences = this.getSharedPreferences("studios.kdc.soundboarding", MODE_PRIVATE);
-        this.deleteDatabase("Data");
         SQLiteDatabase  tracksDatabase = this.openOrCreateDatabase("Data", MODE_PRIVATE, null);
-        if (sharedPreferences.getBoolean("Creation", false)) {
+        DataServiceSingleton.getInstance(tracksDatabase);
+        if (!sharedPreferences.getBoolean("Start", false)) {
             DataServiceSingleton.getInstance(tracksDatabase).loadDefaultDatabase();
-            sharedPreferences.edit().putBoolean("Creation", true).apply();
+            sharedPreferences.edit().putBoolean("Start", true).apply();
+            Log.i("Tag:", "yarab");
         }
         ///////////////////////////////////////////////////////
 
@@ -74,8 +75,8 @@ public class MainActivity extends AppCompatActivity {
 
 /////////////////////CHECKII MAWDOO3  V7 w WIDGET  /////////////////////////
 //TODO FEE 3'alta hnaa lma t3melii comment leeh hatla2ii l bytl3 kol 7aga ma3da l names bta3et l 7agat.
-        SearchView searchView = (SearchView) findViewById(R.id.search_view);
-        ((EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text)).setTextColor(Color.WHITE);
+//        SearchView searchView = (SearchView) findViewById(R.id.search_view);
+//        ((EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text)).setTextColor(Color.WHITE);
 
 
     }
