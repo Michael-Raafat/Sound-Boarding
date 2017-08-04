@@ -56,6 +56,7 @@ public class DataController {
 
     public void searchTracksInGroups(String search) {
         if (search.equals("")) {
+            groupContainer.getGrps().clear();
             importDatabase();
         } else {
             List<List<String>> data = DataServiceSingleton.getInstance().getDataMatches(search);
