@@ -44,4 +44,16 @@ public class GroupContainerImp implements GroupContainer {
         }
         DataServiceSingleton.getInstance().removeGroup(name);
     }
+
+    @Override
+    public void clearAndAddGroups(List<Group> groups) {
+        this.groups.clear();
+        this.groups.addAll(groups);
+    }
+
+
+    @Override
+    public int getNumberOfGroups() {
+        return groups.size();
+    }
 }

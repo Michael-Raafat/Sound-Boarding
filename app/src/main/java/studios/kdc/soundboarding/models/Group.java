@@ -63,4 +63,6 @@ public interface Group {
      * @return ineteger value of number of tracks.
      */
     int getNumberOfTracks();
+
+    void clearAndAddTracks(List<Track> tracks);
 }

@@ -104,4 +104,10 @@ public class GroupImp implements Group {
     public int getNumberOfTracks() {
         return tracks.size();
     }
+
+    @Override
+    public void clearAndAddTracks(List<Track> tracks) {
+        this.tracks.clear();
+        this.tracks.addAll(tracks);
+    }
 }

@@ -2,7 +2,12 @@ package studios.kdc.soundboarding;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Pair;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import studios.kdc.soundboarding.models.Group;
 import studios.kdc.soundboarding.models.Track;
@@ -44,26 +49,27 @@ public class DataServiceSingleton {
         SharedPreferences sharedPreferences = activity.getSharedPreferences("studios.kdc.soundboarding", MODE_PRIVATE);
         sharedPreferences.edit().putBoolean("Creation", true).apply();
 
-        database.execSQL("CREATE TABLE tables (name VARCHAR, color VARCHAR)");
+        database.execSQL("CREATE TABLE groups (name VARCHAR, color VARCHAR)");
         //TODO color
-        database.execSQL("INSERT INTO tables (name, duration) VALUES ('all', '#41494c')");
-        database.execSQL("INSERT INTO tables (name, duration) VALUES ('nature', '#41494c')");
+        database.execSQL("INSERT INTO groups (name, color) VALUES ('all', '#41494c')");
+        database.execSQL("INSERT INTO groups (name, color) VALUES ('nature', '#41494c')");
 
 
+        //TODO path of assets
         database.execSQL("CREATE TABLE all (name VARCHAR, duration INTEGER, path VARCHAR)");
-        database.execSQL("INSERT INTO all (name, duration) VALUES ('hurricane', 4)");
-        database.execSQL("INSERT INTO all (name, duration) VALUES ('wind01', 9)");
-        database.execSQL("INSERT INTO all (name, duration) VALUES ('storm-thunder', 3)");
+        database.execSQL("INSERT INTO all (name, duration) VALUES ('hurricane', 4, '')");
+        database.execSQL("INSERT INTO all (name, duration) VALUES ('wind01', 9, '')");
+        database.execSQL("INSERT INTO all (name, duration) VALUES ('storm-thunder', 3, '')");
 
         database.execSQL("CREATE TABLE nature (name VARCHAR, duration INTEGER, path VARCHAR)");
-        database.execSQL("INSERT INTO nature (name, duration) VALUES ('hurricane', 4)");
-        database.execSQL("INSERT INTO nature (name, duration) VALUES ('wind01', 9)");
-        database.execSQL("INSERT INTO nature (name, duration) VALUES ('storm-thunder', 3)");
+        database.execSQL("INSERT INTO nature (name, duration) VALUES ('hurricane', 4, '')");
+        database.execSQL("INSERT INTO nature (name, duration) VALUES ('wind01', 9, '')");
+        database.execSQL("INSERT INTO nature (name, duration) VALUES ('storm-thunder', 3, '')");
 
     }
 
     public void addGroup(Group group) {
-        database.execSQL("CREATE TABLE " + group.getName() + " (name VARCHAR, duration INTEGER(4), path VARCHAR)");
+        database.execSQL("CREATE TABLE " + group.getName() + " (name VARCHAR, duration INTEGER, path VARCHAR)");
         database.execSQL("INSERT INTO tables (name, duration) VALUES ('"+ group.getName() + "', "+group.getColor() +")");
     }
 
@@ -79,6 +85,72 @@ public class DataServiceSingleton {
     public void removeGroup(String groupName) {
         database.execSQL("DROP TABLE " + groupName);
     }
+
+    public List<Pair<String, Integer>> getGroupsInDatabase() {
+        Cursor cursor = database.rawQuery("SELECT * FROM tables", null);
+        int nameIndex = cursor.getColumnIndex("name");
+        int colorIndex = cursor.getColumnIndex("color");
+        cursor.moveToFirst();
+        List<Pair<String, Integer>> groups = new ArrayList<>();
+        while (cursor != null) {
+            Pair<String, Integer> pair = new Pair<>(
+                    cursor.getString(nameIndex),
+                    cursor.getInt(colorIndex));
+            groups.add(pair);
+            cursor.moveToNext();
+        }
+        return groups;
+    }
+
+
+    public List<String[]> getTracksInTable(String tableName) {
+        Cursor cursor = database.rawQuery("SELECT * FROM "+ tableName, null);
+        int nameIndex = cursor.getColumnIndex("name");
+        int durationIndex = cursor.getColumnIndex("duration");
+        int pathIndex = cursor.getColumnIndex("duration");
+        cursor.moveToFirst();
+        List<String[]> tracks = new ArrayList<String[]>();
+        while (cursor != null) {
+            String[] trackInfo = new String[3];
+            trackInfo[0] = cursor.getString(nameIndex);
+            trackInfo[1] = String.valueOf(cursor.getInt(durationIndex));
+            trackInfo[2] = cursor.getString(pathIndex);
+            tracks.add(trackInfo);
+            cursor.moveToNext();
+        }
+        return tracks;
+    }
+
+    public List<List<String>> getDataMatches(String search) {
+        Cursor groupsCursor = database.rawQuery("SELECT * FROM tables", null);
+        int groupNameIndex = groupsCursor.getColumnIndex("name");
+        groupsCursor.moveToFirst();
+        List<List<String>> data = new ArrayList<>();
+        while (groupsCursor != null) {
+            Cursor tracksCursor = database.rawQuery(
+                    "SELECT * FROM " + groupsCursor.getString(groupNameIndex), null);
+            int trackNameIndex = tracksCursor.getColumnIndex("name");
+            tracksCursor.moveToFirst();
+            List<String> infos = new ArrayList<String>();
+            boolean flag = false;
+            while (tracksCursor != null) {
+                if (tracksCursor.getString(trackNameIndex).contains(search)) {
+                    if (!flag) {
+                        infos.add(groupsCursor.getString(groupNameIndex));
+                        flag = true;
+                    }
+                    infos.add(tracksCursor.getString(trackNameIndex));
+                }
+                tracksCursor.moveToNext();
+            }
+            if (!infos.isEmpty()) {
+                data.add(infos);
+            }
+            groupsCursor.moveToNext();
+        }
+        return data;
+    }
+
 
 
 
