@@ -49,25 +49,29 @@ public class DataServiceSingleton {
     public void loadDefaultDatabase() {
         database.execSQL("CREATE TABLE IF NOT EXISTS groups (name VARCHAR, color VARCHAR, imagePath VARCHAR)");
         //TODO color
-        database.execSQL("INSERT INTO groups (name, color) VALUES ('Tracks', '#ff00ff')");
+        database.execSQL("INSERT INTO groups (name, color) VALUES ('Cars', '#ff00ff')");
         database.execSQL("INSERT INTO groups (name, color) VALUES ('Nature', '#0000ff')");
         database.execSQL("INSERT INTO groups (name, color) VALUES ('Animal', '#008000')");
 
 
         //TODO path of assets
-        database.execSQL("CREATE TABLE IF NOT EXISTS Tracks (name VARCHAR, duration INTEGER, path VARCHAR)");
-        database.execSQL("INSERT INTO tracks (name, duration, path) VALUES ('hurricane', 4, '')");
-        database.execSQL("INSERT INTO tracks (name, duration, path) VALUES ('wind01', 9, '')");
-        database.execSQL("INSERT INTO tracks (name, duration, path) VALUES ('storm-thunder', 3, '')");
+        database.execSQL("CREATE TABLE IF NOT EXISTS Nature (name VARCHAR, duration INTEGER, path VARCHAR)");
+        database.execSQL("INSERT INTO Nature (name, duration, path) VALUES ('hurricane', 4, '')");
+        database.execSQL("INSERT INTO Nature (name, duration, path) VALUES ('wind01', 9, '')");
+        database.execSQL("INSERT INTO Nature (name, duration, path) VALUES ('storm-thunder', 3, '')");
+        database.execSQL("INSERT INTO Nature (name, duration, path) VALUES ('earthquake', 2, '')");
+        database.execSQL("INSERT INTO Nature (name, duration, path) VALUES ('rain', 4, '')");
+        database.execSQL("INSERT INTO Nature (name, duration, path) VALUES ('water', 50, '')");
 
         database.execSQL("CREATE TABLE IF NOT EXISTS Animal (name VARCHAR, duration INTEGER, path VARCHAR)");
-        database.execSQL("INSERT INTO tracks (name, duration, path) VALUES ('Dog', 47, '')");
-        database.execSQL("INSERT INTO tracks (name, duration, path) VALUES ('Kitty-noises', 3, '')");
+        database.execSQL("INSERT INTO Animal (name, duration, path) VALUES ('Dog', 47, '')");
+        database.execSQL("INSERT INTO Animal (name, duration, path) VALUES ('Kitty-noises', 3, '')");
 
-        database.execSQL("CREATE TABLE IF NOT EXISTS Nature (name VARCHAR, duration INTEGER, path VARCHAR)");
-        database.execSQL("INSERT INTO nature (name, duration, path) VALUES ('hurricane', 4, '')");
-        database.execSQL("INSERT INTO nature (name, duration, path) VALUES ('wind01', 9, '')");
-        database.execSQL("INSERT INTO nature (name, duration, path) VALUES ('storm-thunder', 3, '')");
+        database.execSQL("CREATE TABLE IF NOT EXISTS Cars (name VARCHAR, duration INTEGER, path VARCHAR)");
+        database.execSQL("INSERT INTO Cars (name, duration, path) VALUES ('Dog', 47, '')");
+        database.execSQL("INSERT INTO Cars (name, duration, path) VALUES ('Kitty-noises', 3, '')");
+
+
     }
 
     public void addGroup(Group group) {
@@ -132,19 +136,17 @@ public class DataServiceSingleton {
         List<List<String>> data = new ArrayList<>();
         while (!groupsCursor.isAfterLast()) {
             Cursor tracksCursor = database.rawQuery(
-                    "SELECT * FROM " + groupsCursor.getString(groupNameIndex), null);
+                    "SELECT * FROM " + groupsCursor.getString(groupNameIndex) + " WHERE name LIKE '%" + search + "%'", null);
             int trackNameIndex = tracksCursor.getColumnIndex("name");
             tracksCursor.moveToFirst();
             List<String> infos = new ArrayList<String>();
             boolean flag = false;
             while (!tracksCursor.isAfterLast()) {
-                if (tracksCursor.getString(trackNameIndex).contains(search)) {
-                    if (!flag) {
-                        infos.add(groupsCursor.getString(groupNameIndex));
-                        flag = true;
-                    }
-                    infos.add(tracksCursor.getString(trackNameIndex));
+                if (!flag) {
+                    infos.add(groupsCursor.getString(groupNameIndex));
+                    flag = true;
                 }
+                infos.add(tracksCursor.getString(trackNameIndex));
                 tracksCursor.moveToNext();
             }
             if (!infos.isEmpty()) {
@@ -155,7 +157,33 @@ public class DataServiceSingleton {
         return data;
     }
 
+    public List<String> getGroupData(String groupName) {
+        Cursor groupsCursor = database.rawQuery(
+                "SELECT * FROM groups WHERE name = '" + groupName + "'", null);
+        int groupNameIndex = groupsCursor.getColumnIndex("name");
+        int colorIndex = groupsCursor.getColumnIndex("color");
+        int imagePathIndex = groupsCursor.getColumnIndex("imagePath");
+        groupsCursor.moveToFirst();
+        List<String> groupData = new ArrayList<>();
+        groupData.add(groupsCursor.getString(groupNameIndex));
+        groupData.add(groupsCursor.getString(colorIndex));
+        groupData.add(groupsCursor.getString(imagePathIndex));
+        return groupData;
+    }
 
+    public List<String> getTrackData(String trackName, String groupName) {
+        Cursor tracksCursor = database.rawQuery(
+                "SELECT * FROM "+ groupName +" WHERE name = '" + trackName + "'", null);
+        int nameIndex = tracksCursor.getColumnIndex("name");
+        int durationIndex = tracksCursor.getColumnIndex("duration");
+        int pathIndex = tracksCursor.getColumnIndex("path");
+        tracksCursor.moveToFirst();
+        List<String> trackData = new ArrayList<>();
+        trackData.add(tracksCursor.getString(nameIndex));
+        trackData.add(String.valueOf(tracksCursor.getInt(durationIndex)));
+        trackData.add(tracksCursor.getString(pathIndex));
+        return trackData;
+    }
 
 
 }

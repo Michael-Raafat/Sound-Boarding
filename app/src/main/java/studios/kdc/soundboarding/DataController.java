@@ -55,22 +55,33 @@ public class DataController {
     }
 
     public void searchTracksInGroups(String search) {
-        List<List<String>> data = DataServiceSingleton.getInstance().getDataMatches(search);
-        List<Group> newGroups = new ArrayList<>();
-        for (int i = 0; i < data.size(); i++) {
-            List<Track> tracksMatched = new ArrayList<>();
-            Group group = null;
-            for (int j = 0; j < data.get(i).size(); j++) {
-                if ( j == 0) {
-                    group = groupContainer.getGroupByName(data.get(i).get(j));
-                } else {
-                    tracksMatched.add(group.getTrackByName(data.get(i).get(j)));
+        if (search.equals("")) {
+            importDatabase();
+        } else {
+            List<List<String>> data = DataServiceSingleton.getInstance().getDataMatches(search);
+            List<Group> newGroups = new ArrayList<>();
+            for (int i = 0; i < data.size(); i++) {
+                List<Track> tracksMatched = new ArrayList<>();
+                Group group = null;
+                for (int j = 0; j < data.get(i).size(); j++) {
+                    if (j == 0) {
+                        List<String> groupData = DataServiceSingleton.getInstance().getGroupData(data.get(i).get(0));
+                        group = new GroupImp(Color.parseColor(groupData.get(1)), groupData.get(0), groupData.get(2));
+
+                    } else {
+                        List<String> trackData = DataServiceSingleton.getInstance().getTrackData(
+                                data.get(i).get(j),
+                                data.get(i).get(0));
+                        Track track = new TrackImp(trackData.get(0),
+                                trackData.get(2), group, Integer.valueOf(trackData.get(1)));
+                        tracksMatched.add(track);
+                    }
                 }
+                group.clearAndAddTracks(tracksMatched);
+                newGroups.add(group);
             }
-            group.clearAndAddTracks(tracksMatched);
-            newGroups.add(group);
+            groupContainer.clearAndAddGroups(newGroups);
         }
-        groupContainer.clearAndAddGroups(newGroups);
     }
 
     public Map<String , String> selectTrackToMix(String trackName , int groupPosition) {
