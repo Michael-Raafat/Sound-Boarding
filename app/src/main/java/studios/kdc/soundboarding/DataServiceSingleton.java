@@ -126,6 +126,7 @@ public class DataServiceSingleton {
     }
 
     public List<List<String>> getDataMatches(String search) {
+
         Cursor groupsCursor = database.rawQuery("SELECT * FROM groups", null);
         int groupNameIndex = groupsCursor.getColumnIndex("name");
         groupsCursor.moveToFirst();

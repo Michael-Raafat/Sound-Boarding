@@ -63,12 +63,15 @@ public class DataController {
             for (int j = 0; j < data.get(i).size(); j++) {
                 if ( j == 0) {
                     group = groupContainer.getGroupByName(data.get(i).get(j));
+                    if (group == null)
+                        j = data.get(i).size();
                 } else {
                     tracksMatched.add(group.getTrackByName(data.get(i).get(j)));
                 }
+            } if(!tracksMatched.isEmpty()) {
+                group.clearAndAddTracks(tracksMatched);
+                newGroups.add(group);
             }
-            group.clearAndAddTracks(tracksMatched);
-            newGroups.add(group);
         }
         groupContainer.clearAndAddGroups(newGroups);
     }
