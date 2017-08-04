@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -42,9 +43,11 @@ public class MainActivity extends AppCompatActivity {
 
         //////////////////////////////////MO2KATAN//////////////
         SharedPreferences  sharedPreferences = this.getSharedPreferences("studios.kdc.soundboarding", MODE_PRIVATE);
+        this.deleteDatabase("Data");
         SQLiteDatabase  tracksDatabase = this.openOrCreateDatabase("Data", MODE_PRIVATE, null);
         if (sharedPreferences.getBoolean("Creation", false)) {
-            DataServiceSingleton.getInstance(tracksDatabase).loadDefaultDatabase(this);
+            DataServiceSingleton.getInstance(tracksDatabase).loadDefaultDatabase();
+            sharedPreferences.edit().putBoolean("Creation", true).apply();
         }
         ///////////////////////////////////////////////////////
 
@@ -69,8 +72,8 @@ public class MainActivity extends AppCompatActivity {
         TimeLineAdapter timeLineAdapter = new TimeLineAdapter();
         timeline_view.setAdapter(timeLineAdapter);
 
-
-
+/////////////////////CHECKII MAWDOO3  V7 w WIDGET  /////////////////////////
+//TODO FEE 3'alta hnaa lma t3melii comment leeh hatla2ii l bytl3 kol 7aga ma3da l names bta3et l 7agat.
         SearchView searchView = (SearchView) findViewById(R.id.search_view);
         ((EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text)).setTextColor(Color.WHITE);
 
