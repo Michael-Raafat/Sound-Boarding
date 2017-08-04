@@ -14,6 +14,8 @@ import studios.kdc.soundboarding.models.Track;
  * Created by Michael on 8/2/2017.
  */
 public class GroupImp implements Group {
+
+    private String imagePath;
     /**
      * list of tracks.
      */
@@ -30,10 +32,11 @@ public class GroupImp implements Group {
     private String name;
 
 
-    public GroupImp(int color, String name){
+    public GroupImp(int color, String name, String imagePath){
         tracks = new ArrayList<Track>();
         this.color = color;
         this.name = name;
+        this.imagePath = imagePath;
     }
 
     public GroupImp(String name){
@@ -56,6 +59,14 @@ public class GroupImp implements Group {
     @Override
     public void setColor(int color) {
         this.color = color;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 
     @Override

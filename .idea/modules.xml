@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/SoundBoarding.iml" filepath="$PROJECT_DIR$/SoundBoarding.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sound-boarding.iml" filepath="$PROJECT_DIR$/sound-boarding.iml" />
     </modules>
   </component>
 </project>

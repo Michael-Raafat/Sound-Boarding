@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
+import android.util.Log;
 import android.util.Pair;
 
 import java.util.ArrayList;
@@ -45,23 +47,27 @@ public class DataServiceSingleton {
     }
 
     public void loadDefaultDatabase() {
-        database.execSQL("CREATE TABLE IF NOT EXISTS groups (name VARCHAR, color VARCHAR)");
+        database.execSQL("CREATE TABLE IF NOT EXISTS groups (name VARCHAR, color VARCHAR, imagePath VARCHAR)");
         //TODO color
-        database.execSQL("INSERT INTO groups (name, color) VALUES ('tracks', '#41494c')");
-        database.execSQL("INSERT INTO groups (name, color) VALUES ('nature', '#41494c')");
+        database.execSQL("INSERT INTO groups (name, color) VALUES ('Tracks', '#ff00ff')");
+        database.execSQL("INSERT INTO groups (name, color) VALUES ('Nature', '#0000ff')");
+        database.execSQL("INSERT INTO groups (name, color) VALUES ('Animal', '#008000')");
 
 
         //TODO path of assets
-        database.execSQL("CREATE TABLE IF NOT EXISTS tracks (name VARCHAR, duration INTEGER, path VARCHAR)");
+        database.execSQL("CREATE TABLE IF NOT EXISTS Tracks (name VARCHAR, duration INTEGER, path VARCHAR)");
         database.execSQL("INSERT INTO tracks (name, duration, path) VALUES ('hurricane', 4, '')");
         database.execSQL("INSERT INTO tracks (name, duration, path) VALUES ('wind01', 9, '')");
         database.execSQL("INSERT INTO tracks (name, duration, path) VALUES ('storm-thunder', 3, '')");
 
-        database.execSQL("CREATE TABLE IF NOT EXISTS nature (name VARCHAR, duration INTEGER, path VARCHAR)");
+        database.execSQL("CREATE TABLE IF NOT EXISTS Animal (name VARCHAR, duration INTEGER, path VARCHAR)");
+        database.execSQL("INSERT INTO tracks (name, duration, path) VALUES ('Dog', 47, '')");
+        database.execSQL("INSERT INTO tracks (name, duration, path) VALUES ('Kitty-noises', 3, '')");
+
+        database.execSQL("CREATE TABLE IF NOT EXISTS Nature (name VARCHAR, duration INTEGER, path VARCHAR)");
         database.execSQL("INSERT INTO nature (name, duration, path) VALUES ('hurricane', 4, '')");
         database.execSQL("INSERT INTO nature (name, duration, path) VALUES ('wind01', 9, '')");
         database.execSQL("INSERT INTO nature (name, duration, path) VALUES ('storm-thunder', 3, '')");
-
     }
 
     public void addGroup(Group group) {
@@ -82,17 +88,19 @@ public class DataServiceSingleton {
         database.execSQL("DROP TABLE " + groupName);
     }
 
-    public List<Pair<String, Integer>> getGroupsInDatabase() {
+    public List<List<String>> getGroupsInDatabase() {
         Cursor cursor = database.rawQuery("SELECT * FROM groups", null);
         int nameIndex = cursor.getColumnIndex("name");
         int colorIndex = cursor.getColumnIndex("color");
+        int imageIndex = cursor.getColumnIndex("imagePath");
         cursor.moveToFirst();
-        List<Pair<String, Integer>> groups = new ArrayList<>();
+        List<List<String>> groups = new ArrayList<>();
         while (!cursor.isAfterLast()) {
-            Pair<String, Integer> pair = new Pair<>(
-                    cursor.getString(nameIndex),
-                    cursor.getInt(colorIndex));
-            groups.add(pair);
+            List<String> temp = new ArrayList<>();
+            temp.add(cursor.getString(nameIndex));
+            temp.add(cursor.getString(colorIndex));
+            temp.add(cursor.getString(imageIndex));
+            groups.add(temp);
             cursor.moveToNext();
         }
         return groups;
@@ -118,7 +126,7 @@ public class DataServiceSingleton {
     }
 
     public List<List<String>> getDataMatches(String search) {
-        Cursor groupsCursor = database.rawQuery("SELECT * FROM tables", null);
+        Cursor groupsCursor = database.rawQuery("SELECT * FROM groups", null);
         int groupNameIndex = groupsCursor.getColumnIndex("name");
         groupsCursor.moveToFirst();
         List<List<String>> data = new ArrayList<>();
