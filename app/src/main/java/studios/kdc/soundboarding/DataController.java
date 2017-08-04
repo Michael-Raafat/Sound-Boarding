@@ -58,6 +58,11 @@ public class DataController {
         if (search.equals("")) {
             groupContainer.getGrps().clear();
             importDatabase();
+            for (int i = 0; i < tracksContainer.getNumberOfTracks(); i++) {
+                groupContainer.getGroupByName(
+                        tracksContainer.getTracks().get(i).getGroup().getName()).removeTrackByName(
+                                tracksContainer.getTracks().get(i).getName());
+            }
         } else {
             List<List<String>> data = DataServiceSingleton.getInstance().getDataMatches(search);
             List<Group> newGroups = new ArrayList<>();

@@ -17,4 +17,6 @@ public interface TracksContainer {
 
     int getNumberOfTracks();
 
+    List<Track> getTracks();
+
 }

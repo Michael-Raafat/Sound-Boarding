@@ -55,4 +55,9 @@ public class TrackContainerImp implements TracksContainer {
     public int getNumberOfTracks() {
         return selectedTracks.size();
     }
+
+    @Override
+    public List<Track> getTracks() {
+        return selectedTracks;
+    }
 }
