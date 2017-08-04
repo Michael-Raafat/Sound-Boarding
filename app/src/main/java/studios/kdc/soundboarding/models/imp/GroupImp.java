@@ -71,14 +71,12 @@ public class GroupImp implements Group {
     @Override
     public void addTrack(Track track) {
         tracks.add(track);
-        DataServiceSingleton.getInstance().addTrack(track);
     }
 
     @Override
     public void removeTrackByName(String name) {
         for (int i = 0; i < tracks.size(); i++) {
             if (tracks.get(i).getName().equals(name)) {
-                DataServiceSingleton.getInstance().removeTrack(tracks.get(i));
                 tracks.remove(i);
             }
         }

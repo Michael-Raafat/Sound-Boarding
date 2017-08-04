@@ -23,7 +23,6 @@ public class GroupContainerImp implements GroupContainer {
     @Override
     public void addGroup(Group group) {
         groups.add(group);
-        DataServiceSingleton.getInstance().addGroup(group);
     }
 
     @Override
@@ -43,7 +42,6 @@ public class GroupContainerImp implements GroupContainer {
                 groups.remove(i);
             }
         }
-        DataServiceSingleton.getInstance().removeGroup(name);
     }
 
     @Override
