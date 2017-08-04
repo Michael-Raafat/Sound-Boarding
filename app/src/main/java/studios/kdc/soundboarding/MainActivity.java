@@ -144,6 +144,7 @@ public class MainActivity extends AppCompatActivity {
             GridViewAdapter adapter = (GridViewAdapter) gridView.getAdapter();
             Map<String, String> trackInfo = dataController.selectTrackToMix(params[1] , Integer.parseInt(params[0]));
             adapter.notifyDataSetChanged();
+            mainAdapter.notifyDataSetChanged();
             view.setVisibility(View.VISIBLE);
             return trackInfo;
         }
