@@ -13,6 +13,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -69,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
         int id = searchView.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
         TextView textView = searchView.findViewById(id);
         textView.setTextColor(Color.WHITE);
+
         setSearchBoxClickListener(searchView);
 
     }
@@ -83,7 +85,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String s) {
                 dataController.searchTracksInGroups(s);
-                mainAdapter.notifyDataSetChanged();
+                if(mainAdapter != null)
+                   mainAdapter.notifyDataSetChanged();
                 return true;
             }
         });

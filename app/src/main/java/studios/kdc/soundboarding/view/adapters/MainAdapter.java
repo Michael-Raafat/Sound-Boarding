@@ -57,7 +57,6 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
             holder.getGroupName().setBackgroundColor(this.groups.get(position).getColor());
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(this.groups.get(position).getTracks().size() * (int) context.getResources().getDimension(R.dimen.small_card_width), LinearLayout.LayoutParams.WRAP_CONTENT);
             holder.getGridView().setLayoutParams(params);
-            Log.i("hna" , this.groups.get(position).getTracks().size()+"");
         }
     }
 
