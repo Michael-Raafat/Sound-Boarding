@@ -52,7 +52,6 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
             GridViewAdapter gridViewAdapter = new GridViewAdapter(this.context, this.groups.get(position).getTracks(), this.groups.get(position).getColor() ,position);
             holder.getGridView().setNumColumns(this.groups.get(position).getTracks().size());
             holder.getGridView().setAdapter(gridViewAdapter);
-            holder.getCardView().setBackgroundColor(Color.WHITE);
             holder.getGroupName().setText(this.groups.get(position).getName());
             holder.getGroupName().setBackgroundColor(this.groups.get(position).getColor());
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(this.groups.get(position).getTracks().size() * (int) context.getResources().getDimension(R.dimen.small_card_width), LinearLayout.LayoutParams.WRAP_CONTENT);

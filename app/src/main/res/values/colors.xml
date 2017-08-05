@@ -10,9 +10,10 @@
     <color name="blue">#304f9f</color>
     <color name="grey">@color/material_blue_grey_800</color>
     <color name="light">@color/primary_material_light</color>
+    <color name="black">#000000</color>
 
-    <color name="colorPrimary">@color/grey</color>
-    <color name="colorPrimaryDark">@color/grey</color>
+    <color name="colorPrimary">#282D31</color>
+    <color name="colorPrimaryDark">#282D31</color>
 
     <color name="windowBackgroundColor">#FFFF</color>
     <color name="black_translucent">#80000000</color>
