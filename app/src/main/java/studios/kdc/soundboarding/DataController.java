@@ -38,17 +38,11 @@ public class DataController {
     public void importDatabase() {
         List<List<String>> groups = DataServiceSingleton.getInstance().getGroupsInDatabase();
         for (int i = 0; i < groups.size(); i++) {
-            String groupName = groups.get(i).get(0);
-            int groupColor = Color.parseColor(groups.get(i).get(1));
-            String imagePath = groups.get(i).get(2);
-            Group group = new GroupImp(groupColor, groupName, imagePath);
+            Group group = new GroupImp(groups.get(i));
             groupContainer.addGroup(group);
-            List<String[]> tracks = DataServiceSingleton.getInstance().getTracksInTable(groupName);
+            List<List<String>> tracks = DataServiceSingleton.getInstance().getTracksInTable(group.getName());
             for(int j = 0; j < tracks.size(); j++) {
-                String trackName = tracks.get(j)[0];
-                int trackDuration = Integer.valueOf(tracks.get(j)[1]);
-                String trackPath = tracks.get(j)[2];
-                Track track = new TrackImp(trackName, trackPath, group, trackDuration);
+                Track track = new TrackImp(tracks.get(j), group);
                 group.addTrack(track);
             }
         }
@@ -72,14 +66,13 @@ public class DataController {
                 for (int j = 0; j < data.get(i).size(); j++) {
                     if (j == 0) {
                         List<String> groupData = DataServiceSingleton.getInstance().getGroupData(data.get(i).get(0));
-                        group = new GroupImp(Color.parseColor(groupData.get(1)), groupData.get(0), groupData.get(2));
+                        group = new GroupImp(groupData);
 
                     } else {
                         List<String> trackData = DataServiceSingleton.getInstance().getTrackData(
                                 data.get(i).get(j),
                                 data.get(i).get(0));
-                        Track track = new TrackImp(trackData.get(0),
-                                trackData.get(2), group, Integer.valueOf(trackData.get(1)));
+                        Track track = new TrackImp(trackData, group);
                         tracksMatched.add(track);
                     }
                 }

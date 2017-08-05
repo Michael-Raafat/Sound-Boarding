@@ -25,6 +25,10 @@ public interface Group {
      */
     void setColor(int color);
 
+    String getImagePath();
+
+    void setImagePath(String imagePath);
+
     /**
      * gets color in form of string.
      * @return color in the form of string of the group

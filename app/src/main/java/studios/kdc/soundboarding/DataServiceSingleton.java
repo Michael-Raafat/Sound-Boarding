@@ -1,12 +1,7 @@
 package studios.kdc.soundboarding;
 
-import android.app.Activity;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
-import android.util.Log;
-import android.util.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,12 +42,13 @@ public class DataServiceSingleton {
     }
 
     public void loadDefaultDatabase() {
+
         database.execSQL("CREATE TABLE IF NOT EXISTS groups (name VARCHAR, color VARCHAR, imagePath VARCHAR)");
-        //TODO color
-        database.execSQL("INSERT INTO groups (name, color) VALUES ('Cars', '#ff00ff')");
+        database.execSQL("INSERT INTO groups (name, color) VALUES ('Car', '#ff00ff')");
         database.execSQL("INSERT INTO groups (name, color) VALUES ('Nature', '#0000ff')");
         database.execSQL("INSERT INTO groups (name, color) VALUES ('Animal', '#46bde4')");
         database.execSQL("INSERT INTO groups (name, color) VALUES ('War', '#672543')");
+        database.execSQL("INSERT INTO groups (name, color) VALUES ('Cartoon', '#c8498b')");
 
         database.execSQL("CREATE TABLE IF NOT EXISTS War (name VARCHAR, duration INTEGER, path VARCHAR)");
         database.execSQL("INSERT INTO War (name, duration, path) VALUES ('explode', 1, 'file:///assets/War/explode.mp3')");
@@ -65,27 +61,34 @@ public class DataServiceSingleton {
 
         //TODO path of assets
         database.execSQL("CREATE TABLE IF NOT EXISTS Nature (name VARCHAR, duration INTEGER, path VARCHAR)");
-        database.execSQL("INSERT INTO Nature (name, duration, path) VALUES ('hurricane', 4, '')");
-        database.execSQL("INSERT INTO Nature (name, duration, path) VALUES ('wind01', 9, '')");
-        database.execSQL("INSERT INTO Nature (name, duration, path) VALUES ('storm-thunder', 3, '')");
-        database.execSQL("INSERT INTO Nature (name, duration, path) VALUES ('earthquake', 2, '')");
-        database.execSQL("INSERT INTO Nature (name, duration, path) VALUES ('rain', 4, '')");
-        database.execSQL("INSERT INTO Nature (name, duration, path) VALUES ('water', 50, '')");
+        database.execSQL("INSERT INTO Nature (name, duration, path) VALUES ('hurricane', 4, 'file:///assets/Nature/hurricane.mp3')");
+        database.execSQL("INSERT INTO Nature (name, duration, path) VALUES ('wind01', 9, 'file:///assets/Nature/wind01.mp3')");
+        database.execSQL("INSERT INTO Nature (name, duration, path) VALUES ('storm-thunder', 3, 'file:///assets/Nature/storm-thunder.mp3')");
+        database.execSQL("INSERT INTO Nature (name, duration, path) VALUES ('earthquake', 2, 'file:///assets/Nature/earthquake.mp3')");
+        database.execSQL("INSERT INTO Nature (name, duration, path) VALUES ('rain', 4, 'file:///assets/Nature/rain.mp3')");
+        database.execSQL("INSERT INTO Nature (name, duration, path) VALUES ('water', 50, 'file:///assets/Nature/water.mp3')");
 
         database.execSQL("CREATE TABLE IF NOT EXISTS Animal (name VARCHAR, duration INTEGER, path VARCHAR)");
-        database.execSQL("INSERT INTO Animal (name, duration, path) VALUES ('Dog', 47, '')");
-        database.execSQL("INSERT INTO Animal (name, duration, path) VALUES ('Kitty-noises', 3, '')");
+        database.execSQL("INSERT INTO Animal (name, duration, path) VALUES ('Dog', 47, 'file:///assets/Animal/Dog.mp3')");
+        database.execSQL("INSERT INTO Animal (name, duration, path) VALUES ('Kitty-noises', 3, 'file:///assets/Animal/Kitty-noises.mp3')");
 
-        database.execSQL("CREATE TABLE IF NOT EXISTS Cars (name VARCHAR, duration INTEGER, path VARCHAR)");
-        database.execSQL("INSERT INTO Cars (name, duration, path) VALUES ('vehicle162', 47, '')");
-        database.execSQL("INSERT INTO Cars (name, duration, path) VALUES ('vehicle165', 3, '')");
+        database.execSQL("CREATE TABLE IF NOT EXISTS Car (name VARCHAR, duration INTEGER, path VARCHAR)");
+        database.execSQL("INSERT INTO Car (name, duration, path) VALUES ('vehicle162', 47, 'file:///assets/Car/vehicle162.mp3'')");
+        database.execSQL("INSERT INTO Car (name, duration, path) VALUES ('vehicle165', 3, 'file:///assets/Car/vehicle165.mp3'')");
+
+        database.execSQL("CREATE TABLE IF NOT EXISTS Cartoon (name VARCHAR, duration INTEGER, path VARCHAR)");
+        database.execSQL("INSERT INTO Cartoon (name, duration, path) VALUES ('bush_baby', 47, 'file:///assets/Cartoon/bush_baby.mp3')");
+        database.execSQL("INSERT INTO Cartoon (name, duration, path) VALUES ('popcorn', 3, 'file:///assets/Cartoon/bush_baby.mp3')");
+        database.execSQL("INSERT INTO Cartoon (name, duration, path) VALUES ('Tom and Jerry', 3, 'file:///assets/Cartoon/Tom and Jerry.mp3')");
 
 
     }
 
     public void addGroup(Group group) {
         database.execSQL("CREATE TABLE IF NOT EXISTS " + group.getName() + " (name VARCHAR, duration INTEGER, path VARCHAR)");
-        database.execSQL("INSERT INTO tables (name, duration) VALUES ('"+ group.getName() + "', "+group.getColor() +")");
+        database.execSQL("INSERT INTO groups (name, duration) VALUES ('"+ group.getName() +
+                "', "+ group.getColor() +"', '"+ group.getImagePath()
+                +"')");
     }
 
     public void addTrack(Track track) {
@@ -120,18 +123,18 @@ public class DataServiceSingleton {
     }
 
 
-    public List<String[]> getTracksInTable(String tableName) {
+    public List<List<String>> getTracksInTable(String tableName) {
         Cursor cursor = database.rawQuery("SELECT * FROM "+ tableName, null);
         int nameIndex = cursor.getColumnIndex("name");
         int durationIndex = cursor.getColumnIndex("duration");
         int pathIndex = cursor.getColumnIndex("duration");
         cursor.moveToFirst();
-        List<String[]> tracks = new ArrayList<String[]>();
+        List<List<String>> tracks = new ArrayList<>();
         while (!cursor.isAfterLast()) {
-            String[] trackInfo = new String[3];
-            trackInfo[0] = cursor.getString(nameIndex);
-            trackInfo[1] = String.valueOf(cursor.getInt(durationIndex));
-            trackInfo[2] = cursor.getString(pathIndex);
+            List<String> trackInfo = new ArrayList<>();
+            trackInfo.add(cursor.getString(nameIndex));
+            trackInfo.add(String.valueOf(cursor.getInt(durationIndex)));
+            trackInfo.add(cursor.getString(pathIndex));
             tracks.add(trackInfo);
             cursor.moveToNext();
         }

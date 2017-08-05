@@ -2,6 +2,8 @@ package studios.kdc.soundboarding.models.imp;
 
 import android.support.annotation.NonNull;
 
+import java.util.List;
+
 import studios.kdc.soundboarding.models.Group;
 import studios.kdc.soundboarding.models.Track;
 
@@ -26,6 +28,12 @@ public class TrackImp implements Track{
      * group which contains this track.
      */
     private Group group;
+
+    public TrackImp(List<String> data, Group group) {
+        this.name = data.get(0);
+        this.trackDuration = Integer.valueOf(data.get(1));
+        this.path = data.get(2);
+    }
 
     public TrackImp(String name, Group group) {
         this.name = name;

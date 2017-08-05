@@ -32,6 +32,11 @@ public class GroupImp implements Group {
     private String name;
 
 
+    public GroupImp(List<String> data) {
+        this.name = data.get(0);
+        this.color = Color.parseColor(data.get(1));
+        this.imagePath = data.get(2);
+    }
     public GroupImp(int color, String name, String imagePath){
         tracks = new ArrayList<Track>();
         this.color = color;
@@ -61,10 +66,12 @@ public class GroupImp implements Group {
         this.color = color;
     }
 
+    @Override
     public String getImagePath() {
         return imagePath;
     }
 
+    @Override
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
     }
