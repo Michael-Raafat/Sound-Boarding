@@ -73,8 +73,8 @@ public class DataServiceSingleton {
         database.execSQL("INSERT INTO Animal (name, duration, path) VALUES ('Kitty-noises', 3, 'file:///assets/Animal/Kitty-noises.mp3')");
 
         database.execSQL("CREATE TABLE IF NOT EXISTS Car (name VARCHAR, duration INTEGER, path VARCHAR)");
-        database.execSQL("INSERT INTO Car (name, duration, path) VALUES ('vehicle162', 47, 'file:///assets/Car/vehicle162.mp3'')");
-        database.execSQL("INSERT INTO Car (name, duration, path) VALUES ('vehicle165', 3, 'file:///assets/Car/vehicle165.mp3'')");
+        database.execSQL("INSERT INTO Car (name, duration, path) VALUES ('vehicle162', 47, 'file:///assets/Car/vehicle162.mp3')");
+        database.execSQL("INSERT INTO Car (name, duration, path) VALUES ('vehicle165', 3, 'file:///assets/Car/vehicle165.mp3')");
 
         database.execSQL("CREATE TABLE IF NOT EXISTS Cartoon (name VARCHAR, duration INTEGER, path VARCHAR)");
         database.execSQL("INSERT INTO Cartoon (name, duration, path) VALUES ('bush_baby', 47, 'file:///assets/Cartoon/bush_baby.mp3')");

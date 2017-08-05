@@ -33,6 +33,7 @@ public class GroupImp implements Group {
 
 
     public GroupImp(List<String> data) {
+        tracks = new ArrayList<Track>();
         this.name = data.get(0);
         this.color = Color.parseColor(data.get(1));
         this.imagePath = data.get(2);

@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
     private class Dragger implements View.OnDragListener {
 
         @Override
-        public boolean onDrag(View v, DragEvent event) { // v --> table layout
+        public boolean onDrag(View v, DragEvent event) {
 
             switch (event.getAction()) {
                 case DragEvent.ACTION_DRAG_STARTED:
