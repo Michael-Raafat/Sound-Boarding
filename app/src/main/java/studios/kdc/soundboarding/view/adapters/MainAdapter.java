@@ -9,7 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -53,7 +55,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
             holder.getCardView().setBackgroundColor(Color.WHITE);
             holder.getGroupName().setText(this.groups.get(position).getName());
             holder.getGroupName().setBackgroundColor(this.groups.get(position).getColor());
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(this.groups.get(position).getTracks().size() * 250, LinearLayout.LayoutParams.WRAP_CONTENT);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(this.groups.get(position).getTracks().size() * (int) context.getResources().getDimension(R.dimen.small_card_width), LinearLayout.LayoutParams.WRAP_CONTENT);
             holder.getGridView().setLayoutParams(params);
         }
     }
@@ -72,6 +74,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
             return groupName;
         }
 
+      private HorizontalScrollView scrollView;
         private TextView groupName;
 
 
@@ -81,6 +84,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
             gridView = itemView.findViewById(R.id.gridview);
             cardView = itemView.findViewById(R.id.card_view);
             groupName = itemView.findViewById(R.id.group_name);
+            scrollView = itemView.findViewById(R.id.horizontalScrollView);
 
         }
         private CardView getCardView() {
@@ -92,7 +96,12 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
             return gridView;
         }
 
-    }
+        private HorizontalScrollView getScrollView() {
+          return scrollView;
+        }
+
+
+  }
 
 
 }

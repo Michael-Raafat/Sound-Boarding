@@ -13,6 +13,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -66,9 +67,11 @@ public class MainActivity extends AppCompatActivity {
         timeline_view.setAdapter(timeLineAdapter);
 
 
-
         SearchView searchView = (SearchView) findViewById(R.id.search_view);
-        //((EditText) searchView.findViewById(R.id.search_src_text)).setTextColor(Color.WHITE);
+        int id = searchView.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
+        TextView textView = searchView.findViewById(id);
+        textView.setTextColor(Color.WHITE);
+
         setSearchBoxClickListener(searchView);
 
     }
@@ -83,7 +86,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String s) {
                 dataController.searchTracksInGroups(s);
-                mainAdapter.notifyDataSetChanged();
+                if(mainAdapter != null)
+                   mainAdapter.notifyDataSetChanged();
                 return true;
             }
         });
@@ -125,7 +129,6 @@ public class MainActivity extends AppCompatActivity {
                     View view = (View) event.getLocalState();
                     String description = event.getClipData().getDescription().getLabel().toString();
                     String[] s = description.split("&&@");
-                    int pos = Integer.parseInt(s[0]);
                     Map<String, String> trackInfo = removeTrackFromView(view, s);
                     addTrackToTimeLine(v, trackInfo);
                     break;
@@ -145,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
             GridViewAdapter adapter = (GridViewAdapter) gridView.getAdapter();
             Map<String, String> trackInfo = dataController.selectTrackToMix(params[1] , Integer.parseInt(params[0]));
             adapter.notifyDataSetChanged();
+            mainAdapter.notifyDataSetChanged();
             view.setVisibility(View.VISIBLE);
             return trackInfo;
         }
@@ -159,7 +163,8 @@ public class MainActivity extends AppCompatActivity {
                 InputStream inputStream = new FileInputStream(trackInfo.get("path"));
                 byte[] soundBytes = Utils.toByteArray(inputStream);
                 AudioWaveView waveForm = new AudioWaveView(getApplicationContext());
-                TableRow.LayoutParams params = new TableRow.LayoutParams(300, 100);  // <<====== DURATION
+                //TODO track duration
+                TableRow.LayoutParams params = new TableRow.LayoutParams(300, 100);
                 frameLayout.setLayoutParams(params);
                 waveForm.setWaveColor(Color.WHITE);
                 waveForm.setExpansionAnimated(false);
