@@ -1,6 +1,7 @@
 package studios.kdc.soundboarding;
 
 import android.content.SharedPreferences;
+import android.content.res.AssetManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -8,18 +9,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Map;
 
@@ -160,11 +159,12 @@ public class MainActivity extends AppCompatActivity {
                 TextView name = new TextView(getApplicationContext());
                 FrameLayout frameLayout = new FrameLayout(getApplicationContext());
                 tb_row.setPadding(5, 5, 5, 5);
-                InputStream inputStream = new FileInputStream(trackInfo.get("path"));
+                AssetManager am = getAssets();
+                InputStream inputStream  = am.open(trackInfo.get("grpName") + "/" + trackInfo.get("name")+ ".mp3");
                 byte[] soundBytes = Utils.toByteArray(inputStream);
                 AudioWaveView waveForm = new AudioWaveView(getApplicationContext());
                 //TODO track duration
-                TableRow.LayoutParams params = new TableRow.LayoutParams(300, 100);
+                TableRow.LayoutParams params = new TableRow.LayoutParams(Integer.parseInt(trackInfo.get("duration")) * 10 , 100);
                 frameLayout.setLayoutParams(params);
                 waveForm.setWaveColor(Color.WHITE);
                 waveForm.setExpansionAnimated(false);
