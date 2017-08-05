@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.DragEvent;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -170,7 +171,9 @@ public class MainActivity extends AppCompatActivity {
                 waveForm.setExpansionAnimated(false);
                 waveForm.setLayoutParams(params);
                 waveForm.setRawData(soundBytes);
+               // name.setWidth(waveForm.getChunkWidth());
                 name.setText(trackInfo.get("grpName") + " - " + trackInfo.get("name"));
+                name.setGravity(Gravity.CENTER);
                 name.setTextColor(Color.WHITE);
                 frameLayout.addView(waveForm);
                 frameLayout.addView(name);
