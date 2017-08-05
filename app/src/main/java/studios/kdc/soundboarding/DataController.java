@@ -1,8 +1,5 @@
 package studios.kdc.soundboarding;
 
-import android.graphics.Color;
-
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -84,13 +81,16 @@ public class DataController {
     }
 
     public Map<String , String> selectTrackToMix(String trackName , int groupPosition) {
-        Track selected =  groupContainer.popTrack(groupPosition , trackName);
-        tracksContainer.addTrack(selected);
+        List<String> trackData = DataServiceSingleton.getInstance().getTrackData(
+                trackName,
+                groupContainer.getGrps().get(groupPosition).getName());
+        groupContainer.getGrps().get(groupPosition).removeTrackByName(trackName);
+        tracksContainer.addTrack(new TrackImp(trackData,groupContainer.getGrps().get(groupPosition)));
         Map<String , String> trackInfo =  new HashMap<>();
-        trackInfo.put("name" , selected.getName());
-        trackInfo.put("path" , selected.getPath());
-        trackInfo.put("duration" , String.valueOf(selected.getTrackDuration()));
-        trackInfo.put("grpName" , selected.getGroup().getName());
+        trackInfo.put("name" , trackData.get(0));
+        trackInfo.put("path" , trackData.get(2));
+        trackInfo.put("duration" , String.valueOf(trackData.get(1)));
+        trackInfo.put("grpName" , groupContainer.getGrps().get(groupPosition).getName());
         return trackInfo;
     }
 
