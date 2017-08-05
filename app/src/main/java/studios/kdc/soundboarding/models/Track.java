@@ -18,18 +18,6 @@ public interface Track extends Comparable<Track> {
     String getName();
 
     /**
-     * set group that contains the track.
-     * @param group that contains this track.
-     */
-    void setGroup(Group group);
-
-    /**
-     * gets group of the track.
-     * @return group of the track.
-     */
-    Group getGroup();
-
-    /**
      * set path of the track on phone.
      * @param path string contains path of the track.
      */

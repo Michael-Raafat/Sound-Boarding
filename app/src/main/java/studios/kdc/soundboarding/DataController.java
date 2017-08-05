@@ -42,7 +42,7 @@ public class DataController {
             groupContainer.addGroup(group);
             List<List<String>> tracks = DataServiceSingleton.getInstance().getTracksInTable(group.getName());
             for(int j = 0; j < tracks.size(); j++) {
-                Track track = new TrackImp(tracks.get(j), group);
+                Track track = new TrackImp(tracks.get(j));
                 group.addTrack(track);
             }
         }
@@ -52,11 +52,6 @@ public class DataController {
         if (search.equals("")) {
             groupContainer.getGrps().clear();
             importDatabase();
-            for (int i = 0; i < tracksContainer.getNumberOfTracks(); i++) {
-                groupContainer.getGroupByName(
-                        tracksContainer.getTracks().get(i).getGroup().getName()).removeTrackByName(
-                                tracksContainer.getTracks().get(i).getName());
-            }
         } else {
             List<List<String>> data = DataServiceSingleton.getInstance().getDataMatches(search);
             List<Group> newGroups = new ArrayList<>();
@@ -72,7 +67,7 @@ public class DataController {
                         List<String> trackData = DataServiceSingleton.getInstance().getTrackData(
                                 data.get(i).get(j),
                                 data.get(i).get(0));
-                        Track track = new TrackImp(trackData, group);
+                        Track track = new TrackImp(trackData);
                         tracksMatched.add(track);
                     }
                 }
@@ -80,6 +75,10 @@ public class DataController {
                 newGroups.add(group);
             }
             groupContainer.clearAndAddGroups(newGroups);
+        }
+        for (int i = 0; i < tracksContainer.getNumberOfTracks(); i++) {
+            groupContainer.removeTrackByName(
+                    tracksContainer.getTracks().get(i).getName());
         }
     }
 
@@ -89,7 +88,7 @@ public class DataController {
                 trackName,
                 groupContainer.getGrps().get(groupPosition).getName());
         groupContainer.getGrps().get(groupPosition).removeTrackByName(trackName);
-        tracksContainer.addTrack(new TrackImp(trackData, group));
+        tracksContainer.addTrack(new TrackImp(trackData));
         if (groupContainer.getGrps().get(groupPosition).getTracks().size() == 0) {
             groupContainer.removeGroupByName(group.getName());
         }

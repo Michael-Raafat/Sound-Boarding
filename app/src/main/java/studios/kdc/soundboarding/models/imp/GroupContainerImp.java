@@ -69,4 +69,16 @@ public class GroupContainerImp implements GroupContainer {
             groups.remove(position);
         return temp;
     }
+
+    @Override
+    public void removeTrackByName(String trackName) {
+        for(int i = 0; i < this.groups.size(); i++) {
+            for(int j = 0; j < this.groups.get(i).getTracks().size(); j++) {
+                if (this.groups.get(i).getTracks().get(j).getName().equals(trackName)) {
+                    this.groups.get(i).removeTrackByName(trackName);
+                    break;
+                }
+            }
+        }
+    }
 }

@@ -24,12 +24,8 @@ public class TrackImp implements Track{
      * path of the track on phone.
      */
     private String path;
-    /**
-     * group which contains this track.
-     */
-    private Group group;
 
-    public TrackImp(List<String> data, Group group) {
+    public TrackImp(List<String> data) {
         this.name = data.get(0);
         this.trackDuration = Integer.valueOf(data.get(1));
         this.path = data.get(2);
@@ -37,14 +33,12 @@ public class TrackImp implements Track{
 
     public TrackImp(String name, Group group) {
         this.name = name;
-        this.group = group;
         this.path = "";
         this.trackDuration = 0;
     }
 
     public TrackImp(String name, Group group, int trackDuration) {
         this.name = name;
-        this.group = group;
         this.path = "";
         this.trackDuration = trackDuration;
     }
@@ -52,7 +46,6 @@ public class TrackImp implements Track{
     public TrackImp(String name, String path, Group group, int trackDuration) {
         this.name = name;
         this.path = path;
-        this.group = group;
         this.trackDuration = trackDuration;
     }
     @Override
@@ -63,16 +56,6 @@ public class TrackImp implements Track{
     @Override
     public String getName() {
         return this.name;
-    }
-
-    @Override
-    public void setGroup(Group group) {
-        this.group = group;
-    }
-
-    @Override
-    public Group getGroup() {
-        return this.group;
     }
 
     @Override

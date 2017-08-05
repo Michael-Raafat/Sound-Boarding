@@ -22,4 +22,5 @@ public interface GroupContainer {
 
     Track popTrack(int position, String trackName);
 
+    void removeTrackByName(String trackName);
 }

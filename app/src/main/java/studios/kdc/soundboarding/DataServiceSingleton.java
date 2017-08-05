@@ -91,13 +91,13 @@ public class DataServiceSingleton {
                 +"')");
     }
 
-    public void addTrack(Track track) {
-        database.execSQL("INSERT INTO "+ track.getGroup().getName() +" (name, duration, path) VALUES ('"+
+    public void addTrack(Track track, String groupName) {
+        database.execSQL("INSERT INTO "+ groupName +" (name, duration, path) VALUES ('"+
                 track.getName() +"', "+ String.valueOf(track.getTrackDuration()) +", "+ track.getPath() +")");
     }
 
-    public void removeTrack(Track track) {
-        database.execSQL("DELETE FROM "+ track.getGroup().getName() +" WHERE name = '"+ track.getName() +"'");
+    public void removeTrack(Track track, String groupName) {
+        database.execSQL("DELETE FROM "+ groupName +" WHERE name = '"+ track.getName() +"'");
     }
 
     public void removeGroup(String groupName) {
