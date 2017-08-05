@@ -2,15 +2,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
-    >
+    android:background="@drawable/background">
     <SearchView
         android:id="@+id/search_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        android:searchHintIcon="@color/white"
         />
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
@@ -18,24 +16,40 @@
         android:layout_width="match_parent"
         android:layout_height="400dp"
         android:layout_below="@id/search_view"/>
-
+<!--
     <android.support.v7.widget.RecyclerView
         android:id="@+id/timeline_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         android:layout_below="@id/recycler_view"/>
-
-
-
+        -->
+    <!--
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/timeline_view"
+        android:layout_below="@+id/recycler_view"
         android:fillViewport="true"
+        android:background="@color/colorPrimary"
         android:id="@+id/table_scroll"
         >
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:fillViewport="true"
+        android:layout_height="wrap_content">
 
+-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_below="@+id/recycler_view"
+            android:layout_height="match_parent"
+            android:animateLayoutChanges="true"
+            android:background="@color/blue"
+            android:id="@+id/timeline_view"
+            android:padding="5dp"
+            android:orientation="vertical"/>
+
+<!--
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -43,9 +57,16 @@
             android:id="@+id/table"
             android:background="@color/colorPrimary"
             >
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/timeline_view"/>
         </TableLayout>
-
+-->
+    <!--
+</HorizontalScrollView>
     </ScrollView>
-
+-->
 
 </RelativeLayout>

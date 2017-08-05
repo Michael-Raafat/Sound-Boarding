@@ -6,19 +6,27 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import studios.kdc.soundboarding.R;
 
 
-public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.ViewHolder>{
-
+public class TimeLineAdapter extends TableRow{
     private int minutes;
     private int seconds;
 
-    public TimeLineAdapter(){
+
+    public TimeLineAdapter(Context context) {
+        super(context);
         this.minutes = 0;
         this.seconds = 0;
+    }
+/*
+
+
+    public TimeLineAdapter(){
+
     }
 
 
@@ -71,6 +79,6 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.ViewHo
 
 
         }
-    }
+    }*/
 
 }
