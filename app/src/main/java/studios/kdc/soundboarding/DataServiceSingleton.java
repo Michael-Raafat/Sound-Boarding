@@ -51,7 +51,16 @@ public class DataServiceSingleton {
         //TODO color
         database.execSQL("INSERT INTO groups (name, color) VALUES ('Cars', '#ff00ff')");
         database.execSQL("INSERT INTO groups (name, color) VALUES ('Nature', '#0000ff')");
-        database.execSQL("INSERT INTO groups (name, color) VALUES ('Animal', '#008000')");
+        database.execSQL("INSERT INTO groups (name, color) VALUES ('Animal', '#46bde4')");
+        database.execSQL("INSERT INTO groups (name, color) VALUES ('War', '#672543')");
+
+        database.execSQL("CREATE TABLE IF NOT EXISTS War (name VARCHAR, duration INTEGER, path VARCHAR)");
+        database.execSQL("INSERT INTO War (name, duration, path) VALUES ('explode', 1, 'file:///assets/War/explode.mp3')");
+        database.execSQL("INSERT INTO War (name, duration, path) VALUES ('bazooka', 1, 'file:///assets/War/bazooka.mp3')");
+        database.execSQL("INSERT INTO War (name, duration, path) VALUES ('battle', 5, 'file:///assets/War/battle.mp3')");
+        database.execSQL("INSERT INTO War (name, duration, path) VALUES ('artillery', 1, 'file:///assets/War/artillery.mp3')");
+        database.execSQL("INSERT INTO War (name, duration, path) VALUES ('chainsaw', 4, 'file:///assets/War/chainsaw.mp3')");
+        database.execSQL("INSERT INTO War (name, duration, path) VALUES ('bomb', 2, 'file:///assets/War/bomb.mp3')");
 
 
         //TODO path of assets
@@ -68,8 +77,8 @@ public class DataServiceSingleton {
         database.execSQL("INSERT INTO Animal (name, duration, path) VALUES ('Kitty-noises', 3, '')");
 
         database.execSQL("CREATE TABLE IF NOT EXISTS Cars (name VARCHAR, duration INTEGER, path VARCHAR)");
-        database.execSQL("INSERT INTO Cars (name, duration, path) VALUES ('Dog', 47, '')");
-        database.execSQL("INSERT INTO Cars (name, duration, path) VALUES ('Kitty-noises', 3, '')");
+        database.execSQL("INSERT INTO Cars (name, duration, path) VALUES ('vehicle162', 47, '')");
+        database.execSQL("INSERT INTO Cars (name, duration, path) VALUES ('vehicle165', 3, '')");
 
 
     }
