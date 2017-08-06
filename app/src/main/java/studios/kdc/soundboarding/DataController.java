@@ -80,6 +80,11 @@ public class DataController {
             groupContainer.removeTrackByName(
                     tracksContainer.getTracks().get(i).getName());
         }
+        for(int i = 0; i < groupContainer.getNumberOfGroups(); i++) {
+            if (groupContainer.getGrps().get(i).getTracks().size() == 0) {
+                groupContainer.removeGroupByName(groupContainer.getGrps().get(i).getName());
+            }
+        }
     }
 
     public Map<String , String> selectTrackToMix(String trackName , int groupPosition) {
