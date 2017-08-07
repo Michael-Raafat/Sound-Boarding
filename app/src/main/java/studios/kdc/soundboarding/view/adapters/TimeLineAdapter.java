@@ -12,7 +12,7 @@ import android.widget.TextView;
 import studios.kdc.soundboarding.R;
 
 
-public class TimeLineAdapter extends TableRow{
+public class TimeLineAdapter extends TableRow {
     private int minutes;
     private int seconds;
 
@@ -22,6 +22,7 @@ public class TimeLineAdapter extends TableRow{
         this.minutes = 0;
         this.seconds = 0;
     }
+
 /*
 
 

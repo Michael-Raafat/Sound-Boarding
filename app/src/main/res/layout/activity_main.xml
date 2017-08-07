@@ -16,15 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="400dp"
         android:layout_below="@id/search_view"/>
-<!--
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/timeline_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        android:layout_below="@id/recycler_view"/>
-        -->
-    <!--
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -33,40 +25,27 @@
         android:background="@color/colorPrimary"
         android:id="@+id/table_scroll"
         >
-    <HorizontalScrollView
-        android:layout_width="match_parent"
-        android:fillViewport="true"
-        android:layout_height="wrap_content">
 
--->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_below="@+id/recycler_view"
-            android:layout_height="match_parent"
-            android:animateLayoutChanges="true"
-            android:background="@color/blue"
-            android:id="@+id/timeline_view"
-            android:padding="5dp"
-            android:orientation="vertical"/>
-
-<!--
-        <TableLayout
-            android:layout_width="match_parent"
+        <HorizontalScrollView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:id="@+id/table"
-            android:background="@color/colorPrimary"
+            android:fillViewport="true"
+            android:scrollbars="horizontal"
+            android:id="@+id/sc"
             >
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/timeline_view"/>
-        </TableLayout>
--->
-    <!--
-</HorizontalScrollView>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:animateLayoutChanges="true"
+            android:id="@+id/timeline_view"
+            android:padding="5dp"
+            android:layout_margin="5dp"
+            android:orientation="vertical"/>
+        </HorizontalScrollView>
+
+
     </ScrollView>
--->
+
 
 </RelativeLayout>

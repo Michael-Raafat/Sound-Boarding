@@ -15,11 +15,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.GridView;
+import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.SearchView;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 
 import java.io.File;
@@ -37,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
     private DataController dataController;
     private MainAdapter mainAdapter;
-
+    private HorizontalScrollView horizontalScrollView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,39 +63,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
     private void initializeTable() {
-
-        //TableLayout table = (TableLayout) findViewById(R.id.table);
-        //this.addOnDragListenerOnTableTimeline(table);
-      LinearLayout timeline_view = (LinearLayout) findViewById(R.id.timeline_view);
-      this.addOnDragListenerOnTableTimeline(timeline_view);
-     //   ScrollView scrollView = (ScrollView) findViewById(R.id.table_scroll);
-      //  this.addOnDragListenerOnTableTimeline(scrollView);
+        ScrollView scrollView = (ScrollView) findViewById(R.id.table_scroll);
+        horizontalScrollView = (HorizontalScrollView) findViewById(R.id.sc);
+        this.addOnDragListenerOnTableTimeline(scrollView);
 
 
     }
     private void initializeTimeLineView() {
-       /* RecyclerView timeline_view = (RecyclerView) findViewById(R.id.timeline_view);
-        timeline_view .setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        TimeLineAdapter timeLineAdapter = new TimeLineAdapter();
-        timeline_view.setAdapter(timeLineAdapter);
-       TableRow timelineView = (TableRow) findViewById(R.id.timeline_view);
-        TextView tv = new TextView(this);
-        tv.setTextColor(Color.WHITE);
-        tv.setText("00:00");
-        timelineView.addView(tv);
-
-        TextView tv2= new TextView(this);
-        tv2.setTextColor(Color.WHITE);
-        tv2.setText("00:00");
-        timelineView.addView(tv2);
-        TextView tv3 = new TextView(this);
-        tv3.setTextColor(Color.WHITE);
-        tv3.setText("00:00");
-        timelineView.addView(tv3);
-        TextView tv4 = new TextView(this);
-        tv4.setTextColor(Color.WHITE);
-        tv4.setText("00:00");
-        timelineView.addView(tv4);*/
     }
 
     private void initializeSearchView() {
@@ -126,8 +99,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
-
     private void addOnDragListenerOnTableTimeline(View root){
         root.setOnDragListener(new View.OnDragListener() {
             @Override
@@ -144,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
                         String description = event.getClipData().getDescription().getLabel().toString();
                         String[] s = description.split("&&@");
                         Map<String, String> trackInfo = removeTrackFromView(view, s);
-                        addTrackToTimeLine(v, trackInfo);
+                        addTrackToTimeLine((((ViewGroup)((ViewGroup)v).getChildAt(0)).getChildAt(0)), trackInfo);
                         break;
                     case DragEvent.ACTION_DRAG_ENDED:
                         View view2 = (View) event.getLocalState();
@@ -173,16 +144,13 @@ public class MainActivity extends AppCompatActivity {
         private void addTrackToTimeLine(View table, Map<String, String> trackInfo) {
             try {
                 LinearLayout linearLayout = (LinearLayout) table;
-               // TableLayout tableLayout = (TableLayout) table;
-              //  TableRow tb_row = new TableRow(getApplicationContext());
-             //   TableLayout.LayoutParams rowParam = new TableLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT , ViewGroup.LayoutParams.WRAP_CONTENT);
-             //   tb_row.setLayoutParams(rowParam);
                 FrameLayout frameLayout = new FrameLayout(getApplicationContext());
                 TextView name = new TextView(getApplicationContext());
-              //  tb_row.setPadding(5, 5, 5, 5);  //TODO track extension
+                //TODO track extension
                 byte[] soundBytes = getWaveFormByteArray(trackInfo.get("grpName") , trackInfo.get("name") , "mp3" );
                 FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(Integer.parseInt(trackInfo.get("duration")) * 10, 100);
-                LinearLayout.LayoutParams frameParam = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                LinearLayout.LayoutParams frameParam = new LinearLayout.LayoutParams(2400, ViewGroup.LayoutParams.WRAP_CONTENT);
+                frameParam.setMargins(10,10,10,10);
                 frameLayout.setLayoutParams(frameParam);
                 name.setLayoutParams(params);
                 AudioWaveView waveForm = new AudioWaveView(getApplicationContext());
@@ -195,10 +163,8 @@ public class MainActivity extends AppCompatActivity {
                 frameLayout.addView(waveForm);
                 frameLayout.addView(name);
                 name.setGravity(Gravity.CENTER_HORIZONTAL);
-           //     tb_row.addView(frameLayout);
-           //     tableLayout.addView(tb_row);
                 linearLayout.addView(frameLayout);
-                waveForm.setOnTouchListener(new HorizontalSlider(waveForm.getX(), waveForm.getY()));
+                waveForm.setOnTouchListener(new HorizontalSlider(horizontalScrollView, this));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -232,4 +198,3 @@ public class MainActivity extends AppCompatActivity {
     }
 
     }
-
