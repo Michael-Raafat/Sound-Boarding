@@ -8,7 +8,9 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.DragEvent;
 import android.view.Gravity;
 import android.view.View;
@@ -30,7 +32,7 @@ import rm.com.audiowave.AudioWaveView;
 import studios.kdc.soundboarding.view.ScrollViewListener;
 import studios.kdc.soundboarding.view.CustomHorizontalScrollView;
 import studios.kdc.soundboarding.view.adapters.GridViewAdapter;
-import studios.kdc.soundboarding.view.adapters.HorizontalSlider;
+import studios.kdc.soundboarding.view.HorizontalSlider;
 import studios.kdc.soundboarding.view.adapters.MainAdapter;
 import studios.kdc.soundboarding.view.CustomTimelineView;
 
@@ -40,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements ScrollViewListene
     private MainAdapter mainAdapter;
     private CustomHorizontalScrollView horizontalScrollView;
     private CustomTimelineView timelineView;
-    private int i;
+    private int scrollFactor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements ScrollViewListene
 
         dataController = new DataController();
         new DatabaseGetter().execute();
-        this.i = 0;
+        this.scrollFactor = 0;
         this.initializeTable();
         this.initializeTimeLineView();
         this.initializeSearchView();
@@ -173,10 +175,27 @@ public class MainActivity extends AppCompatActivity implements ScrollViewListene
             name.setGravity(Gravity.CENTER_HORIZONTAL);
             linearLayout.addView(frameLayout);
             waveForm.setOnTouchListener(new HorizontalSlider(horizontalScrollView, frameLayout , (View) frameLayout.getParent().getParent()));
+            setOnLongClickListenerToWaveForm(frameLayout);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+    private void setOnLongClickListenerToWaveForm(final FrameLayout waveForm) {
+
+        waveForm.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                Log.i("hna" , "wsl");
+                PopupMenu popup = new PopupMenu(MainActivity.this, waveForm);
+                popup.getMenuInflater().inflate(R.menu.delete_menu, popup.getMenu());
+                popup.show();
+                return true;
+            }
+        });
+    }
+
+
     private byte[] getWaveFormByteArray(String grpName , String trackName , String extension) {
         AssetManager am = getAssets(); //TODO l 7ta deh msh htnf3 lw l path msh assets
         try {
@@ -192,13 +211,12 @@ public class MainActivity extends AppCompatActivity implements ScrollViewListene
     public void onScrollChanged(CustomHorizontalScrollView scrollView, int x, int y, int oldX, int oldY) {
 
         int delta = x - oldX;
-        if((delta > 0) && ((i + 1 ) * 150 < x) ) {
-            i++;
+        if((delta > 0) && ((scrollFactor + 1 ) * 150 < x) ) {
+            scrollFactor++;
             timelineView.IncreaseTimelineView();
-        } else if((delta < 0) &&  ((i - 1 ) * 150 >= x)) {
-            i--;
+        } else if((delta < 0) &&  ((scrollFactor - 1 ) * 150 >= x)) {
+            scrollFactor--;
             timelineView.decreaseTimelineView();
-
         }
     }
 

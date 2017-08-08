@@ -1,4 +1,4 @@
-package studios.kdc.soundboarding.view.adapters;
+package studios.kdc.soundboarding.view;
 
 import android.util.Log;
 import android.view.MotionEvent;
