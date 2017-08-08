@@ -154,7 +154,7 @@ public class GridViewAdapter extends BaseAdapter implements MediaPlayerContract.
 
         @Override
         public void onClick(View view) {
-            mediaPlayerController.singlePlayAndPauseTrack(view,position,name);
+            mediaPlayerController.singlePlayAndPauseTrack(groupName, name);
         }
     }
 

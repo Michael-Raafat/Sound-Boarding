@@ -34,8 +34,8 @@ public class MediaPlayerController implements  MediaPlayerContract.ControllerAct
     }
 
     @Override
-    public void singlePlayAndPauseTrack(View v, int position, String name) {
-        mediaPlayerHandler.playSong(name);
+    public void singlePlayAndPauseTrack(String groupName, String name) {
+        mediaPlayerHandler.playSong(groupName + "/" + name);
     }
 
     @Override

@@ -180,7 +180,7 @@ public class MainActivity extends AppCompatActivity implements ScrollViewListene
     private byte[] getWaveFormByteArray(String grpName , String trackName , String extension) {
         AssetManager am = getAssets(); //TODO l 7ta deh msh htnf3 lw l path msh assets
         try {
-            InputStream inputStream = am.open(grpName + File.separator + trackName);
+            InputStream inputStream = am.open(grpName + File.separator + trackName + extension);
             return   Utils.toByteArray(inputStream);
         } catch (Exception e) {
             e.printStackTrace();
