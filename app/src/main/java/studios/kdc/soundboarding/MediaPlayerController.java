@@ -21,19 +21,16 @@ public class MediaPlayerController implements  MediaPlayerContract.ControllerAct
     private Context context;
     private static MediaPlayerController instance;
 
-    private MediaPlayerController(MediaPlayerContract.AdapterActions gridViewAdapter,
-                                 Context context) {
+    private MediaPlayerController(Context context) {
         name = "";
         position = 0;
         mediaPlayerHandler = new MediaPlayerHandler(context);
-        this.gridViewAdapter = gridViewAdapter;
         this.context = context;
     }
 
-    public static MediaPlayerController getInstance(MediaPlayerContract.AdapterActions gridViewAdapter,
-                                                    Context context) {
+    public static MediaPlayerController getInstance(Context context) {
         if (instance == null) {
-            instance = new MediaPlayerController(gridViewAdapter, context);
+            instance = new MediaPlayerController(context);
         }
         return instance;
     }
@@ -44,11 +41,12 @@ public class MediaPlayerController implements  MediaPlayerContract.ControllerAct
     }
 
     @Override
-    public void checkTrackChanged(View view, int position, String name) {
+    public boolean checkTrackChanged(View view, int position, String name) {
         if (!this.name.equals(name)) {
             mediaPlayerHandler.stop();
-            gridViewAdapter.setOnFirstClickListener(view, position, name);
             this.name = name;
+            return true;
         }
+        return false;
     }
 }

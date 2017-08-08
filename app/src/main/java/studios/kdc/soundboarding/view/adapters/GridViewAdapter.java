@@ -19,7 +19,7 @@ import studios.kdc.soundboarding.MediaPlayerHandler;
 import studios.kdc.soundboarding.R;
 import studios.kdc.soundboarding.models.Track;
 
-public class GridViewAdapter extends BaseAdapter implements MediaPlayerContract.AdapterActions {
+public class GridViewAdapter extends BaseAdapter  {
 
     private List<Track> allItemsResourceID;
     private LayoutInflater inflater;
@@ -29,6 +29,7 @@ public class GridViewAdapter extends BaseAdapter implements MediaPlayerContract.
     private String groupName;
     private MediaPlayerController mediaPlayerController;
     private ChoiceClickListener choiceTouchListener;
+    private String name = "";
 
     public GridViewAdapter(Context context, List<Track> media, int color , int cardPosition, String groupName) {
         this.inflater = LayoutInflater.from(context);
@@ -37,7 +38,7 @@ public class GridViewAdapter extends BaseAdapter implements MediaPlayerContract.
         this.cardPosition = cardPosition;
         this.context = context;
         this.groupName = groupName;
-        this.mediaPlayerController = MediaPlayerController.getInstance(this, context);
+        this.mediaPlayerController = MediaPlayerController.getInstance(context);
     }
 
     @Override
@@ -75,8 +76,9 @@ public class GridViewAdapter extends BaseAdapter implements MediaPlayerContract.
             holder.getTextView().setText(allItemsResourceID.get(position).getName());
         }
         setOnLongClickListener(view, this.cardPosition , holder.getTextView().getText().toString());
-        mediaPlayerController.checkTrackChanged(view, this.cardPosition, holder.getTextView().getText().toString());
-        //setOnClickListener(view, this.cardPosition , holder.getTextView().getText().toString());
+        if (mediaPlayerController.checkTrackChanged(view, this.cardPosition, holder.getTextView().getText().toString())) {
+            setOnClickListener(view, this.cardPosition , holder.getTextView().getText().toString());
+        }
         return view;
     }
 
@@ -84,15 +86,11 @@ public class GridViewAdapter extends BaseAdapter implements MediaPlayerContract.
         v.setOnLongClickListener(new ChoiceTouchListener(position , name, context));
     }
 
-    @Override
-    public void setOnFirstClickListener(View v, int position, String name) {
+
+    private void setOnClickListener(View v, int position, String name) {
         v.setOnClickListener(new ChoiceClickListener(position , name, groupName));
     }
 
-    @Override
-    public void setOnSecondClickListener(View v, int position, String name) {
-        v.setOnClickListener(choiceTouchListener);
-    }
     private class ViewHolder {
         private TextView getTextView() {
             return textView;

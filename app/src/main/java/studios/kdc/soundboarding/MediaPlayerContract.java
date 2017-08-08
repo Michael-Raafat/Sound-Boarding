@@ -12,15 +12,8 @@ public class MediaPlayerContract {
 
         void singlePlayAndPauseTrack(String groupName, String name);
 
-        void checkTrackChanged(View view, int position, String name);
+        boolean checkTrackChanged(View view, int position, String name);
 
-
-    }
-
-    public interface AdapterActions {
-
-        void setOnFirstClickListener(View v, int position, String name);
-        void setOnSecondClickListener(View v, int position, String name);
 
     }
 }
