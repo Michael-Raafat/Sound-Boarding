@@ -10,7 +10,7 @@ public class MediaPlayerContract {
 
     public interface ControllerActions {
 
-        void singlePlayAndPauseTrack(View v, int position, String name);
+        void singlePlayAndPauseTrack(String groupName, String name);
 
         void checkTrackChanged(View view, int position, String name);
 
