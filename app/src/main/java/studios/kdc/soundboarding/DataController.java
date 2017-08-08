@@ -23,12 +23,12 @@ import studios.kdc.soundboarding.view.adapters.MainAdapter;
  */
 
 public class DataController {
-    private GroupContainer groupContainer;
+    private GroupContainerImp groupContainer;
     private TracksContainer tracksContainer;
 
     public DataController() {
-        groupContainer = new GroupContainerImp();
-        tracksContainer = new TrackContainerImp();
+        groupContainer = GroupContainerImp.getInstance();
+        tracksContainer = TrackContainerImp.getInstance();
 
     }
     public void setMainAdapterList(MainAdapter adapter) {

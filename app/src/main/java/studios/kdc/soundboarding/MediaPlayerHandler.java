@@ -27,6 +27,8 @@ public class MediaPlayerHandler {
     private int curVolume;
     private String trackName;
     private GridViewAdapter mCallBack;
+    private boolean flag;
+    private int currentPosition;
 
 
     public MediaPlayerHandler(Context context) {
@@ -37,6 +39,7 @@ public class MediaPlayerHandler {
         this.maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
         this.curVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
         this.trackName = null;
+        this.flag = false;
 
     }
 
@@ -60,17 +63,30 @@ public class MediaPlayerHandler {
     }
     @SuppressLint("NewApi")
     public void playSong(String name) {
-        if(trackName == null || !this.trackName.equals(name)) {
-            this.mediaPlayer.reset();
-            try {
-                AssetFileDescriptor afd = context.getAssets().openFd(name);
-                this.mediaPlayer.setDataSource(afd.getFileDescriptor(),afd.getStartOffset(),afd.getLength());
-                this.mediaPlayer.prepare();
-                this.mediaPlayer.start();
-                this.trackName= name;
-            } catch (Exception e) {
-                e.printStackTrace();
+        if (mediaPlayer.getDuration() != -1) {
+            if(mediaPlayer.isPlaying() && this.trackName.equals(name)) {
+                mediaPlayer.pause();
+                this.currentPosition = mediaPlayer.getCurrentPosition();
+                flag = true;
+                return;
             }
+        }
+        if (trackName != null && trackName.equals(name) && flag) {
+            Log.i("gogo", "zew");
+            this.seekTo(currentPosition);
+            this.start();
+            flag = false;
+            return;
+        }
+        this.mediaPlayer.reset();
+        try {
+            AssetFileDescriptor afd = context.getAssets().openFd(name);
+            this.mediaPlayer.setDataSource(afd.getFileDescriptor(),afd.getStartOffset(),afd.getLength());
+            this.mediaPlayer.prepare();
+            this.mediaPlayer.start();
+            this.trackName= name;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

@@ -82,7 +82,7 @@ public class GridViewAdapter extends BaseAdapter {
     }
 
     private void setOnClickListener(View v, int position, String name) {
-        v.setOnClickListener(new ChoiceTouchListener(position , name, context));
+        v.setOnClickListener(new ChoiceClickListener(position , name, context));
     }
 
     private class ViewHolder {
@@ -138,8 +138,26 @@ public class GridViewAdapter extends BaseAdapter {
         }
     }
 
-    public String getTrackName() {
-        return this.trackName;
+
+    private class ChoiceClickListener implements View.OnClickListener {
+        @SuppressLint("NewApi")
+        private int position;
+        private String name;
+        private MediaPlayerHandler mediaPlayerHandler;
+
+        private ChoiceClickListener(int position, String name, Context context) {
+            this.position = position;
+            this.name = name;
+            mediaPlayerHandler = new MediaPlayerHandler(context);
+        }
+
+        @Override
+        public void onClick(View view) {
+            mediaPlayerHandler.playSong(groupName + "/" + name);
+        }
     }
+
+
+
 }
 
