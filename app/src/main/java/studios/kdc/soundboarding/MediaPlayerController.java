@@ -19,18 +19,23 @@ public class MediaPlayerController implements  MediaPlayerContract.ControllerAct
     private MediaPlayerContract.AdapterActions gridViewAdapter;
     private MediaPlayerHandler mediaPlayerHandler;
     private Context context;
+    private static MediaPlayerController instance;
 
-    public MediaPlayerController(MediaPlayerContract.AdapterActions gridViewAdapter,
-                                 Context context,
-                                 List<Track> media,
-                                 int color ,
-                                 int cardPosition,
-                                 String groupName) {
+    private MediaPlayerController(MediaPlayerContract.AdapterActions gridViewAdapter,
+                                 Context context) {
         name = "";
         position = 0;
         mediaPlayerHandler = new MediaPlayerHandler(context);
         this.gridViewAdapter = gridViewAdapter;
         this.context = context;
+    }
+
+    public static MediaPlayerController getInstance(MediaPlayerContract.AdapterActions gridViewAdapter,
+                                                    Context context) {
+        if (instance == null) {
+            instance = new MediaPlayerController(gridViewAdapter, context);
+        }
+        return instance;
     }
 
     @Override
@@ -41,7 +46,7 @@ public class MediaPlayerController implements  MediaPlayerContract.ControllerAct
     @Override
     public void checkTrackChanged(View view, int position, String name) {
         if (!this.name.equals(name)) {
-            mediaPlayerHandler = new MediaPlayerHandler(context);
+            mediaPlayerHandler.stop();
             gridViewAdapter.setOnFirstClickListener(view, position, name);
             this.name = name;
         } else {
