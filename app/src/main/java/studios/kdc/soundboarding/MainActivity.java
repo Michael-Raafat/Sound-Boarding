@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -170,28 +171,33 @@ public class MainActivity extends AppCompatActivity implements ScrollViewListene
             waveForm.setRawData(soundBytes);
             name.setText(trackInfo.get("grpName") + " - " + trackInfo.get("name"));
             name.setTextColor(Color.WHITE);
+            ImageButton optionsButton = new ImageButton(this);
+            optionsButton.setBackgroundColor(Color.RED);
+            FrameLayout.LayoutParams optionsParams = new FrameLayout.LayoutParams(40 , 40);
+            optionsButton.setLayoutParams(optionsParams);
             frameLayout.addView(waveForm);
             frameLayout.addView(name);
+            frameLayout.addView(optionsButton);
             name.setGravity(Gravity.CENTER_HORIZONTAL);
             linearLayout.addView(frameLayout);
+            setOnClickListenerToOptionsButton(optionsButton);
             waveForm.setOnTouchListener(new HorizontalSlider(horizontalScrollView, frameLayout , (View) frameLayout.getParent().getParent()));
-            setOnLongClickListenerToWaveForm(frameLayout);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void setOnLongClickListenerToWaveForm(final FrameLayout waveForm) {
+    private void setOnClickListenerToOptionsButton(final ImageButton options) {
 
-        waveForm.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                Log.i("hna" , "wsl");
-                PopupMenu popup = new PopupMenu(MainActivity.this, waveForm);
-                popup.getMenuInflater().inflate(R.menu.delete_menu, popup.getMenu());
-                popup.show();
-                return true;
-            }
+       options.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+               Log.i("hna" , "clicked");
+               PopupMenu popup = new PopupMenu(MainActivity.this, options);
+               popup.getMenuInflater().inflate(R.menu.delete_menu, popup.getMenu());
+               popup.show();
+           }
+
         });
     }
 
