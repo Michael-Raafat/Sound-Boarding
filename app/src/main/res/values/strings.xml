@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Sound Boarding</string>
+    <string name="separator">&amp;&amp;@</string>
 </resources>
