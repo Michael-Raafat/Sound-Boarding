@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.DragEvent;
 import android.view.Gravity;
 import android.view.View;
@@ -203,11 +202,12 @@ public class MainActivity extends AppCompatActivity implements ScrollViewListene
     @Override
     public void onScrollChanged(CustomHorizontalScrollView scrollView, int x, int y, int oldX, int oldY) {
 
-        int delta = x - oldX;
-        if(x >= ( (i + 1) * 140) && (x <= ((i + 1) * 150)) && (delta > 0)) { //scrolling to right
+        int delta = x- oldX;
+
+        if(x >= ( (i + 1) * 140) && (x <= ((i + 1) * 150)) && (delta > 0)) {
             i++;
             timelineView.IncreaseTimelineView();
-        } else if(x >= ( (i - 1) * 140) && (x<= ((i - 1 ) * 150)) &&(delta <= 0)) { //scrolling to  left
+        } else if(x >= ( (i - 1) * 140) && (x<= ((i - 1 ) * 150)) &&(delta <= 0)) {
             i--;
             timelineView.decreaseTimelineView();
 
