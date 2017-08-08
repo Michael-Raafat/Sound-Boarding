@@ -74,7 +74,7 @@ public class MediaPlayerHandler {
         }
         this.mediaPlayer.reset();
         try {
-            AssetFileDescriptor afd = context.getAssets().openFd(name);
+            AssetFileDescriptor afd = context.getAssets().openFd(name + ".mp3");
             this.mediaPlayer.setDataSource(afd.getFileDescriptor(),afd.getStartOffset(),afd.getLength());
             this.mediaPlayer.prepare();
             this.mediaPlayer.start();

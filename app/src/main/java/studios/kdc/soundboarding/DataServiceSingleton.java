@@ -51,35 +51,35 @@ public class DataServiceSingleton {
         database.execSQL("INSERT INTO groups (name, color) VALUES ('Cartoon', '#c8498b')");
 
         database.execSQL("CREATE TABLE IF NOT EXISTS War (name VARCHAR, duration INTEGER, path VARCHAR)");
-        database.execSQL("INSERT INTO War (name, duration, path) VALUES ('explode.mp3', 1, 'file:///assets/War/explode.mp3')");
-        database.execSQL("INSERT INTO War (name, duration, path) VALUES ('bazooka.mp3', 1, 'file:///assets/War/bazooka.mp3')");
-        database.execSQL("INSERT INTO War (name, duration, path) VALUES ('battle.mp3', 5, 'file:///assets/War/battle.mp3')");
-        database.execSQL("INSERT INTO War (name, duration, path) VALUES ('artillery.mp3', 1, 'file:///assets/War/artillery.mp3')");
-        database.execSQL("INSERT INTO War (name, duration, path) VALUES ('chainsaw.mp3', 4, 'file:///assets/War/chainsaw.mp3')");
-        database.execSQL("INSERT INTO War (name, duration, path) VALUES ('bomb.mp3', 2, 'file:///assets/War/bomb.mp3')");
+        database.execSQL("INSERT INTO War (name, duration, path) VALUES ('explode', 1, 'file:///assets/War/explode.mp3')");
+        database.execSQL("INSERT INTO War (name, duration, path) VALUES ('bazooka', 1, 'file:///assets/War/bazooka.mp3')");
+        database.execSQL("INSERT INTO War (name, duration, path) VALUES ('battle', 5, 'file:///assets/War/battle.mp3')");
+        database.execSQL("INSERT INTO War (name, duration, path) VALUES ('artillery', 1, 'file:///assets/War/artillery.mp3')");
+        database.execSQL("INSERT INTO War (name, duration, path) VALUES ('chainsaw', 4, 'file:///assets/War/chainsaw.mp3')");
+        database.execSQL("INSERT INTO War (name, duration, path) VALUES ('bomb', 2, 'file:///assets/War/bomb.mp3')");
 
 
         //TODO path of assets
         database.execSQL("CREATE TABLE IF NOT EXISTS Nature (name VARCHAR, duration INTEGER, path VARCHAR)");
-        database.execSQL("INSERT INTO Nature (name, duration, path) VALUES ('hurricane.mp3', 4, 'file:///assets/Nature/hurricane.mp3')");
-        database.execSQL("INSERT INTO Nature (name, duration, path) VALUES ('wind01.mp3', 9, 'file:///assets/Nature/wind01.mp3')");
-        database.execSQL("INSERT INTO Nature (name, duration, path) VALUES ('storm-thunder.mp3', 3, 'file:///assets/Nature/storm-thunder.mp3')");
-        database.execSQL("INSERT INTO Nature (name, duration, path) VALUES ('earthquake.mp3', 2, 'file:///assets/Nature/earthquake.mp3')");
-        database.execSQL("INSERT INTO Nature (name, duration, path) VALUES ('rain.mp3', 4, 'file:///assets/Nature/rain.mp3')");
-        database.execSQL("INSERT INTO Nature (name, duration, path) VALUES ('water.mp3', 50, 'file:///assets/Nature/water.mp3')");
+        database.execSQL("INSERT INTO Nature (name, duration, path) VALUES ('hurricane', 4, 'file:///assets/Nature/hurricane.mp3')");
+        database.execSQL("INSERT INTO Nature (name, duration, path) VALUES ('wind01', 9, 'file:///assets/Nature/wind01.mp3')");
+        database.execSQL("INSERT INTO Nature (name, duration, path) VALUES ('storm-thunder', 3, 'file:///assets/Nature/storm-thunder.mp3')");
+        database.execSQL("INSERT INTO Nature (name, duration, path) VALUES ('earthquake', 2, 'file:///assets/Nature/earthquake.mp3')");
+        database.execSQL("INSERT INTO Nature (name, duration, path) VALUES ('rain', 4, 'file:///assets/Nature/rain.mp3')");
+        database.execSQL("INSERT INTO Nature (name, duration, path) VALUES ('water', 50, 'file:///assets/Nature/water.mp3')");
 
         database.execSQL("CREATE TABLE IF NOT EXISTS Animal (name VARCHAR, duration INTEGER, path VARCHAR)");
-        database.execSQL("INSERT INTO Animal (name, duration, path) VALUES ('Dog.mp3', 47, 'file:///assets/Animal/Dog.mp3')");
-        database.execSQL("INSERT INTO Animal (name, duration, path) VALUES ('Kitty-noises.mp3', 3, 'file:///assets/Animal/Kitty-noises.mp3')");
+        database.execSQL("INSERT INTO Animal (name, duration, path) VALUES ('Dog', 47, 'file:///assets/Animal/Dog.mp3')");
+        database.execSQL("INSERT INTO Animal (name, duration, path) VALUES ('Kitty-noises', 3, 'file:///assets/Animal/Kitty-noises.mp3')");
 
         database.execSQL("CREATE TABLE IF NOT EXISTS Car (name VARCHAR, duration INTEGER, path VARCHAR)");
-        database.execSQL("INSERT INTO Car (name, duration, path) VALUES ('vehicle162.mp3', 47, 'file:///assets/Car/vehicle162.mp3')");
-        database.execSQL("INSERT INTO Car (name, duration, path) VALUES ('vehicle165.mp3', 3, 'file:///assets/Car/vehicle165.mp3')");
+        database.execSQL("INSERT INTO Car (name, duration, path) VALUES ('vehicle162', 47, 'file:///assets/Car/vehicle162.mp3')");
+        database.execSQL("INSERT INTO Car (name, duration, path) VALUES ('vehicle165', 3, 'file:///assets/Car/vehicle165.mp3')");
 
         database.execSQL("CREATE TABLE IF NOT EXISTS Cartoon (name VARCHAR, duration INTEGER, path VARCHAR)");
-        database.execSQL("INSERT INTO Cartoon (name, duration, path) VALUES ('bush_baby.mp3', 99, 'file:///assets/Cartoon/bush_baby.mp3')");
-        database.execSQL("INSERT INTO Cartoon (name, duration, path) VALUES ('popcorn.mp3', 57, 'file:///assets/Cartoon/bush_baby.mp3')");
-        database.execSQL("INSERT INTO Cartoon (name, duration, path) VALUES ('Tom and Jerry.mp3', 24, 'file:///assets/Cartoon/Tom and Jerry.mp3')");
+        database.execSQL("INSERT INTO Cartoon (name, duration, path) VALUES ('bush_baby', 99, 'file:///assets/Cartoon/bush_baby.mp3')");
+        database.execSQL("INSERT INTO Cartoon (name, duration, path) VALUES ('popcorn', 57, 'file:///assets/Cartoon/bush_baby.mp3')");
+        database.execSQL("INSERT INTO Cartoon (name, duration, path) VALUES ('Tom and Jerry', 24, 'file:///assets/Cartoon/Tom and Jerry.mp3')");
 
 
     }
