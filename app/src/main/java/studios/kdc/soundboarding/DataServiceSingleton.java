@@ -51,12 +51,12 @@ public class DataServiceSingleton {
         database.execSQL("INSERT INTO groups (name, color) VALUES ('Cartoon', '#c8498b')");
 
         database.execSQL("CREATE TABLE IF NOT EXISTS War (name VARCHAR, duration INTEGER, path VARCHAR)");
-        database.execSQL("INSERT INTO War (name, duration, path) VALUES ('explode', 1, 'file:///assets/War/explode.mp3')");
-        database.execSQL("INSERT INTO War (name, duration, path) VALUES ('bazooka', 1, 'file:///assets/War/bazooka.mp3')");
-        database.execSQL("INSERT INTO War (name, duration, path) VALUES ('battle', 5, 'file:///assets/War/battle.mp3')");
-        database.execSQL("INSERT INTO War (name, duration, path) VALUES ('artillery', 1, 'file:///assets/War/artillery.mp3')");
-        database.execSQL("INSERT INTO War (name, duration, path) VALUES ('chainsaw', 4, 'file:///assets/War/chainsaw.mp3')");
-        database.execSQL("INSERT INTO War (name, duration, path) VALUES ('bomb', 2, 'file:///assets/War/bomb.mp3')");
+        database.execSQL("INSERT INTO War (name, duration, path) VALUES ('explode.mp3', 1, 'file:///assets/War/explode.mp3')");
+        database.execSQL("INSERT INTO War (name, duration, path) VALUES ('bazooka.mp3', 1, 'file:///assets/War/bazooka.mp3')");
+        database.execSQL("INSERT INTO War (name, duration, path) VALUES ('battle.mp3', 5, 'file:///assets/War/battle.mp3')");
+        database.execSQL("INSERT INTO War (name, duration, path) VALUES ('artillery.mp3', 1, 'file:///assets/War/artillery.mp3')");
+        database.execSQL("INSERT INTO War (name, duration, path) VALUES ('chainsaw.mp3', 4, 'file:///assets/War/chainsaw.mp3')");
+        database.execSQL("INSERT INTO War (name, duration, path) VALUES ('bomb.mp3', 2, 'file:///assets/War/bomb.mp3')");
 
 
         //TODO path of assets
