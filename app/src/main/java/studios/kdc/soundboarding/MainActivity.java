@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements ScrollViewListene
             sharedPreferences.edit().putBoolean("Start", true).apply();
         }
         ///////////////////////////////////////////////////////
-
+        //TODO database import ??
         dataController = new DataController();
         new DatabaseGetter().execute();
         this.scrollFactor = 0;
