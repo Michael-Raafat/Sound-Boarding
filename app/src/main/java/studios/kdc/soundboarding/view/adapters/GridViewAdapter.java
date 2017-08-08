@@ -13,11 +13,13 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import studios.kdc.soundboarding.MediaPlayerContract;
+import studios.kdc.soundboarding.MediaPlayerController;
 import studios.kdc.soundboarding.MediaPlayerHandler;
 import studios.kdc.soundboarding.R;
 import studios.kdc.soundboarding.models.Track;
 
-public class GridViewAdapter extends BaseAdapter {
+public class GridViewAdapter extends BaseAdapter implements MediaPlayerContract.AdapterActions {
 
     private List<Track> allItemsResourceID;
     private LayoutInflater inflater;
@@ -25,6 +27,8 @@ public class GridViewAdapter extends BaseAdapter {
     private int cardPosition;
     private Context context;
     private String groupName;
+    private MediaPlayerController mediaPlayerController;
+    private ChoiceClickListener choiceTouchListener;
 
     public GridViewAdapter(Context context, List<Track> media, int color , int cardPosition, String groupName) {
         this.inflater = LayoutInflater.from(context);
@@ -33,6 +37,7 @@ public class GridViewAdapter extends BaseAdapter {
         this.cardPosition = cardPosition;
         this.context = context;
         this.groupName = groupName;
+        this.mediaPlayerController = new MediaPlayerController(this, context, media, color, cardPosition, groupName);
     }
 
     @Override
@@ -70,7 +75,8 @@ public class GridViewAdapter extends BaseAdapter {
             holder.getTextView().setText(allItemsResourceID.get(position).getName());
         }
         setOnLongClickListener(view, this.cardPosition , holder.getTextView().getText().toString());
-        setOnClickListener(view, this.cardPosition , holder.getTextView().getText().toString());
+        mediaPlayerController.checkTrackChanged(view, this.cardPosition, holder.getTextView().getText().toString());
+        //setOnClickListener(view, this.cardPosition , holder.getTextView().getText().toString());
         return view;
     }
 
@@ -78,10 +84,16 @@ public class GridViewAdapter extends BaseAdapter {
         v.setOnLongClickListener(new ChoiceTouchListener(position , name, context));
     }
 
-    private void setOnClickListener(View v, int position, String name) {
-        v.setOnClickListener(new ChoiceClickListener(position , name, context));
+    @Override
+    public void setOnFirstClickListener(View v, int position, String name) {
+        choiceTouchListener = new ChoiceClickListener(position , name);
+        v.setOnClickListener(choiceTouchListener);
     }
 
+    @Override
+    public void setOnSecondClickListener(View v, int position, String name) {
+        v.setOnClickListener(choiceTouchListener);
+    }
     private class ViewHolder {
         private TextView getTextView() {
             return textView;
@@ -105,18 +117,17 @@ public class GridViewAdapter extends BaseAdapter {
 
 
 
-    private class ChoiceTouchListener implements View.OnLongClickListener, View.OnClickListener {
+    private class ChoiceTouchListener implements View.OnLongClickListener {
         @SuppressLint("NewApi")
         private int position;
         private String name;
         private Context context;
-        private MediaPlayerHandler mediaPlayerHandler;
+
 
         private ChoiceTouchListener(int position, String name, Context context) {
             this.position = position;
             this.name = name;
             this.context = context;
-            mediaPlayerHandler = new MediaPlayerHandler(context);
         }
 
         @Override
@@ -128,11 +139,6 @@ public class GridViewAdapter extends BaseAdapter {
             return true;
 
         }
-
-        @Override
-        public void onClick(View view) {
-            mediaPlayerHandler.playSong(groupName + "/" + name);
-        }
     }
 
 
@@ -140,17 +146,15 @@ public class GridViewAdapter extends BaseAdapter {
         @SuppressLint("NewApi")
         private int position;
         private String name;
-        private MediaPlayerHandler mediaPlayerHandler;
 
-        private ChoiceClickListener(int position, String name, Context context) {
+        private ChoiceClickListener(int position, String name) {
             this.position = position;
             this.name = name;
-            mediaPlayerHandler = new MediaPlayerHandler(context);
         }
 
         @Override
         public void onClick(View view) {
-            mediaPlayerHandler.playSong(groupName + "/" + name);
+            mediaPlayerController.singlePlayAndPauseTrack(view,position,name);
         }
     }
 
