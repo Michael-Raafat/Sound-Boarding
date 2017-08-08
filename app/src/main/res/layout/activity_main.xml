@@ -16,36 +16,55 @@
         android:layout_width="match_parent"
         android:layout_height="400dp"
         android:layout_below="@id/search_view"/>
+    
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:id="@+id/timeline"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/recycler_view"
+        android:orientation="horizontal"/>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/recycler_view"
+        android:layout_below="@+id/timeline"
         android:fillViewport="true"
-        android:background="@color/colorPrimary"
+        android:background="@drawable/timeline"
         android:id="@+id/table_scroll"
         >
 
-        <HorizontalScrollView
+        <studios.kdc.soundboarding.view.CustomHorizontalScrollView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fillViewport="true"
             android:scrollbars="horizontal"
             android:id="@+id/sc"
             >
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
 
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/seeker"
+        android:layout_margin="2dp"
+        android:src="@drawable/seeker"/>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:animateLayoutChanges="true"
             android:id="@+id/timeline_view"
-            android:padding="5dp"
-            android:layout_margin="5dp"
-            android:orientation="vertical"/>
-        </HorizontalScrollView>
+            android:orientation="vertical">
+            </LinearLayout>
+
+      </LinearLayout>
+
+        </studios.kdc.soundboarding.view.CustomHorizontalScrollView>
 
 
     </ScrollView>
-
 
 </RelativeLayout>

@@ -9,13 +9,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.DragEvent;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.GridView;
-import android.widget.HorizontalScrollView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.SearchView;
@@ -27,16 +28,20 @@ import java.util.Map;
 
 
 import rm.com.audiowave.AudioWaveView;
+import studios.kdc.soundboarding.view.ScrollViewListener;
+import studios.kdc.soundboarding.view.CustomHorizontalScrollView;
 import studios.kdc.soundboarding.view.adapters.GridViewAdapter;
 import studios.kdc.soundboarding.view.adapters.HorizontalSlider;
 import studios.kdc.soundboarding.view.adapters.MainAdapter;
-import studios.kdc.soundboarding.view.adapters.TimeLineAdapter;
+import studios.kdc.soundboarding.view.adapters.CustomTimelineView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ScrollViewListener{
 
     private DataController dataController;
     private MainAdapter mainAdapter;
-    private HorizontalScrollView horizontalScrollView;
+    private CustomHorizontalScrollView horizontalScrollView;
+    private CustomTimelineView timelineView;
+    private int i;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
         dataController = new DataController();
         new DatabaseGetter().execute();
-
+        this.i = 0;
         this.initializeTable();
         this.initializeTimeLineView();
         this.initializeSearchView();
@@ -64,12 +69,27 @@ public class MainActivity extends AppCompatActivity {
     }
     private void initializeTable() {
         ScrollView scrollView = (ScrollView) findViewById(R.id.table_scroll);
-        horizontalScrollView = (HorizontalScrollView) findViewById(R.id.sc);
+        horizontalScrollView = (CustomHorizontalScrollView) findViewById(R.id.sc);
+        horizontalScrollView.setScrollViewListener(this);
         this.addOnDragListenerOnTableTimeline(scrollView);
-
+        ImageView seeker = (ImageView) findViewById(R.id.seeker);
+        seeker.setOnTouchListener(new HorizontalSlider(horizontalScrollView, seeker , (View) seeker.getParent()));
+        this.addOnscrollChangeListener();
 
     }
+
+    private void addOnscrollChangeListener() {
+
+     /*   horizontalScrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+            @Override
+            public void onScrollChanged() {
+
+        });*/
+    }
     private void initializeTimeLineView() {
+        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.timeline);
+        timelineView = new CustomTimelineView(this);
+        linearLayout.addView(timelineView);
     }
 
     private void initializeSearchView() {
@@ -77,7 +97,6 @@ public class MainActivity extends AppCompatActivity {
         int id = searchView.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
         TextView textView = searchView.findViewById(id);
         textView.setTextColor(Color.WHITE);
-
         setSearchBoxClickListener(searchView);
 
     }
@@ -113,9 +132,10 @@ public class MainActivity extends AppCompatActivity {
                     case DragEvent.ACTION_DROP:
                         View view = (View) event.getLocalState();
                         String description = event.getClipData().getDescription().getLabel().toString();
-                        String[] s = description.split("&&@");
+                        String[] s = description.split(getResources().getString(R.string.separator));
                         Map<String, String> trackInfo = removeTrackFromView(view, s);
-                        addTrackToTimeLine((((ViewGroup)((ViewGroup)v).getChildAt(0)).getChildAt(0)), trackInfo);
+                        View viewGroup = ((ViewGroup)(((ViewGroup)((ViewGroup)v).getChildAt(0)).getChildAt(0))).getChildAt(1);
+                        addTrackToTimeLine(viewGroup, trackInfo);
                         break;
                     case DragEvent.ACTION_DRAG_ENDED:
                         View view2 = (View) event.getLocalState();
@@ -148,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
                 TextView name = new TextView(getApplicationContext());
                 //TODO track extension
                 byte[] soundBytes = getWaveFormByteArray(trackInfo.get("grpName") , trackInfo.get("name") , "mp3" );
-                FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(Integer.parseInt(trackInfo.get("duration")) * 10, 100);
+                FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(Integer.parseInt(trackInfo.get("duration")) * Utils.SECOND_PIXEL_RATIO, 100);
                 LinearLayout.LayoutParams frameParam = new LinearLayout.LayoutParams(2400, ViewGroup.LayoutParams.WRAP_CONTENT);
                 frameParam.setMargins(10,10,10,10);
                 frameLayout.setLayoutParams(frameParam);
@@ -164,7 +184,7 @@ public class MainActivity extends AppCompatActivity {
                 frameLayout.addView(name);
                 name.setGravity(Gravity.CENTER_HORIZONTAL);
                 linearLayout.addView(frameLayout);
-                waveForm.setOnTouchListener(new HorizontalSlider(horizontalScrollView, this));
+                waveForm.setOnTouchListener(new HorizontalSlider(horizontalScrollView, frameLayout , (View) frameLayout.getParent().getParent()));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -179,6 +199,23 @@ public class MainActivity extends AppCompatActivity {
         }
         return null;
     }
+
+    @Override
+    public void onScrollChanged(CustomHorizontalScrollView scrollView, int x, int y, int oldX, int oldY) {
+
+        int delta = x - oldX;
+        if(x >= ( (i + 1) * 140) && (x <= ((i + 1) * 150)) && (delta > 0)) { //scrolling to right
+            i++;
+            timelineView.IncreaseTimelineView();
+        } else if(x >= ( (i - 1) * 140) && (x<= ((i - 1 ) * 150)) &&(delta <= 0)) { //scrolling to  left
+            i--;
+            timelineView.decreaseTimelineViewIncrease();
+
+        }
+    }
+
+
+
     private class DatabaseGetter extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... voids) {
@@ -196,5 +233,6 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
+
 
     }

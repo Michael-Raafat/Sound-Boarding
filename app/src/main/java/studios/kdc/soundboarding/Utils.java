@@ -11,6 +11,8 @@ import java.io.InputStream;
 
 public class Utils {
 
+    public  static final int SECOND_PIXEL_RATIO = 10;  //timeline seconds = 10px
+
     public static byte[] toByteArray(InputStream in) throws IOException {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         int read = 0;
