@@ -14,8 +14,16 @@ public class TrackContainerImp implements TracksContainer {
 
     private List<Track> selectedTracks;
 
-    public TrackContainerImp(){
+    private static TrackContainerImp instance;
+    private TrackContainerImp(){
         selectedTracks = new ArrayList<>();
+    }
+
+    public static TrackContainerImp getInstance() {
+        if (instance == null) {
+            instance = new TrackContainerImp();
+        }
+        return instance;
     }
 
     @Override

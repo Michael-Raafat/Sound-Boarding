@@ -15,9 +15,17 @@ import studios.kdc.soundboarding.models.Track;
 public class GroupContainerImp implements GroupContainer {
 
     private List<Group> groups;
+    private static GroupContainerImp instance;
 
-    public GroupContainerImp() {
+    private GroupContainerImp() {
         groups = new ArrayList<Group>();
+    }
+
+    public static GroupContainerImp getInstance() {
+        if (instance == null) {
+            instance = new GroupContainerImp();
+        }
+        return instance;
     }
 
     @Override

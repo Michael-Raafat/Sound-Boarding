@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements ScrollViewListene
             public boolean onQueryTextChange(String s) {
                 dataController.searchTracksInGroups(s);
                 if(mainAdapter != null)
-                   mainAdapter.notifyDataSetChanged();
+                    mainAdapter.notifyDataSetChanged();
                 return true;
             }
         });
@@ -151,49 +151,49 @@ public class MainActivity extends AppCompatActivity implements ScrollViewListene
         });
     }
 
-        private Map<String, String> removeTrackFromView(View view, String[] params) {
-            GridView gridView = (GridView) view.getParent();
-            GridViewAdapter adapter = (GridViewAdapter) gridView.getAdapter();
-            Map<String, String> trackInfo = dataController.selectTrackToMix(params[1], Integer.parseInt(params[0]));
-            adapter.notifyDataSetChanged();
-            mainAdapter.notifyDataSetChanged();
-            view.setVisibility(View.VISIBLE);
-            return trackInfo;
-        }
+    private Map<String, String> removeTrackFromView(View view, String[] params) {
+        GridView gridView = (GridView) view.getParent();
+        GridViewAdapter adapter = (GridViewAdapter) gridView.getAdapter();
+        Map<String, String> trackInfo = dataController.selectTrackToMix(params[1], Integer.parseInt(params[0]));
+        adapter.notifyDataSetChanged();
+        mainAdapter.notifyDataSetChanged();
+        view.setVisibility(View.VISIBLE);
+        return trackInfo;
+    }
 
-        private void addTrackToTimeLine(View table, Map<String, String> trackInfo) {
-            try {
-                LinearLayout linearLayout = (LinearLayout) table;
-                FrameLayout frameLayout = new FrameLayout(getApplicationContext());
-                TextView name = new TextView(getApplicationContext());
-                //TODO track extension
-                byte[] soundBytes = getWaveFormByteArray(trackInfo.get("grpName") , trackInfo.get("name") , "mp3" );
-                FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(Integer.parseInt(trackInfo.get("duration")) * Utils.SECOND_PIXEL_RATIO, 100);
-                LinearLayout.LayoutParams frameParam = new LinearLayout.LayoutParams(2400, ViewGroup.LayoutParams.WRAP_CONTENT);
-                frameParam.setMargins(10,10,10,10);
-                frameLayout.setLayoutParams(frameParam);
-                name.setLayoutParams(params);
-                AudioWaveView waveForm = new AudioWaveView(getApplicationContext());
-                waveForm.setWaveColor(Color.WHITE);
-                waveForm.setExpansionAnimated(false);
-                waveForm.setLayoutParams(params);
-                waveForm.setRawData(soundBytes);
-                name.setText(trackInfo.get("grpName") + " - " + trackInfo.get("name"));
-                name.setTextColor(Color.WHITE);
-                frameLayout.addView(waveForm);
-                frameLayout.addView(name);
-                name.setGravity(Gravity.CENTER_HORIZONTAL);
-                linearLayout.addView(frameLayout);
-                waveForm.setOnTouchListener(new HorizontalSlider(horizontalScrollView, frameLayout , (View) frameLayout.getParent().getParent()));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+    private void addTrackToTimeLine(View table, Map<String, String> trackInfo) {
+        try {
+            LinearLayout linearLayout = (LinearLayout) table;
+            FrameLayout frameLayout = new FrameLayout(getApplicationContext());
+            TextView name = new TextView(getApplicationContext());
+            //TODO track extension
+            byte[] soundBytes = getWaveFormByteArray(trackInfo.get("grpName") , trackInfo.get("name") , "mp3" );
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(Integer.parseInt(trackInfo.get("duration")) * Utils.SECOND_PIXEL_RATIO, 100);
+            LinearLayout.LayoutParams frameParam = new LinearLayout.LayoutParams(2400, ViewGroup.LayoutParams.WRAP_CONTENT);
+            frameParam.setMargins(10,10,10,10);
+            frameLayout.setLayoutParams(frameParam);
+            name.setLayoutParams(params);
+            AudioWaveView waveForm = new AudioWaveView(getApplicationContext());
+            waveForm.setWaveColor(Color.WHITE);
+            waveForm.setExpansionAnimated(false);
+            waveForm.setLayoutParams(params);
+            waveForm.setRawData(soundBytes);
+            name.setText(trackInfo.get("grpName") + " - " + trackInfo.get("name"));
+            name.setTextColor(Color.WHITE);
+            frameLayout.addView(waveForm);
+            frameLayout.addView(name);
+            name.setGravity(Gravity.CENTER_HORIZONTAL);
+            linearLayout.addView(frameLayout);
+            waveForm.setOnTouchListener(new HorizontalSlider(horizontalScrollView, frameLayout , (View) frameLayout.getParent().getParent()));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+    }
     private byte[] getWaveFormByteArray(String grpName , String trackName , String extension) {
         AssetManager am = getAssets(); //TODO l 7ta deh msh htnf3 lw l path msh assets
         try {
-        InputStream inputStream = am.open(grpName + File.separator + trackName + "." + extension);
-          return   Utils.toByteArray(inputStream);
+            InputStream inputStream = am.open(grpName + File.separator + trackName + "." + extension);
+            return   Utils.toByteArray(inputStream);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -234,4 +234,4 @@ public class MainActivity extends AppCompatActivity implements ScrollViewListene
     }
 
 
-    }
+}

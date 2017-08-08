@@ -49,7 +49,10 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, int position) {
 
        if(!this.groups.get(position).getTracks().isEmpty()) {
-            GridViewAdapter gridViewAdapter = new GridViewAdapter(this.context, this.groups.get(position).getTracks(), this.groups.get(position).getColor() ,position);
+            GridViewAdapter gridViewAdapter = new GridViewAdapter(this.context, this.groups.get(position).getTracks(),
+                    this.groups.get(position).getColor() ,
+                    position,
+                    this.groups.get(position).getName());
             holder.getGridView().setNumColumns(this.groups.get(position).getTracks().size());
             holder.getGridView().setAdapter(gridViewAdapter);
             holder.getGroupName().setText(this.groups.get(position).getName());
