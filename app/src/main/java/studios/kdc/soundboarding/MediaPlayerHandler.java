@@ -72,7 +72,6 @@ public class MediaPlayerHandler {
             }
         }
         if (trackName != null && trackName.equals(name) && flag) {
-            Log.i("gogo", "zew");
             this.seekTo(currentPosition);
             this.start();
             flag = false;

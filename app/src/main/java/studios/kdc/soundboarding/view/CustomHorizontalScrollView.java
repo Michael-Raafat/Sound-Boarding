@@ -8,8 +8,6 @@ import android.widget.HorizontalScrollView;
 
 public class CustomHorizontalScrollView extends HorizontalScrollView{
 
-    private boolean mCurrentlyTouching;
-    private boolean mCurrentlyFling;
 
 
     private ScrollViewListener scrollViewListener = null;
@@ -33,7 +31,6 @@ public class CustomHorizontalScrollView extends HorizontalScrollView{
     @Override
     public void fling(int velocityX) {
         super.fling(velocityX);
-        mCurrentlyFling = true;
     }
 
     @Override
@@ -43,22 +40,15 @@ public class CustomHorizontalScrollView extends HorizontalScrollView{
             scrollViewListener.onScrollChanged(this, l, t, oldl, oldt);
         }
 
-        if (Math.abs(t - oldt) < 2 || t >= getMeasuredHeight() || t == 0) {
-
-            mCurrentlyFling = false;
-        }
-
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
         switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                mCurrentlyTouching = true;
                 break;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
-                mCurrentlyTouching = false;
                 break;
 
             default:
@@ -72,11 +62,9 @@ public class CustomHorizontalScrollView extends HorizontalScrollView{
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                mCurrentlyTouching = true;
                 break;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
-                mCurrentlyTouching = false;
 
                 break;
 

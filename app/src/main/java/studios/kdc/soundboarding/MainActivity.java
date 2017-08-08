@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.DragEvent;
 import android.view.Gravity;
 import android.view.View;
@@ -74,18 +73,8 @@ public class MainActivity extends AppCompatActivity implements ScrollViewListene
         this.addOnDragListenerOnTableTimeline(scrollView);
         ImageView seeker = (ImageView) findViewById(R.id.seeker);
         seeker.setOnTouchListener(new HorizontalSlider(horizontalScrollView, seeker , (View) seeker.getParent()));
-        this.addOnscrollChangeListener();
-
     }
 
-    private void addOnscrollChangeListener() {
-
-     /*   horizontalScrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
-            @Override
-            public void onScrollChanged() {
-
-        });*/
-    }
     private void initializeTimeLineView() {
         LinearLayout linearLayout = (LinearLayout) findViewById(R.id.timeline);
         timelineView = new CustomTimelineView(this);
@@ -101,7 +90,6 @@ public class MainActivity extends AppCompatActivity implements ScrollViewListene
 
     }
     private void setSearchBoxClickListener(SearchView searchView) {
-
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
