@@ -78,10 +78,11 @@ public class CustomTimelineView extends LinearLayout{
     public void decreaseTimelineView() {
         TextView tv = (TextView) this.getChildAt(this.numberOfTextViews - 1);
         TextView first = (TextView) this.getChildAt(0);
-        this.removeView(tv);
-        tv.setText(this.calculateTimeBefore(first.getText().toString()));
-        this.addView(tv , 0);
-
+        if(!first.getText().toString().equals("00:00")) {
+            this.removeView(tv);
+            tv.setText(this.calculateTimeBefore(first.getText().toString()));
+            this.addView(tv, 0);
+        }
     }
 
     private String calculateTimeBefore(String textviewAfter) {
