@@ -209,7 +209,7 @@ public class MainActivity extends AppCompatActivity implements ScrollViewListene
             timelineView.IncreaseTimelineView();
         } else if(x >= ( (i - 1) * 140) && (x<= ((i - 1 ) * 150)) &&(delta <= 0)) { //scrolling to  left
             i--;
-            timelineView.decreaseTimelineViewIncrease();
+            timelineView.decreaseTimelineView();
 
         }
     }

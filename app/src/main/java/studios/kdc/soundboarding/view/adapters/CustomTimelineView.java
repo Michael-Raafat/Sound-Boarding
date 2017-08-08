@@ -75,7 +75,7 @@ public class CustomTimelineView extends LinearLayout{
         return this.finalMinSec;
     }
 
-    public void decreaseTimelineViewIncrease() {
+    public void decreaseTimelineView() {
         TextView tv = (TextView) this.getChildAt(this.numberOfTextViews - 1);
         TextView first = (TextView) this.getChildAt(0);
         this.removeView(tv);
