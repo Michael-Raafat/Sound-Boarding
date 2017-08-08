@@ -5,9 +5,6 @@ import android.content.Context;
 import android.content.res.AssetFileDescriptor;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.util.Log;
-
-import java.io.FileDescriptor;
 
 import studios.kdc.soundboarding.view.adapters.GridViewAdapter;
 
@@ -17,9 +14,7 @@ import studios.kdc.soundboarding.view.adapters.GridViewAdapter;
 
 public class MediaPlayerHandler {
 
-    private DataController dataController;
     private MediaPlayer mediaPlayer;
-    private static MediaPlayerHandler instance;
     private int currentSongId;
     private Context context;
     private AudioManager audioManager;

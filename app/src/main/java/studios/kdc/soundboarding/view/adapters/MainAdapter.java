@@ -50,8 +50,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
 
        if(!this.groups.get(position).getTracks().isEmpty()) {
             GridViewAdapter gridViewAdapter = new GridViewAdapter(this.context, this.groups.get(position).getTracks(),
-                    this.groups.get(position).getColor() ,
-                    position,
+                    this.groups.get(position).getColor() , position,
                     this.groups.get(position).getName());
             holder.getGridView().setNumColumns(this.groups.get(position).getTracks().size());
             holder.getGridView().setAdapter(gridViewAdapter);
@@ -71,12 +70,11 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
   class ViewHolder extends RecyclerView.ViewHolder {
 
         private GridView gridView;
-        private  CardView cardView;
         private TextView getGroupName() {
             return groupName;
         }
 
-      private HorizontalScrollView scrollView;
+
         private TextView groupName;
 
 
@@ -84,13 +82,8 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         private ViewHolder(final View itemView) {
             super(itemView);
             gridView = itemView.findViewById(R.id.gridview);
-            cardView = itemView.findViewById(R.id.card_view);
             groupName = itemView.findViewById(R.id.group_name);
-            scrollView = itemView.findViewById(R.id.horizontalScrollView);
 
-        }
-        private CardView getCardView() {
-            return cardView;
         }
 
 
@@ -98,9 +91,6 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
             return gridView;
         }
 
-        private HorizontalScrollView getScrollView() {
-          return scrollView;
-        }
 
 
   }

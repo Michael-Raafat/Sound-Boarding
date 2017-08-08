@@ -3,5 +3,6 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="small_card_width">250px</dimen>
+    <dimen name="small_card_height">250px</dimen>
     <dimen name="recycler_view_height">400dp</dimen>
 </resources>

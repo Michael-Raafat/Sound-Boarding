@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +24,6 @@ public class GridViewAdapter extends BaseAdapter {
     private int color;
     private int cardPosition;
     private Context context;
-    private String trackName;
     private String groupName;
 
     public GridViewAdapter(Context context, List<Track> media, int color , int cardPosition, String groupName) {
@@ -73,7 +71,6 @@ public class GridViewAdapter extends BaseAdapter {
         }
         setOnLongClickListener(view, this.cardPosition , holder.getTextView().getText().toString());
         setOnClickListener(view, this.cardPosition , holder.getTextView().getText().toString());
-        this.trackName = holder.getTextView().getText().toString();
         return view;
     }
 
@@ -124,7 +121,7 @@ public class GridViewAdapter extends BaseAdapter {
 
         @Override
         public boolean onLongClick(View view) {
-            ClipData data = ClipData.newPlainText( String.valueOf(this.position) + "&&@" +  name, "");
+            ClipData data = ClipData.newPlainText( String.valueOf(this.position) + context.getResources().getString(R.string.separator) +  name, "");
             View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
             view.startDrag(data, shadowBuilder, view, 0);
             view.setVisibility(View.INVISIBLE);

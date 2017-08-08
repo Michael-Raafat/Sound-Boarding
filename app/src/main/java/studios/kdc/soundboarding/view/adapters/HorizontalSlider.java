@@ -1,5 +1,6 @@
 package studios.kdc.soundboarding.view.adapters;
 
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.HorizontalScrollView;
@@ -34,14 +35,11 @@ public class HorizontalSlider implements View.OnTouchListener {
                     v.setX(v.getX() + event.getX() - deltaX);
                     v.setY(v.getY());
 
-                  //if((parent.getX() + event.getX() - deltaX + view.getWidth())>= Utils.getScreenWidth(this.activity)) {
-
-                 // }
-
               }
                 return true;
             } else if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL) {
                 isDragging = false;
+                Log.i("hna " , (v.getX() / 10) + "");
                 return true;
             }
         }

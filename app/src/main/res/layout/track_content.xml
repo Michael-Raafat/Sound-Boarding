@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card_view"
     android:layout_width="@dimen/small_card_width"
-    android:layout_height="match_parent"
+    android:layout_height="@dimen/small_card_height"
     android:focusable="true"
     app:cardBackgroundColor="@color/cardview_shadow_end_color">
 
