@@ -37,6 +37,7 @@ public class GridViewAdapter extends BaseAdapter implements MediaPlayerContract.
         this.cardPosition = cardPosition;
         this.context = context;
         this.groupName = groupName;
+        this.mediaPlayerController = MediaPlayerController.getInstance(this, context);
     }
 
     @Override
@@ -74,7 +75,7 @@ public class GridViewAdapter extends BaseAdapter implements MediaPlayerContract.
             holder.getTextView().setText(allItemsResourceID.get(position).getName());
         }
         setOnLongClickListener(view, this.cardPosition , holder.getTextView().getText().toString());
-        MediaPlayerController.getInstance(this, context).checkTrackChanged(view, this.cardPosition, holder.getTextView().getText().toString());
+        mediaPlayerController.checkTrackChanged(view, this.cardPosition, holder.getTextView().getText().toString());
         //setOnClickListener(view, this.cardPosition , holder.getTextView().getText().toString());
         return view;
     }
@@ -85,8 +86,7 @@ public class GridViewAdapter extends BaseAdapter implements MediaPlayerContract.
 
     @Override
     public void setOnFirstClickListener(View v, int position, String name) {
-        choiceTouchListener = new ChoiceClickListener(this, position , name);
-        v.setOnClickListener(choiceTouchListener);
+        v.setOnClickListener(new ChoiceClickListener(position , name, groupName));
     }
 
     @Override
@@ -145,17 +145,17 @@ public class GridViewAdapter extends BaseAdapter implements MediaPlayerContract.
         @SuppressLint("NewApi")
         private int position;
         private String name;
-        private GridViewAdapter gridViewAdapter;
+        private String groupName;
 
-        private ChoiceClickListener(GridViewAdapter gridViewAdapter, int position, String name) {
+        private ChoiceClickListener( int position, String name, String groupName) {
             this.position = position;
             this.name = name;
-            this.gridViewAdapter = gridViewAdapter;
+            this.groupName = groupName;
         }
 
         @Override
         public void onClick(View view) {
-            MediaPlayerController.getInstance(gridViewAdapter, context).singlePlayAndPauseTrack(groupName, name);
+            mediaPlayerController.singlePlayAndPauseTrack(this.groupName, name);
         }
     }
 

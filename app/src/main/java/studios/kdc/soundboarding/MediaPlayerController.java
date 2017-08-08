@@ -49,8 +49,6 @@ public class MediaPlayerController implements  MediaPlayerContract.ControllerAct
             mediaPlayerHandler.stop();
             gridViewAdapter.setOnFirstClickListener(view, position, name);
             this.name = name;
-        } else {
-            gridViewAdapter.setOnSecondClickListener(view, position, name);
         }
     }
 }
