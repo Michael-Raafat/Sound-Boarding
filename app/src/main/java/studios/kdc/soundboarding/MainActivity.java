@@ -32,7 +32,7 @@ import studios.kdc.soundboarding.view.CustomHorizontalScrollView;
 import studios.kdc.soundboarding.view.adapters.GridViewAdapter;
 import studios.kdc.soundboarding.view.adapters.HorizontalSlider;
 import studios.kdc.soundboarding.view.adapters.MainAdapter;
-import studios.kdc.soundboarding.view.adapters.CustomTimelineView;
+import studios.kdc.soundboarding.view.CustomTimelineView;
 
 public class MainActivity extends AppCompatActivity implements ScrollViewListener{
 
@@ -180,7 +180,7 @@ public class MainActivity extends AppCompatActivity implements ScrollViewListene
     private byte[] getWaveFormByteArray(String grpName , String trackName , String extension) {
         AssetManager am = getAssets(); //TODO l 7ta deh msh htnf3 lw l path msh assets
         try {
-            InputStream inputStream = am.open(grpName + File.separator + trackName + "." + extension);
+            InputStream inputStream = am.open(grpName + File.separator + trackName);
             return   Utils.toByteArray(inputStream);
         } catch (Exception e) {
             e.printStackTrace();
