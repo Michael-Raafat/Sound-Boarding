@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -158,7 +159,7 @@ public class MainActivity extends AppCompatActivity implements ScrollViewListene
             FrameLayout frameLayout = new FrameLayout(getApplicationContext());
             TextView name = new TextView(getApplicationContext());
             //TODO track extension
-            byte[] soundBytes = getWaveFormByteArray(trackInfo.get("grpName") , trackInfo.get("name") , "mp3" );
+            byte[] soundBytes = getWaveFormByteArray(trackInfo.get("grpName") , trackInfo.get("name") , ".mp3" );
             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(Integer.parseInt(trackInfo.get("duration")) * Utils.SECOND_PIXEL_RATIO, 100);
             LinearLayout.LayoutParams frameParam = new LinearLayout.LayoutParams(2400, ViewGroup.LayoutParams.WRAP_CONTENT);
             frameParam.setMargins(10,10,10,10);
@@ -172,30 +173,39 @@ public class MainActivity extends AppCompatActivity implements ScrollViewListene
             name.setText(trackInfo.get("grpName") + " - " + trackInfo.get("name"));
             name.setTextColor(Color.WHITE);
             ImageButton optionsButton = new ImageButton(this);
-            optionsButton.setBackgroundColor(Color.RED);
-            FrameLayout.LayoutParams optionsParams = new FrameLayout.LayoutParams(40 , 40);
+            optionsButton.setBackgroundColor(Color.CYAN);
+            FrameLayout.LayoutParams optionsParams = new FrameLayout.LayoutParams(30 , 30);
             optionsButton.setLayoutParams(optionsParams);
             frameLayout.addView(waveForm);
             frameLayout.addView(name);
             frameLayout.addView(optionsButton);
             name.setGravity(Gravity.CENTER_HORIZONTAL);
             linearLayout.addView(frameLayout);
-            setOnClickListenerToOptionsButton(optionsButton);
+            setOnClickListenerToOptionsButton(optionsButton , linearLayout.indexOfChild(frameLayout));
             waveForm.setOnTouchListener(new HorizontalSlider(horizontalScrollView, frameLayout , (View) frameLayout.getParent().getParent()));
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void setOnClickListenerToOptionsButton(final ImageButton options) {
+    private void setOnClickListenerToOptionsButton(final ImageButton options , final int position) {
 
        options.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
-               Log.i("hna" , "clicked");
-               PopupMenu popup = new PopupMenu(MainActivity.this, options);
+               final PopupMenu popup = new PopupMenu(MainActivity.this, options);
                popup.getMenuInflater().inflate(R.menu.delete_menu, popup.getMenu());
                popup.show();
+               popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                   public boolean onMenuItemClick(MenuItem item) {
+                      switch (item.getItemId()){
+                          case R.id.remove:
+                              Log.i("hna" , position+"");
+                              break;
+                      }
+                       return true;
+                   }
+               });
            }
 
         });
@@ -206,7 +216,7 @@ public class MainActivity extends AppCompatActivity implements ScrollViewListene
         AssetManager am = getAssets(); //TODO l 7ta deh msh htnf3 lw l path msh assets
         try {
             InputStream inputStream = am.open(grpName + File.separator + trackName + extension);
-            return   Utils.toByteArray(inputStream);
+            return  Utils.toByteArray(inputStream);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -244,6 +254,4 @@ public class MainActivity extends AppCompatActivity implements ScrollViewListene
 
         }
     }
-
-
 }
