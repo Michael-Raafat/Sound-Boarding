@@ -1,7 +1,5 @@
 package studios.kdc.soundboarding;
 
-import android.graphics.Color;
-
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,12 +7,11 @@ import java.util.List;
 import java.util.Map;
 
 import studios.kdc.soundboarding.models.Group;
-import studios.kdc.soundboarding.models.GroupContainer;
 import studios.kdc.soundboarding.models.Track;
-import studios.kdc.soundboarding.models.TracksContainer;
+import studios.kdc.soundboarding.models.SelectedTracksContainer;
 import studios.kdc.soundboarding.models.imp.GroupContainerImp;
 import studios.kdc.soundboarding.models.imp.GroupImp;
-import studios.kdc.soundboarding.models.imp.TrackContainerImp;
+import studios.kdc.soundboarding.models.imp.SelectedTrackContainerImp;
 import studios.kdc.soundboarding.models.imp.TrackImp;
 import studios.kdc.soundboarding.view.adapters.MainAdapter;
 
@@ -24,11 +21,11 @@ import studios.kdc.soundboarding.view.adapters.MainAdapter;
 
 public class DataController {
     private GroupContainerImp groupContainer;
-    private TracksContainer tracksContainer;
+    private SelectedTracksContainer selectedTracksContainer;
 
     public DataController() {
         groupContainer = GroupContainerImp.getInstance();
-        tracksContainer = TrackContainerImp.getInstance();
+        selectedTracksContainer = SelectedTrackContainerImp.getInstance();
 
     }
     public void setMainAdapterList(MainAdapter adapter) {
@@ -76,9 +73,9 @@ public class DataController {
             }
             groupContainer.clearAndAddGroups(newGroups);
         }
-        for (int i = 0; i < tracksContainer.getNumberOfTracks(); i++) {
+        for (int i = 0; i < selectedTracksContainer.getNumberOfTracks(); i++) {
             groupContainer.removeTrackByName(
-                    tracksContainer.getTracks().get(i).getName());
+                    selectedTracksContainer.getTracks().get(i).getName());
         }
         for(int i = 0; i < groupContainer.getNumberOfGroups(); i++) {
             if (groupContainer.getGrps().get(i).getTracks().size() == 0) {
@@ -93,7 +90,7 @@ public class DataController {
                 trackName,
                 groupContainer.getGrps().get(groupPosition).getName());
         groupContainer.getGrps().get(groupPosition).removeTrackByName(trackName);
-        tracksContainer.addTrack(new TrackImp(trackData));
+        selectedTracksContainer.addTrack(new TrackImp(trackData));
         if (groupContainer.getGrps().get(groupPosition).getTracks().size() == 0) {
             groupContainer.removeGroupByName(group.getName());
         }
@@ -104,6 +101,10 @@ public class DataController {
         trackInfo.put("grpName" , group.getName());
 
         return trackInfo;
+    }
+
+    public void removeTrack(int position) {
+        selectedTracksContainer.getTracks().remove(position);
     }
 
 }
