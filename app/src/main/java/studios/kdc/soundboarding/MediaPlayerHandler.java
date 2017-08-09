@@ -6,7 +6,6 @@ import android.content.res.AssetFileDescriptor;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 
-import studios.kdc.soundboarding.view.adapters.GridViewAdapter;
 
 /**
  * Created by Michael on 8/8/2017.
@@ -22,7 +21,6 @@ public class MediaPlayerHandler {
     private String trackName;
     private boolean flag;
     private int currentPosition;
-    private MediaPlayerController controller;
 
 
     public MediaPlayerHandler(Context context) {
@@ -60,7 +58,7 @@ public class MediaPlayerHandler {
         this.mediaPlayer.setOnCompletionListener (new MediaPlayer.OnCompletionListener ( ) {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
-                MediaPlayerController.getInstance(context).onCompltion();
+                MediaPlayerController.getInstance(context).onCompletion();
             }
         });
 

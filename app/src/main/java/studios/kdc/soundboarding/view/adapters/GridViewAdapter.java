@@ -4,20 +4,19 @@ import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
-import android.util.Log;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
+
 import studios.kdc.soundboarding.MediaPlayerContract;
 import studios.kdc.soundboarding.MediaPlayerController;
-import studios.kdc.soundboarding.MediaPlayerHandler;
 import studios.kdc.soundboarding.R;
 import studios.kdc.soundboarding.models.Track;
 
@@ -67,7 +66,6 @@ public class GridViewAdapter extends BaseAdapter   {
             holder.getTextView().setTextColor(this.color);
             GradientDrawable drawable = (GradientDrawable) holder.getColor().getBackground();
             drawable.setColor(this.color);
-
             view.setTag(holder);
         } else {
             holder = (ViewHolder) view.getTag();
@@ -76,8 +74,8 @@ public class GridViewAdapter extends BaseAdapter   {
             holder.getTextView().setText(allItemsResourceID.get(position).getName());
         }
         setOnLongClickListener(view, this.cardPosition , holder.getTextView().getText().toString());
-        if (mediaPlayerController.checkTrackChanged(this,view, this.cardPosition, holder.getTextView().getText().toString())) {
-            setOnClickListener(view, this.cardPosition , holder.getTextView().getText().toString());
+        if (mediaPlayerController.checkTrackChanged(view, this.cardPosition, holder.getTextView().getText().toString())) {
+            setOnClickListener(view, holder.getCardView() , holder.getTextView().getText().toString(), context);
         }
         return view;
     }
@@ -87,13 +85,8 @@ public class GridViewAdapter extends BaseAdapter   {
     }
 
 
-    private void setOnClickListener(View v, int position, String name) {
-        v.setOnClickListener(new ChoiceClickListener(position , name, groupName));
-    }
-
-
-    public void setOnTrackCompletion() {
-        Log.i("loooog", "7araam");
+    private void setOnClickListener(View v, CardView card ,  String name, Context context) {
+        v.setOnClickListener(new ChoiceClickListener(card ,name, groupName, context));
     }
 
     private class ViewHolder {
@@ -108,10 +101,16 @@ public class GridViewAdapter extends BaseAdapter   {
         private TextView textView;
         private RelativeLayout color;
 
+        public CardView getCardView() {
+            return cardView;
+        }
+
+        private CardView cardView;
 
         ViewHolder(View view) {
             color = view.findViewById(R.id.color_div);
             textView = view.findViewById(R.id.music_name);
+            cardView = view.findViewById(R.id.card_view);
         }
 
     }
@@ -144,21 +143,42 @@ public class GridViewAdapter extends BaseAdapter   {
     }
 
 
-    private class ChoiceClickListener implements View.OnClickListener {
-        @SuppressLint("NewApi")
-        private int position;
+    private class ChoiceClickListener implements View.OnClickListener, MediaPlayerContract.OnCompletionListener {
+
         private String name;
         private String groupName;
+        private CardView card;
+        private Context context;
+        private ChoiceClickListener(CardView cardView ,String name, String groupName , Context context) {
 
-        private ChoiceClickListener( int position, String name, String groupName) {
-            this.position = position;
             this.name = name;
             this.groupName = groupName;
+            this.card = cardView;
+            this.context = context;
         }
 
         @Override
         public void onClick(View view) {
-            mediaPlayerController.singlePlayAndPauseTrack(this.groupName, name);
+            mediaPlayerController.singlePlayAndPauseTrack(this.groupName, name, this);
+            this.toggleCardColor();
+        }
+
+        private void toggleCardColor() {
+          if(card.getCardBackgroundColor() == context.getResources().getColorStateList(R.color.cardview_shadow_end_color))
+               setColorOnPlaying();
+           else if(card.getCardBackgroundColor() == context.getResources().getColorStateList(R.color.light_grey))
+               setColorOnCompleteion();
+        }
+
+        private void setColorOnPlaying(){
+            card.setCardBackgroundColor(context.getResources().getColorStateList(R.color.light_grey));
+        }
+        private void setColorOnCompleteion(){
+            card.setCardBackgroundColor(context.getResources().getColorStateList(R.color.cardview_shadow_end_color));
+        }
+        @Override
+        public void notifyOnTrackCompletion() {
+            setColorOnCompleteion();
         }
     }
 

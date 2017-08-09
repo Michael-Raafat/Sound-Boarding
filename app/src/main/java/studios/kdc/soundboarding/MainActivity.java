@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements ScrollViewListene
         super.onDestroy();
         this.dataController.deleteReferences();
         this.dataController = null;
+        MediaPlayerController.deleteInstance();
         Runtime.getRuntime().gc();
     }
 

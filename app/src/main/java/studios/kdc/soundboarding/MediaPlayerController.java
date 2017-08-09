@@ -3,10 +3,6 @@ package studios.kdc.soundboarding;
 import android.content.Context;
 import android.view.View;
 
-import java.util.List;
-
-import studios.kdc.soundboarding.models.Track;
-import studios.kdc.soundboarding.view.adapters.GridViewAdapter;
 
 /**
  * Created by Michael on 8/8/2017.
@@ -16,7 +12,7 @@ public class MediaPlayerController implements  MediaPlayerContract.ControllerAct
 
     private String name;
     private MediaPlayerHandler mediaPlayerHandler;
-    private GridViewAdapter gridViewAdapter;
+    private MediaPlayerContract.OnCompletionListener listener;
     private static MediaPlayerController instance;
 
     private MediaPlayerController(Context context) {
@@ -30,24 +26,31 @@ public class MediaPlayerController implements  MediaPlayerContract.ControllerAct
         }
         return instance;
     }
+    public static  void deleteInstance(){
+        instance = null;
+    }
 
     @Override
-    public void singlePlayAndPauseTrack(String groupName, String name) {
+    public void singlePlayAndPauseTrack(String groupName, String name, MediaPlayerContract.OnCompletionListener listener) {
+       if(this.listener != null && this.listener != listener ) {
+           this.listener.notifyOnTrackCompletion();
+       }
+        this.listener = listener;
         mediaPlayerHandler.playSong(groupName + "/" + name);
     }
 
     @Override
-    public boolean checkTrackChanged(GridViewAdapter gridViewAdapter,View view, int position, String name) {
+    public boolean checkTrackChanged(View view, int position, String name) {
         if (!this.name.equals(name)) {
             mediaPlayerHandler.stop();
             this.name = name;
-            this.gridViewAdapter = gridViewAdapter;
             return true;
         }
         return false;
     }
 
-    public void onCompltion() {
-        gridViewAdapter.setOnTrackCompletion();
+    public void onCompletion(){
+        if(this.listener != null)
+        this.listener.notifyOnTrackCompletion();
     }
 }
