@@ -3,10 +3,6 @@ package studios.kdc.soundboarding;
 import android.content.Context;
 import android.view.View;
 
-import java.util.List;
-
-import studios.kdc.soundboarding.models.Track;
-import studios.kdc.soundboarding.view.adapters.GridViewAdapter;
 
 /**
  * Created by Michael on 8/8/2017.
@@ -15,16 +11,12 @@ import studios.kdc.soundboarding.view.adapters.GridViewAdapter;
 public class MediaPlayerController implements  MediaPlayerContract.ControllerActions{
 
     private String name;
-    private int position;
     private MediaPlayerHandler mediaPlayerHandler;
-    private Context context;
     private static MediaPlayerController instance;
 
     private MediaPlayerController(Context context) {
         name = "";
-        position = 0;
         mediaPlayerHandler = new MediaPlayerHandler(context);
-        this.context = context;
     }
 
     public static MediaPlayerController getInstance(Context context) {

@@ -132,7 +132,7 @@ public class GridViewAdapter extends BaseAdapter  {
             ClipData data = ClipData.newPlainText( String.valueOf(this.position) + context.getResources().getString(R.string.separator) +  name, "");
             View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
             view.startDrag(data, shadowBuilder, view, 0);
-            view.setVisibility(View.INVISIBLE);
+           // view.setVisibility(View.INVISIBLE);
             return true;
 
         }

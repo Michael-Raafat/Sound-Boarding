@@ -125,13 +125,13 @@ public class MainActivity extends AppCompatActivity implements ScrollViewListene
                         View view = (View) event.getLocalState();
                         String description = event.getClipData().getDescription().getLabel().toString();
                         String[] s = description.split(getResources().getString(R.string.separator));
-                        Map<String, String> trackInfo = removeTrackFromView(view, s);
+                        Map<String, String> trackInfo = dataController.selectTrackToMix(s[1], Integer.parseInt(s[0]));
                         View viewGroup = ((ViewGroup)(((ViewGroup)((ViewGroup)v).getChildAt(0)).getChildAt(0))).getChildAt(1);
                         addTrackToTimeLine(viewGroup, trackInfo);
                         break;
                     case DragEvent.ACTION_DRAG_ENDED:
                         View view2 = (View) event.getLocalState();
-                        view2.setVisibility(View.VISIBLE);
+                       // view2.setVisibility(View.VISIBLE);
                         break;
                     default:
                         break;
@@ -143,15 +143,15 @@ public class MainActivity extends AppCompatActivity implements ScrollViewListene
         });
     }
 
-    private Map<String, String> removeTrackFromView(View view, String[] params) {
-        GridView gridView = (GridView) view.getParent();
-        GridViewAdapter adapter = (GridViewAdapter) gridView.getAdapter();
-        Map<String, String> trackInfo = dataController.selectTrackToMix(params[1], Integer.parseInt(params[0]));
-        adapter.notifyDataSetChanged();
-        mainAdapter.notifyDataSetChanged();
-        view.setVisibility(View.VISIBLE);
-        return trackInfo;
-    }
+   // private Map<String, String> selectTrackToMix(View view, String[] params) {
+      //  GridView gridView = (GridView) view.getParent();
+       // GridViewAdapter adapter = (GridViewAdapter) gridView.getAdapter();
+       // Map<String, String> trackInfo =
+       // adapter.notifyDataSetChanged();
+       // mainAdapter.notifyDataSetChanged();
+       // view.setVisibility(View.VISIBLE);
+     //   return trackInfo;
+    //}
 
     private void addTrackToTimeLine(View table, Map<String, String> trackInfo) {
         try {
@@ -181,18 +181,21 @@ public class MainActivity extends AppCompatActivity implements ScrollViewListene
             frameLayout.addView(optionsButton);
             name.setGravity(Gravity.CENTER_HORIZONTAL);
             linearLayout.addView(frameLayout);
-            setOnClickListenerToOptionsButton(optionsButton , linearLayout.indexOfChild(frameLayout));
+            setOnClickListenerToOptionsButton(optionsButton);
             waveForm.setOnTouchListener(new HorizontalSlider(horizontalScrollView, frameLayout , (View) frameLayout.getParent().getParent()));
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+    // linear frame button
 
-    private void setOnClickListenerToOptionsButton(final ImageButton options , final int position) {
+    private void setOnClickListenerToOptionsButton(final ImageButton options) {
 
        options.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
+               final FrameLayout frameLayout = (FrameLayout) view.getParent();
+               final LinearLayout linearLayout = (LinearLayout) frameLayout.getParent();
                final PopupMenu popup = new PopupMenu(MainActivity.this, options);
                popup.getMenuInflater().inflate(R.menu.delete_menu, popup.getMenu());
                popup.show();
@@ -200,7 +203,8 @@ public class MainActivity extends AppCompatActivity implements ScrollViewListene
                    public boolean onMenuItemClick(MenuItem item) {
                       switch (item.getItemId()){
                           case R.id.remove:
-                              Log.i("hna" , position+"");
+                              dataController.removeTrack(linearLayout.indexOfChild(frameLayout));
+                              linearLayout.removeView(frameLayout);
                               break;
                       }
                        return true;
