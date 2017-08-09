@@ -17,7 +17,7 @@ import studios.kdc.soundboarding.MediaPlayerController;
 import studios.kdc.soundboarding.R;
 import studios.kdc.soundboarding.models.Track;
 
-public class GridViewAdapter extends BaseAdapter  {
+public class GridViewAdapter extends BaseAdapter   {
 
     private List<Track> allItemsResourceID;
     private LayoutInflater inflater;
@@ -86,6 +86,7 @@ public class GridViewAdapter extends BaseAdapter  {
     private void setOnClickListener(View v, int position, String name) {
         v.setOnClickListener(new ChoiceClickListener(position , name, groupName));
     }
+
 
     private class ViewHolder {
         private TextView getTextView() {

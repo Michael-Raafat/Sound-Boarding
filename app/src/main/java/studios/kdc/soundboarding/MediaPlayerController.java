@@ -3,6 +3,10 @@ package studios.kdc.soundboarding;
 import android.content.Context;
 import android.view.View;
 
+import java.util.List;
+
+import studios.kdc.soundboarding.models.Track;
+import studios.kdc.soundboarding.view.adapters.GridViewAdapter;
 
 /**
  * Created by Michael on 8/8/2017.

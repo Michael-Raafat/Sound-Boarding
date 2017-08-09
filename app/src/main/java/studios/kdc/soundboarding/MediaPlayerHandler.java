@@ -15,20 +15,17 @@ import studios.kdc.soundboarding.view.adapters.GridViewAdapter;
 public class MediaPlayerHandler {
 
     private MediaPlayer mediaPlayer;
-    private int currentSongId;
     private Context context;
     private AudioManager audioManager;
     private int maxVolume;
     private int curVolume;
     private String trackName;
-    private GridViewAdapter mCallBack;
     private boolean flag;
     private int currentPosition;
 
 
     public MediaPlayerHandler(Context context) {
         this.mediaPlayer = new MediaPlayer();
-        this.currentSongId = -1;
         this.context = context;
         this.audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         this.maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
@@ -51,7 +48,6 @@ public class MediaPlayerHandler {
     public void start() {mediaPlayer.start ();}
     public void pause() {mediaPlayer.pause ();}
     public void stop() {mediaPlayer.stop ();}
-    public boolean hasATrack() {return this.currentSongId != -1;}
     public void setVolume(int vol) {
         this.audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, vol, 0);
 
@@ -74,7 +70,7 @@ public class MediaPlayerHandler {
         }
         this.mediaPlayer.reset();
         try {
-            AssetFileDescriptor afd = context.getAssets().openFd(name + ".mp3");
+            AssetFileDescriptor afd = context.getAssets().openFd(name);
             this.mediaPlayer.setDataSource(afd.getFileDescriptor(),afd.getStartOffset(),afd.getLength());
             this.mediaPlayer.prepare();
             this.mediaPlayer.start();
