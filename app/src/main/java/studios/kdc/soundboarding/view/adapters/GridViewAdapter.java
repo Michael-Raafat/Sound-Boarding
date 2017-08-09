@@ -4,12 +4,14 @@ import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -74,7 +76,7 @@ public class GridViewAdapter extends BaseAdapter   {
             holder.getTextView().setText(allItemsResourceID.get(position).getName());
         }
         setOnLongClickListener(view, this.cardPosition , holder.getTextView().getText().toString());
-        if (mediaPlayerController.checkTrackChanged(view, this.cardPosition, holder.getTextView().getText().toString())) {
+        if (mediaPlayerController.checkTrackChanged(this,view, this.cardPosition, holder.getTextView().getText().toString())) {
             setOnClickListener(view, this.cardPosition , holder.getTextView().getText().toString());
         }
         return view;
@@ -89,6 +91,10 @@ public class GridViewAdapter extends BaseAdapter   {
         v.setOnClickListener(new ChoiceClickListener(position , name, groupName));
     }
 
+
+    public void setOnTrackCompletion() {
+        Log.i("loooog", "7araam");
+    }
 
     private class ViewHolder {
         private TextView getTextView() {

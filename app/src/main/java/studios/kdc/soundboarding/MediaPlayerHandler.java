@@ -22,11 +22,13 @@ public class MediaPlayerHandler {
     private String trackName;
     private boolean flag;
     private int currentPosition;
+    private MediaPlayerController controller;
 
 
     public MediaPlayerHandler(Context context) {
         this.mediaPlayer = new MediaPlayer();
         this.context = context;
+        this.setMediaPlayerListener();
         this.audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         this.maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
         this.curVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
@@ -52,6 +54,18 @@ public class MediaPlayerHandler {
         this.audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, vol, 0);
 
     }
+
+
+    private void setMediaPlayerListener() {
+        this.mediaPlayer.setOnCompletionListener (new MediaPlayer.OnCompletionListener ( ) {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                MediaPlayerController.getInstance(context).onCompltion();
+            }
+        });
+
+    }
+
     @SuppressLint("NewApi")
     public void playSong(String name) {
         if (mediaPlayer.getDuration() != -1) {
@@ -70,7 +84,7 @@ public class MediaPlayerHandler {
         }
         this.mediaPlayer.reset();
         try {
-            AssetFileDescriptor afd = context.getAssets().openFd(name);
+            AssetFileDescriptor afd = context.getAssets().openFd(name + ".mp3");
             this.mediaPlayer.setDataSource(afd.getFileDescriptor(),afd.getStartOffset(),afd.getLength());
             this.mediaPlayer.prepare();
             this.mediaPlayer.start();
