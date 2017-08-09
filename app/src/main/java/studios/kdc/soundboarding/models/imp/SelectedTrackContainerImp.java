@@ -25,6 +25,10 @@ public class SelectedTrackContainerImp implements SelectedTracksContainer {
         }
         return instance;
     }
+    public static void deleteInstance() {
+        instance = null;
+    }
+
 
     @Override
     public void addTrack(Track track) {

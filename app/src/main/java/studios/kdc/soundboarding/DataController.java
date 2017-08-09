@@ -1,6 +1,8 @@
 package studios.kdc.soundboarding;
 
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,6 +30,12 @@ public class DataController {
         selectedTracksContainer = SelectedTrackContainerImp.getInstance();
 
     }
+    public void deleteReferences() {
+        GroupContainerImp.deleteInstance();
+        SelectedTrackContainerImp.deleteInstance();
+    }
+
+
     public void setMainAdapterList(MainAdapter adapter) {
         adapter.setGroups(this.groupContainer.getGrps());
     }
@@ -37,6 +45,7 @@ public class DataController {
         for (int i = 0; i < groups.size(); i++) {
             Group group = new GroupImp(groups.get(i));
             groupContainer.addGroup(group);
+            Log.i("hna" , groupContainer.getNumberOfGroups()+"");
             List<List<String>> tracks = DataServiceSingleton.getInstance().getTracksInTable(group.getName());
             for(int j = 0; j < tracks.size(); j++) {
                 Track track = new TrackImp(tracks.get(j));
