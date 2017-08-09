@@ -68,12 +68,11 @@ public class GridViewAdapter extends BaseAdapter   {
         } else {
             holder = (ViewHolder) view.getTag();
         }
-        if (!allItemsResourceID.get(position).getName().equals("")) {
+        if (!allItemsResourceID.get(position).getName().equals(""))
             holder.getTextView().setText(allItemsResourceID.get(position).getName());
-        }
         setOnLongClickListener(view, this.cardPosition , holder.getTextView().getText().toString());
         if (mediaPlayerController.checkTrackChanged(view, this.cardPosition, holder.getTextView().getText().toString())) {
-            setOnClickListener(view, this.cardPosition , holder.getTextView().getText().toString());
+            setOnClickListener(view, holder.getTextView().getText().toString());
         }
         return view;
     }
@@ -83,8 +82,8 @@ public class GridViewAdapter extends BaseAdapter   {
     }
 
 
-    private void setOnClickListener(View v, int position, String name) {
-        v.setOnClickListener(new ChoiceClickListener(position , name, groupName));
+    private void setOnClickListener(View v,  String name) {
+        v.setOnClickListener(new ChoiceClickListener(name, groupName));
     }
 
 
@@ -137,13 +136,12 @@ public class GridViewAdapter extends BaseAdapter   {
 
 
     private class ChoiceClickListener implements View.OnClickListener {
-        @SuppressLint("NewApi")
-        private int position;
+
         private String name;
         private String groupName;
 
-        private ChoiceClickListener( int position, String name, String groupName) {
-            this.position = position;
+        private ChoiceClickListener( String name, String groupName) {
+
             this.name = name;
             this.groupName = groupName;
         }

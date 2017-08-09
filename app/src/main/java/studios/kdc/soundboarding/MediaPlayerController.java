@@ -12,7 +12,7 @@ import studios.kdc.soundboarding.view.adapters.GridViewAdapter;
  * Created by Michael on 8/8/2017.
  */
 
-public class MediaPlayerController implements  MediaPlayerContract.ControllerActions{
+public class MediaPlayerController implements  MediaPlayerContract.ControllerActions {
 
     private String name;
     private MediaPlayerHandler mediaPlayerHandler;
