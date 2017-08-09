@@ -1,6 +1,6 @@
 package studios.kdc.soundboarding.view;
 
-import android.util.Log;
+
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;

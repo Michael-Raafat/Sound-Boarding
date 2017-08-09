@@ -238,7 +238,7 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
 
     @Override
     public void onSlideChanged(int startSeconds, int position) {
-      //change start duration
+      this.dataController.setStartPointTrack(position , startSeconds);
     }
 
 
