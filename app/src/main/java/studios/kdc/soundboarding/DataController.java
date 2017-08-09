@@ -14,6 +14,7 @@ import studios.kdc.soundboarding.models.SelectedTracksContainer;
 import studios.kdc.soundboarding.models.imp.GroupContainerImp;
 import studios.kdc.soundboarding.models.imp.GroupImp;
 import studios.kdc.soundboarding.models.imp.SelectedTrackContainerImp;
+import studios.kdc.soundboarding.models.imp.SelectedTrackImp;
 import studios.kdc.soundboarding.models.imp.TrackImp;
 import studios.kdc.soundboarding.view.adapters.MainAdapter;
 
@@ -98,7 +99,7 @@ public class DataController {
                 trackName,
                 groupContainer.getGrps().get(groupPosition).getName());
        // groupContainer.getGrps().get(groupPosition).removeTrackByName(trackName);
-        selectedTracksContainer.addTrack(new TrackImp(trackData));
+        selectedTracksContainer.addTrack(new SelectedTrackImp(trackData));
         if (groupContainer.getGrps().get(groupPosition).getTracks().size() == 0) {
             groupContainer.removeGroupByName(group.getName());
         }
@@ -113,6 +114,10 @@ public class DataController {
 
     public void removeTrack(int position) {
         selectedTracksContainer.getTracks().remove(position);
+    }
+
+    public void setStartPointTrack(int position, int interval) {
+        selectedTracksContainer.getTracks().get(position).setStartPoint(interval);
     }
 
 }

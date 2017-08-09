@@ -4,7 +4,7 @@ package studios.kdc.soundboarding.models;
  * Created by Michael on 8/2/2017.
  */
 
-public interface Track extends Comparable<Track> {
+public interface Track {
     /**
      * set name of track.
      * @param name of the track.

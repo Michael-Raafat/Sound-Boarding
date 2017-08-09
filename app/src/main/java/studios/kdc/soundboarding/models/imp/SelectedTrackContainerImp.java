@@ -3,6 +3,7 @@ package studios.kdc.soundboarding.models.imp;
 import java.util.ArrayList;
 import java.util.List;
 
+import studios.kdc.soundboarding.models.SelectedTrack;
 import studios.kdc.soundboarding.models.Track;
 import studios.kdc.soundboarding.models.SelectedTracksContainer;
 
@@ -12,7 +13,7 @@ import studios.kdc.soundboarding.models.SelectedTracksContainer;
 
 public class SelectedTrackContainerImp implements SelectedTracksContainer {
 
-    private List<Track> selectedTracks;
+    private List<SelectedTrack> selectedTracks;
 
     private static SelectedTrackContainerImp instance;
     private SelectedTrackContainerImp(){
@@ -31,7 +32,7 @@ public class SelectedTrackContainerImp implements SelectedTracksContainer {
 
 
     @Override
-    public void addTrack(Track track) {
+    public void addTrack(SelectedTrack track) {
         selectedTracks.add(track);
     }
 
@@ -58,7 +59,7 @@ public class SelectedTrackContainerImp implements SelectedTracksContainer {
     }
 
     @Override
-    public void clearAndaddGroups(List<Track> tracks) {
+    public void clearAndaddGroups(List<SelectedTrack> tracks) {
         selectedTracks.clear();
         selectedTracks.addAll(tracks);
     }
@@ -69,7 +70,7 @@ public class SelectedTrackContainerImp implements SelectedTracksContainer {
     }
 
     @Override
-    public List<Track> getTracks() {
+    public List<SelectedTrack> getTracks() {
         return selectedTracks;
     }
 }

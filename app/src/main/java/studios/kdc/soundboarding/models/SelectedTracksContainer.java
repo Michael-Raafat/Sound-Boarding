@@ -7,16 +7,16 @@ import java.util.List;
  */
 
 public interface SelectedTracksContainer {
-    void addTrack(Track track);
+    void addTrack(SelectedTrack track);
 
     Track getTrackByName(String name);
 
     Track removeTrackByName(String name);
 
-    void clearAndaddGroups(List<Track> tracks);
+    void clearAndaddGroups(List<SelectedTrack> tracks);
 
     int getNumberOfTracks();
 
-    List<Track> getTracks();
+    List<SelectedTrack> getTracks();
 
 }

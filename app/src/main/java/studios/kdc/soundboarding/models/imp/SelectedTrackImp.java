@@ -4,52 +4,63 @@ import android.support.annotation.NonNull;
 
 import java.util.List;
 
-import studios.kdc.soundboarding.models.Group;
-import studios.kdc.soundboarding.models.Track;
+import studios.kdc.soundboarding.models.SelectedTrack;
+
 
 /**
- * Created by Michael on 8/2/2017.
+ * Created by Michael on 8/10/2017.
  */
 
-public class TrackImp implements Track{
-    private String extension;
-    /**
-     * time of the track
-     */
-    private int trackDuration;
-    /**
-     * name of track.
-     */
-    private String name;
-    /**
-     * path of the track on phone.
-     */
-    private String path;
+public class SelectedTrackImp implements SelectedTrack {
 
-    public TrackImp(List<String> data) {
+    private String name;
+    private int trackDuration;
+    private String path;
+    private String extension;
+    private int startPoint;
+    private int endPoint;
+
+
+
+    public SelectedTrackImp(List<String> data) {
         this.name = data.get(0);
         this.trackDuration = Integer.valueOf(data.get(1));
         this.path = data.get(2);
         this.extension = data.get(3);
+        this.startPoint = -1;
+        this.endPoint = -1;
     }
 
-    public TrackImp(String name, Group group) {
+    public SelectedTrackImp(String name, int trackDuration, String path, String extension) {
         this.name = name;
-        this.path = "";
-        this.trackDuration = 0;
-    }
-
-    public TrackImp(String name, Group group, int trackDuration) {
-        this.name = name;
-        this.path = "";
         this.trackDuration = trackDuration;
-    }
-
-    public TrackImp(String name, String path, Group group, int trackDuration) {
-        this.name = name;
         this.path = path;
-        this.trackDuration = trackDuration;
+        this.extension = extension;
+        this.startPoint = -1;
+        this.endPoint = -1;
     }
+
+
+    @Override
+    public void setStartPoint(int interval) {
+        this.startPoint = interval;
+    }
+
+    @Override
+    public int getStratPoint() {
+        return startPoint;
+    }
+
+    @Override
+    public void setEndPoint(int interval) {
+        this.endPoint = interval;
+    }
+
+    @Override
+    public int getEndPoint() {
+        return endPoint;
+    }
+
     @Override
     public void setName(String name) {
         this.name = name;
@@ -57,7 +68,7 @@ public class TrackImp implements Track{
 
     @Override
     public String getName() {
-        return this.name;
+        return name;
     }
 
     @Override
@@ -87,7 +98,8 @@ public class TrackImp implements Track{
 
     @Override
     public String getExtension() {
-        return this.extension;
+        return extension;
     }
+
 
 }
