@@ -13,4 +13,9 @@ public interface SelectedTrack extends Track {
     void setEndPoint(int interval);
 
     int getEndPoint();
+
+    void setGroupName(String groupName);
+
+    String getGroupName();
+
 }

@@ -1,4 +1,4 @@
-package studios.kdc.soundboarding;
+package studios.kdc.soundboarding.mediaPlayer;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
