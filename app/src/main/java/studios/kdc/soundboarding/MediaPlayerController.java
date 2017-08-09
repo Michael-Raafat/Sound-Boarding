@@ -16,6 +16,7 @@ public class MediaPlayerController implements  MediaPlayerContract.ControllerAct
 
     private String name;
     private int position;
+    private MediaPlayerContract.AdapterActions gridViewAdapter;
     private MediaPlayerHandler mediaPlayerHandler;
     private Context context;
     private static MediaPlayerController instance;

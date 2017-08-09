@@ -89,7 +89,7 @@ public class DataController {
         List<String> trackData = DataServiceSingleton.getInstance().getTrackData(
                 trackName,
                 groupContainer.getGrps().get(groupPosition).getName());
-        groupContainer.getGrps().get(groupPosition).removeTrackByName(trackName);
+       // groupContainer.getGrps().get(groupPosition).removeTrackByName(trackName);
         selectedTracksContainer.addTrack(new TrackImp(trackData));
         if (groupContainer.getGrps().get(groupPosition).getTracks().size() == 0) {
             groupContainer.removeGroupByName(group.getName());
