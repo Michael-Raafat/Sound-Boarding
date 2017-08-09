@@ -15,8 +15,8 @@ import android.widget.TextView;
 import java.util.List;
 
 
-import studios.kdc.soundboarding.MediaPlayerContract;
-import studios.kdc.soundboarding.MediaPlayerController;
+import studios.kdc.soundboarding.mediaPlayer.MediaPlayerContract;
+import studios.kdc.soundboarding.mediaPlayer.MediaPlayerController;
 import studios.kdc.soundboarding.R;
 import studios.kdc.soundboarding.models.Track;
 
