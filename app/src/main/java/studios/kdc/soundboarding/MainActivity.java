@@ -31,7 +31,6 @@ import java.util.Map;
 import rm.com.audiowave.AudioWaveView;
 import studios.kdc.soundboarding.view.ScrollViewListener;
 import studios.kdc.soundboarding.view.CustomHorizontalScrollView;
-import studios.kdc.soundboarding.view.adapters.GridViewAdapter;
 import studios.kdc.soundboarding.view.HorizontalSlider;
 import studios.kdc.soundboarding.view.adapters.MainAdapter;
 import studios.kdc.soundboarding.view.CustomTimelineView;
@@ -59,7 +58,6 @@ public class MainActivity extends AppCompatActivity implements ScrollViewListene
             sharedPreferences.edit().putBoolean("Start", true).apply();
         }
         ///////////////////////////////////////////////////////
-        //TODO database import ??
         dataController = new DataController();
         new DatabaseGetter().execute();
         this.scrollFactor = 0;
@@ -138,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements ScrollViewListene
                         addTrackToTimeLine(viewGroup, trackInfo);
                         break;
                     case DragEvent.ACTION_DRAG_ENDED:
-                        View view2 = (View) event.getLocalState();
+                        //View view2 = (View) event.getLocalState();
                        // view2.setVisibility(View.VISIBLE);
                         break;
                     default:
@@ -195,7 +193,6 @@ public class MainActivity extends AppCompatActivity implements ScrollViewListene
             e.printStackTrace();
         }
     }
-    // linear frame button
 
     private void setOnClickListenerToOptionsButton(final ImageButton options) {
 

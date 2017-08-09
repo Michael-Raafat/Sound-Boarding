@@ -13,9 +13,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import studios.kdc.soundboarding.MediaPlayerContract;
 import studios.kdc.soundboarding.MediaPlayerController;
-import studios.kdc.soundboarding.MediaPlayerHandler;
 import studios.kdc.soundboarding.R;
 import studios.kdc.soundboarding.models.Track;
 
@@ -28,8 +26,6 @@ public class GridViewAdapter extends BaseAdapter  {
     private Context context;
     private String groupName;
     private MediaPlayerController mediaPlayerController;
-    private ChoiceClickListener choiceTouchListener;
-    private String name = "";
 
     public GridViewAdapter(Context context, List<Track> media, int color , int cardPosition, String groupName) {
         this.inflater = LayoutInflater.from(context);
