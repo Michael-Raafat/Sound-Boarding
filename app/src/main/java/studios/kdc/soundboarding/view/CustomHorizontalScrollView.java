@@ -5,12 +5,14 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.HorizontalScrollView;
 
+import studios.kdc.soundboarding.view.adapters.ViewContract;
+
 
 public class CustomHorizontalScrollView extends HorizontalScrollView{
 
 
 
-    private ScrollViewListener scrollViewListener = null;
+    private ViewContract.ScrollViewListener scrollViewListener;
 
     public CustomHorizontalScrollView(Context context) {
         super(context);
@@ -24,7 +26,7 @@ public class CustomHorizontalScrollView extends HorizontalScrollView{
         super(context, attrs, defStyle);
     }
 
-    public void setScrollViewListener(ScrollViewListener scrollViewListener) {
+    public void setScrollViewListener(ViewContract.ScrollViewListener scrollViewListener) {
         this.scrollViewListener = scrollViewListener;
     }
 
