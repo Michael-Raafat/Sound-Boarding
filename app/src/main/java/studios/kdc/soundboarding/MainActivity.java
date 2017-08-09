@@ -38,7 +38,7 @@ import studios.kdc.soundboarding.view.HorizontalSlider;
 import studios.kdc.soundboarding.view.adapters.MainAdapter;
 import studios.kdc.soundboarding.view.CustomTimelineView;
 
-public class MainActivity extends AppCompatActivity implements ScrollViewListener{
+public class MainActivity extends AppCompatActivity implements ScrollViewListener {
 
     private DataController dataController;
     private MainAdapter mainAdapter;
