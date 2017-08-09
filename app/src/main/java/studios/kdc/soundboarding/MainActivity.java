@@ -10,14 +10,12 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.DragEvent;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -68,8 +66,18 @@ public class MainActivity extends AppCompatActivity implements ScrollViewListene
         this.initializeTable();
         this.initializeTimeLineView();
         this.initializeSearchView();
-
     }
+
+    @Override
+    protected  void onDestroy() {
+        super.onDestroy();
+        this.dataController.deleteReferences();
+        this.dataController = null;
+        Runtime.getRuntime().gc();
+    }
+
+
+
     private void initializeTable() {
         ScrollView scrollView = (ScrollView) findViewById(R.id.table_scroll);
         horizontalScrollView = (CustomHorizontalScrollView) findViewById(R.id.sc);

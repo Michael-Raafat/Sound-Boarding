@@ -28,6 +28,11 @@ public class GroupContainerImp implements GroupContainer {
         return instance;
     }
 
+    public static void deleteInstance() {
+       instance = null;
+    }
+
+
     @Override
     public void addGroup(Group group) {
         groups.add(group);
