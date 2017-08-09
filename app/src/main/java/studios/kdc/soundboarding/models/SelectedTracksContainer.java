@@ -6,7 +6,7 @@ import java.util.List;
  * Created by Michael on 8/4/2017.
  */
 
-public interface TracksContainer {
+public interface SelectedTracksContainer {
     void addTrack(Track track);
 
     Track getTrackByName(String name);

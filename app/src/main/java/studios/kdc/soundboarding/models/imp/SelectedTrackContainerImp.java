@@ -4,24 +4,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 import studios.kdc.soundboarding.models.Track;
-import studios.kdc.soundboarding.models.TracksContainer;
+import studios.kdc.soundboarding.models.SelectedTracksContainer;
 
 /**
  * Created by Michael on 8/4/2017.
  */
 
-public class TrackContainerImp implements TracksContainer {
+public class SelectedTrackContainerImp implements SelectedTracksContainer {
 
     private List<Track> selectedTracks;
 
-    private static TrackContainerImp instance;
-    private TrackContainerImp(){
+    private static SelectedTrackContainerImp instance;
+    private SelectedTrackContainerImp(){
         selectedTracks = new ArrayList<>();
     }
 
-    public static TrackContainerImp getInstance() {
+    public static SelectedTrackContainerImp getInstance() {
         if (instance == null) {
-            instance = new TrackContainerImp();
+            instance = new SelectedTrackContainerImp();
         }
         return instance;
     }
