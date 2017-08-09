@@ -41,4 +41,8 @@ public interface Track extends Comparable<Track> {
      */
     int getTrackDuration();
 
+    void setExtension(String extension);
+
+    String getExtension();
+
 }

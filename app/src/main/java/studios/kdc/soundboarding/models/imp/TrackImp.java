@@ -12,6 +12,7 @@ import studios.kdc.soundboarding.models.Track;
  */
 
 public class TrackImp implements Track{
+    private String extension;
     /**
      * time of the track
      */
@@ -29,6 +30,7 @@ public class TrackImp implements Track{
         this.name = data.get(0);
         this.trackDuration = Integer.valueOf(data.get(1));
         this.path = data.get(2);
+        this.extension = data.get(3);
     }
 
     public TrackImp(String name, Group group) {
@@ -76,6 +78,16 @@ public class TrackImp implements Track{
     @Override
     public int getTrackDuration() {
         return trackDuration;
+    }
+
+    @Override
+    public void setExtension(String extension) {
+        this.extension = extension;
+    }
+
+    @Override
+    public String getExtension() {
+        return this.extension;
     }
 
     @Override
