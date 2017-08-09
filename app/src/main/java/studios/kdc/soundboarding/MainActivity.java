@@ -29,18 +29,19 @@ import java.util.Map;
 
 
 import rm.com.audiowave.AudioWaveView;
-import studios.kdc.soundboarding.view.ScrollViewListener;
 import studios.kdc.soundboarding.view.CustomHorizontalScrollView;
 import studios.kdc.soundboarding.view.HorizontalSlider;
 import studios.kdc.soundboarding.view.adapters.MainAdapter;
 import studios.kdc.soundboarding.view.CustomTimelineView;
+import studios.kdc.soundboarding.view.adapters.ViewContract;
 
-public class MainActivity extends AppCompatActivity implements ScrollViewListener {
+public class MainActivity extends AppCompatActivity implements ViewContract.ScrollViewListener , ViewContract.SliderListener{
 
     private DataController dataController;
     private MainAdapter mainAdapter;
     private CustomHorizontalScrollView horizontalScrollView;
     private CustomTimelineView timelineView;
+    private ImageView seekbar;
     private int scrollFactor;
 
     @Override
@@ -82,8 +83,8 @@ public class MainActivity extends AppCompatActivity implements ScrollViewListene
         horizontalScrollView = (CustomHorizontalScrollView) findViewById(R.id.sc);
         horizontalScrollView.setScrollViewListener(this);
         this.addOnDragListenerOnTableTimeline(scrollView);
-        ImageView seeker = (ImageView) findViewById(R.id.seeker);
-        seeker.setOnTouchListener(new HorizontalSlider(horizontalScrollView, seeker , (View) seeker.getParent()));
+        seekbar= (ImageView) findViewById(R.id.seeker);
+        seekbar.setOnTouchListener(new HorizontalSlider(horizontalScrollView, seekbar , (View) seekbar.getParent(), null));
     }
 
     private void initializeTimeLineView() {
@@ -137,8 +138,6 @@ public class MainActivity extends AppCompatActivity implements ScrollViewListene
                         addTrackToTimeLine(viewGroup, trackInfo);
                         break;
                     case DragEvent.ACTION_DRAG_ENDED:
-                        //View view2 = (View) event.getLocalState();
-                       // view2.setVisibility(View.VISIBLE);
                         break;
                     default:
                         break;
@@ -150,16 +149,6 @@ public class MainActivity extends AppCompatActivity implements ScrollViewListene
         });
     }
 
-   // private Map<String, String> selectTrackToMix(View view, String[] params) {
-      //  GridView gridView = (GridView) view.getParent();
-       // GridViewAdapter adapter = (GridViewAdapter) gridView.getAdapter();
-       // Map<String, String> trackInfo =
-       // adapter.notifyDataSetChanged();
-       // mainAdapter.notifyDataSetChanged();
-       // view.setVisibility(View.VISIBLE);
-     //   return trackInfo;
-    //}
-
     private void addTrackToTimeLine(View table, Map<String, String> trackInfo) {
         try {
             LinearLayout linearLayout = (LinearLayout) table;
@@ -168,7 +157,7 @@ public class MainActivity extends AppCompatActivity implements ScrollViewListene
             //TODO track extension
             byte[] soundBytes = getWaveFormByteArray(trackInfo.get("grpName") , trackInfo.get("name") , ".mp3" );
             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(Integer.parseInt(trackInfo.get("duration")) * Utils.SECOND_PIXEL_RATIO, 100);
-            LinearLayout.LayoutParams frameParam = new LinearLayout.LayoutParams(2400, ViewGroup.LayoutParams.WRAP_CONTENT);
+            LinearLayout.LayoutParams frameParam = new LinearLayout.LayoutParams(Utils.TIMELINE_LENGTH_LIMIT , ViewGroup.LayoutParams.WRAP_CONTENT);
             frameParam.setMargins(10,10,10,10);
             frameLayout.setLayoutParams(frameParam);
             name.setLayoutParams(params);
@@ -189,7 +178,8 @@ public class MainActivity extends AppCompatActivity implements ScrollViewListene
             name.setGravity(Gravity.CENTER_HORIZONTAL);
             linearLayout.addView(frameLayout);
             setOnClickListenerToOptionsButton(optionsButton);
-            waveForm.setOnTouchListener(new HorizontalSlider(horizontalScrollView, frameLayout , (View) frameLayout.getParent().getParent()));
+            waveForm.setOnTouchListener(new HorizontalSlider(horizontalScrollView,
+                    frameLayout , (View) frameLayout.getParent().getParent(), this));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -244,6 +234,11 @@ public class MainActivity extends AppCompatActivity implements ScrollViewListene
             scrollFactor--;
             timelineView.decreaseTimelineView();
         }
+    }
+
+    @Override
+    public void onSlideChanged(int startSeconds, int position) {
+      //change start duration
     }
 
 

@@ -3,7 +3,10 @@ package studios.kdc.soundboarding.view;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
+
+import studios.kdc.soundboarding.view.adapters.ViewContract;
 
 public class HorizontalSlider implements View.OnTouchListener {
 
@@ -12,12 +15,13 @@ public class HorizontalSlider implements View.OnTouchListener {
     private HorizontalScrollView scrollView;
     private View v;
     private View parentLimit;
+    private ViewContract.SliderListener listener;
 
-    public HorizontalSlider(HorizontalScrollView scrollView , View v , View parentLimit) {
+    public HorizontalSlider(HorizontalScrollView scrollView , View v , View parentLimit, ViewContract.SliderListener listener) {
         this.scrollView = scrollView;
         this.v = v;
         this.parentLimit = parentLimit;
-
+        this.listener = listener;
     }
 
     @Override
@@ -39,7 +43,10 @@ public class HorizontalSlider implements View.OnTouchListener {
                 return true;
             } else if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL) {
                 isDragging = false;
-                Log.i("hna " , (v.getX() / 10) + "");
+                if(listener != null) {
+                    ViewGroup parent = (ViewGroup) v.getParent();
+                    listener.onSlideChanged((int) (v.getX() / 10) , parent.indexOfChild(v));
+                }
                 return true;
             }
         }
