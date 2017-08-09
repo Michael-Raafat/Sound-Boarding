@@ -112,10 +112,10 @@ public class GroupImp implements Group {
         return null;
     }
 
-    @Override
+    /*@Override
     public void sortTracksByName() {
         Collections.sort(this.tracks);
-    }
+    }*/
 
     @Override
     public int getNumberOfTracks() {

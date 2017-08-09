@@ -57,11 +57,11 @@ public interface Group {
      * @param name of the track needed.
      */
     Track getTrackByName(String name);
-    /**
+   /* *//**
      * sort tracks in group by name.
-     */
+     *//*
     void sortTracksByName();
-
+*/
     /**
      * gets number of tracks inside the group.
      * @return ineteger value of number of tracks.
