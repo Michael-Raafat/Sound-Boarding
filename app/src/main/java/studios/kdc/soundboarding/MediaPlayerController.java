@@ -16,6 +16,7 @@ public class MediaPlayerController implements  MediaPlayerContract.ControllerAct
 
     private String name;
     private MediaPlayerHandler mediaPlayerHandler;
+    private GridViewAdapter gridViewAdapter;
     private static MediaPlayerController instance;
 
     private MediaPlayerController(Context context) {
@@ -36,12 +37,17 @@ public class MediaPlayerController implements  MediaPlayerContract.ControllerAct
     }
 
     @Override
-    public boolean checkTrackChanged(View view, int position, String name) {
+    public boolean checkTrackChanged(GridViewAdapter gridViewAdapter,View view, int position, String name) {
         if (!this.name.equals(name)) {
             mediaPlayerHandler.stop();
             this.name = name;
+            this.gridViewAdapter = gridViewAdapter;
             return true;
         }
         return false;
+    }
+
+    public void onCompltion() {
+        gridViewAdapter.setOnTrackCompletion();
     }
 }

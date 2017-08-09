@@ -4,16 +4,20 @@ import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
+import studios.kdc.soundboarding.MediaPlayerContract;
 import studios.kdc.soundboarding.MediaPlayerController;
+import studios.kdc.soundboarding.MediaPlayerHandler;
 import studios.kdc.soundboarding.R;
 import studios.kdc.soundboarding.models.Track;
 
@@ -68,11 +72,12 @@ public class GridViewAdapter extends BaseAdapter   {
         } else {
             holder = (ViewHolder) view.getTag();
         }
-        if (!allItemsResourceID.get(position).getName().equals(""))
+        if (!allItemsResourceID.get(position).getName().equals("")) {
             holder.getTextView().setText(allItemsResourceID.get(position).getName());
+        }
         setOnLongClickListener(view, this.cardPosition , holder.getTextView().getText().toString());
-        if (mediaPlayerController.checkTrackChanged(view, this.cardPosition, holder.getTextView().getText().toString())) {
-            setOnClickListener(view, holder.getTextView().getText().toString());
+        if (mediaPlayerController.checkTrackChanged(this,view, this.cardPosition, holder.getTextView().getText().toString())) {
+            setOnClickListener(view, this.cardPosition , holder.getTextView().getText().toString());
         }
         return view;
     }
@@ -82,10 +87,14 @@ public class GridViewAdapter extends BaseAdapter   {
     }
 
 
-    private void setOnClickListener(View v,  String name) {
-        v.setOnClickListener(new ChoiceClickListener(name, groupName));
+    private void setOnClickListener(View v, int position, String name) {
+        v.setOnClickListener(new ChoiceClickListener(position , name, groupName));
     }
 
+
+    public void setOnTrackCompletion() {
+        Log.i("loooog", "7araam");
+    }
 
     private class ViewHolder {
         private TextView getTextView() {
@@ -136,12 +145,13 @@ public class GridViewAdapter extends BaseAdapter   {
 
 
     private class ChoiceClickListener implements View.OnClickListener {
-
+        @SuppressLint("NewApi")
+        private int position;
         private String name;
         private String groupName;
 
-        private ChoiceClickListener( String name, String groupName) {
-
+        private ChoiceClickListener( int position, String name, String groupName) {
+            this.position = position;
             this.name = name;
             this.groupName = groupName;
         }
