@@ -105,7 +105,8 @@ public class Mixer {
         List<SelectedTrack> selectedTrackList = SelectedTrackContainerImp.getInstance().getTracks();
         if (size == selectedTrackList.size()) {
             for (int i = 0; i < handlers.size(); i++) {
-                //TODO hna bygeeb zero azon.
+
+                Log.i("hna" , progressListener.getCurrentProgress()+"");
                 int pos =  progressListener.getCurrentProgress();
                 handlers.get(i).seekTo(pos);
                 handlers.get(i).start();
@@ -123,3 +124,4 @@ public class Mixer {
         progressListener.resumeSeekBar();
     }
 }
+
