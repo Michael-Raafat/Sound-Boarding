@@ -16,14 +16,6 @@
         android:layout_width="match_parent"
         android:layout_height="400dp"
         android:layout_below="@id/search_view"/>
-    <!--
-   <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/"
-        android:text="MIX"
-        android:id="@+id/mix"/>
-        -->
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -81,8 +73,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context="studios.kdc.myapplication.MainActivity">
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/mix"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"

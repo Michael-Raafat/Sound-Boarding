@@ -5,6 +5,7 @@ import android.content.res.AssetManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,7 +16,6 @@ import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -30,8 +30,8 @@ import java.util.Map;
 
 
 import rm.com.audiowave.AudioWaveView;
-import studios.kdc.soundboarding.media.singlePlayer.MediaPlayerController;
 import studios.kdc.soundboarding.media.mixer.MixerController;
+import studios.kdc.soundboarding.media.singlePlayer.MediaPlayerController;
 import studios.kdc.soundboarding.view.CustomHorizontalScrollView;
 import studios.kdc.soundboarding.view.HorizontalSlider;
 import studios.kdc.soundboarding.view.adapters.MainAdapter;
@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
     private CustomHorizontalScrollView horizontalScrollView;
     private CustomTimelineView timelineView;
     private ImageView seekbar;
+    private FloatingActionButton mixer;
     private int scrollFactor;
 
     @Override
@@ -68,17 +69,8 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
         this.initializeTable();
         this.initializeTimeLineView();
         this.initializeSearchView();
-/*
+        this.initializeMixerButton();
 
-        Button mixer = (Button) findViewById(R.id.mix); //TODO DISABLE BUTTON
-        mixer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                MixerController.getInstance(getApplicationContext()).mix();
-            }
-        });
-
-*/
     }
 
     @Override
@@ -90,7 +82,17 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
         Runtime.getRuntime().gc();
     }
 
+    private void initializeMixerButton(){  //TODO ENABLE BUTTON ON COMPLETION
+        mixer = (FloatingActionButton) findViewById(R.id.mix);
+        mixer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MixerController.getInstance(getApplicationContext()).mix();
+                mixer.setEnabled(false);
+            }
+        });
 
+    }
 
     private void initializeTable() {
         ScrollView scrollView = (ScrollView) findViewById(R.id.table_scroll);
@@ -144,12 +146,14 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
                     case DragEvent.ACTION_DRAG_EXITED:
                         break;
                     case DragEvent.ACTION_DROP:
-                        View view = (View) event.getLocalState();
                         String description = event.getClipData().getDescription().getLabel().toString();
                         String[] s = description.split(getResources().getString(R.string.separator));
                         Map<String, String> trackInfo = dataController.selectTrackToMix(s[1], Integer.parseInt(s[0]));
                         View viewGroup = ((ViewGroup)(((ViewGroup)((ViewGroup)v).getChildAt(0)).getChildAt(0))).getChildAt(1);
                         addTrackToTimeLine(viewGroup, trackInfo);
+                        if(((ViewGroup)viewGroup).getChildCount() > 1){
+                            mixer.setVisibility(View.VISIBLE);
+                        }
                         break;
                     case DragEvent.ACTION_DRAG_ENDED:
                         break;
@@ -215,6 +219,8 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
                           case R.id.remove:
                               dataController.removeTrack(linearLayout.indexOfChild(frameLayout));
                               linearLayout.removeView(frameLayout);
+                              if(linearLayout.getChildCount() < 2)
+                                  mixer.setVisibility(View.GONE);
                               break;
                       }
                        return true;
