@@ -1,4 +1,4 @@
-package studios.kdc.soundboarding;
+package studios.kdc.soundboarding.media.mixer;
 
 import android.content.Context;
 

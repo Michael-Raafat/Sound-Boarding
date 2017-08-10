@@ -1,4 +1,4 @@
-package studios.kdc.soundboarding;
+package studios.kdc.soundboarding.media.mixer;
 
 
 import android.content.Context;
@@ -8,7 +8,7 @@ import android.util.Log;
 import java.io.File;
 import java.util.List;
 
-import studios.kdc.soundboarding.mediaPlayer.MediaPlayerHandler;
+import studios.kdc.soundboarding.media.MediaPlayerHandler;
 import studios.kdc.soundboarding.models.SelectedTrack;
 import studios.kdc.soundboarding.models.imp.SelectedTrackContainerImp;
 
@@ -26,7 +26,7 @@ public class Mixer {
         for(final SelectedTrack selectedTrack : selectedTrackList) {
             handler.postDelayed(new Runnable() {
                 public void run() {
-                    MediaPlayerHandler mediaPlayerHandler = new MediaPlayerHandler(context);
+                    MediaPlayerHandler mediaPlayerHandler = new MixerHandler(context);
                     mediaPlayerHandler.playSong(selectedTrack.getGroupName() + File.separator + selectedTrack.getName());
                 }
             }, selectedTrack.getStratPoint() * 1000); // milliseconds

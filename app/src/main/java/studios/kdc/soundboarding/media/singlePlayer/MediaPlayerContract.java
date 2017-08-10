@@ -1,4 +1,4 @@
-package studios.kdc.soundboarding.mediaPlayer;
+package studios.kdc.soundboarding.media.singlePlayer;
 
 import android.view.View;
 
