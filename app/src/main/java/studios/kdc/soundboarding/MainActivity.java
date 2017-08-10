@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
     private CustomTimelineView timelineView;
     private ImageView seekbar;
     private FloatingActionButton mixer;
+    private FloatingActionButton pause_resume;
     private int scrollFactor;
 
     @Override
@@ -71,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
         this.initializeTimeLineView();
         this.initializeSearchView();
         this.initializeMixerButton();
-
+        this.initializePauseButton();
     }
 
     @Override
@@ -84,13 +85,26 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
         Runtime.getRuntime().gc();
     }
 
+
+    private void initializePauseButton(){
+        this.pause_resume = (FloatingActionButton) findViewById(R.id.pause_resume);
+        this.pause_resume.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) { // TODO toggle pause resume
+                MixerController.getInstance(getApplicationContext() , MainActivity.this).pause();
+                pause_resume.setImageResource((R.drawable.paused));
+            }
+        });
+
+    }
     private void initializeMixerButton(){
-        mixer = (FloatingActionButton) findViewById(R.id.mix);
-        mixer.setOnClickListener(new View.OnClickListener() {
+        this.mixer = (FloatingActionButton) findViewById(R.id.mix);
+        this.mixer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 MixerController.getInstance(getApplicationContext() , MainActivity.this).mix();
-                mixer.setEnabled(false);
+                mixer.setVisibility(View.GONE);
+                pause_resume.setVisibility(View.VISIBLE);
             }
         });
 
@@ -276,7 +290,8 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
     @Override
     public void notifyTrackFinished() {
         this.seekbar.setX(10);
-        this.mixer.setEnabled(true);
+        this.mixer.setVisibility(View.VISIBLE);
+        this.pause_resume.setVisibility(View.GONE);
     }
 
 
