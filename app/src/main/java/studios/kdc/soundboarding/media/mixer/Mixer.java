@@ -3,6 +3,7 @@ package studios.kdc.soundboarding.media.mixer;
 
 import android.content.Context;
 import android.os.Handler;
+import android.util.Log;
 
 import java.io.File;
 import java.util.List;
@@ -42,6 +43,7 @@ public class Mixer {
     }
     private void assignStartingPointForSlider(List<SelectedTrack> selectedTrackList) {
         final int maximumEndPoint = this.getMaximumEndPoint(selectedTrackList);
+       // final int startPoint = (int) progressListener.getCurrentProgress(); //seconds
         handler.postDelayed(new Runnable() {
             public void run() {
                 double  currentDuration = progressListener.getCurrentProgress(); // in seconds
@@ -53,7 +55,7 @@ public class Mixer {
                 }
 
             }
-        }, 1250); // milliseconds
+        }, 1000); // milliseconds
 
     }
     private int getMaximumEndPoint(List<SelectedTrack> selectedTrackList ) {

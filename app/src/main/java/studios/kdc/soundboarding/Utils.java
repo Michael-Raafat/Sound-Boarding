@@ -26,7 +26,7 @@ public class Utils {
         out.close();
         return out.toByteArray();
     }
-
+/*
     public static int getProgressPercentage(long currentDuration, long totalDuration){
         Double percentage;
 

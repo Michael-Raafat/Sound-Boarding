@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
         horizontalScrollView.setScrollViewListener(this);
         this.addOnDragListenerOnTableTimeline(scrollView);
         seekbar= (ImageView) findViewById(R.id.seeker);
-       // seekbar.setOnTouchListener(new HorizontalSlider(horizontalScrollView, seekbar , (View) seekbar.getParent(), null));
+        seekbar.setOnTouchListener(new HorizontalSlider(horizontalScrollView, seekbar , (View) seekbar.getParent(), null));
     }
 
     private void initializeTimeLineView() {
@@ -275,7 +275,7 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
 
     @Override
     public void notifyTrackFinished() {
-        this.seekbar.setX(0);
+        this.seekbar.setX(10);
         this.mixer.setEnabled(true);
     }
 
