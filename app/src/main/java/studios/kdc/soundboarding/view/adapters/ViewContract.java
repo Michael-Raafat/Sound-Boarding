@@ -12,4 +12,12 @@ public class ViewContract {
         void onSlideChanged(int startSeconds, int position);
 
     }
+    public interface mixerProgressChange {
+
+        double getCurrentProgress();
+        void setProgressChange(double seconds);
+        void notifyTrackFinished();
+
+    }
+
 }

@@ -30,10 +30,9 @@ public class SelectedTrackContainerImp implements SelectedTracksContainer {
         instance = null;
     }
 
-
     @Override
     public void addTrack(SelectedTrack track) {
-        selectedTracks.add(track);
+        this.selectedTracks.add(track);
     }
 
     @Override
@@ -59,7 +58,7 @@ public class SelectedTrackContainerImp implements SelectedTracksContainer {
     }
 
     @Override
-    public void clearAndaddGroups(List<SelectedTrack> tracks) {
+    public void clearAndAddGroups(List<SelectedTrack> tracks) {
         selectedTracks.clear();
         selectedTracks.addAll(tracks);
     }
