@@ -6,7 +6,7 @@ import android.util.Log;
  * Created by Michael on 8/10/2017.
  */
 
-public class Pauser{
+public class Pauser {
 
     private boolean isPaused=false;
 

@@ -3,8 +3,6 @@ package studios.kdc.soundboarding.media.mixer;
 
 import android.content.Context;
 import android.os.Handler;
-import android.util.Log;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +15,7 @@ import studios.kdc.soundboarding.view.adapters.ViewContract;
 public class Mixer {
     private Handler handler;
     private Context context;
-    private Pauser pauser;
+   // private Pauser pauser;
     private List<MediaPlayerHandler> handlers;
     private int size;
     private ViewContract.mixerProgressChange progressListener;
@@ -25,7 +23,7 @@ public class Mixer {
     public Mixer(Context context, ViewContract.mixerProgressChange progressListener) {
         this.handler =new Handler();
         this.context = context;
-        this.pauser = new Pauser();
+       // this.pauser = new Pauser();
         this.handlers = new ArrayList<>();
         this.size = 0;
         this.progressListener = progressListener;
@@ -69,7 +67,6 @@ public class Mixer {
        // final int startPoint = (int) progressListener.getCurrentProgress(); //seconds
         handler.postDelayed(new Runnable() {
             public void run() {
-                //TODO hna mazboot
                 double  currentDuration = progressListener.getCurrentProgress(); // in seconds
                 progressListener.setProgressChange(currentDuration + 1);
                 if(currentDuration <= maximumEndPoint) {
@@ -79,7 +76,7 @@ public class Mixer {
                 }
 
             }
-        }, 1000); // milliseconds
+        }, 0); // milliseconds
     }
     private int getMaximumEndPoint(List<SelectedTrack> selectedTrackList ) {
         int maximumEndPoint = 0;
@@ -107,7 +104,6 @@ public class Mixer {
         List<SelectedTrack> selectedTrackList = SelectedTrackContainerImp.getInstance().getTracks();
         if (size == selectedTrackList.size()) {
             for (int i = 0; i < handlers.size(); i++) {
-                //TODO hna bygeeb zero azon.
                 this.trackToResume(selectedTrackList.get(i), progressListener.getCurrentProgress(),handlers.get(i));
             }
         } else {
@@ -118,7 +114,7 @@ public class Mixer {
                 i++;
             }
             handlers.clear();
-            this.assignStartingPointsForPlaying(selectedTrackList, (int) progressListener.getCurrentProgress());
+            this.assignStartingPointsForPlaying(selectedTrackList, progressListener.getCurrentProgress());
         }
         progressListener.resumeSeekBar();
     }
@@ -133,7 +129,7 @@ public class Mixer {
                 }
             }, (selectedTrack.getStartPoint() - seekBarPosition) * 1000);// milliseconds
         } else {
-            mediaPlayerHandler.seekTo((seekBarPosition - selectedTrack.getStartPoint()) *1000 );
+            mediaPlayerHandler.seekTo((seekBarPosition - selectedTrack.getStartPoint()) * 1000 );
             mediaPlayerHandler.start();
         }
 
