@@ -48,7 +48,7 @@ public class Mixer {
             public void run() {
                 double  currentDuration = progressListener.getCurrentProgress(); // in seconds
                 progressListener.setProgressChange(currentDuration + 1);
-                if(currentDuration < maximumEndPoint) {
+                if(currentDuration <= maximumEndPoint) {
                     handler.postDelayed(this, 1000);
                 } else {
                     progressListener.notifyTrackFinished();
