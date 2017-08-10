@@ -41,4 +41,8 @@ public class MixerController {
         mixer.getHandlers().get(position).stop();
         mixer.getHandlers().remove(position);
     }
+
+    public void resume() {
+        this.mixer.resume();
+    }
 }

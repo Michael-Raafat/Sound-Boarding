@@ -19,7 +19,6 @@ public class Mixer {
     private Context context;
     private Pauser pauser;
     private List<MediaPlayerHandler> handlers;
-    private boolean paused;
     private int size;
     private ViewContract.mixerProgressChange progressListener;
 
@@ -28,47 +27,39 @@ public class Mixer {
         this.context = context;
         this.pauser = new Pauser();
         this.handlers = new ArrayList<>();
-        this.paused = true;
         this.size = 0;
         this.progressListener = progressListener;
     }
 
     public void mix() {
         List<SelectedTrack> selectedTrackList = SelectedTrackContainerImp.getInstance().getTracks();
-        if (!paused && size == selectedTrackList.size()) {
-            for (int i = 0; i < handlers.size(); i++) {
-                int pos = handlers.get(i).getCurrentPosition();
-                handlers.get(i).seekTo(pos);
-                handlers.get(i).start();
-                Log.i(selectedTrackList.get(i).getName() + " continue", String.valueOf(i));
-
-            }
-            return;
-        } else if (!paused) {
-            int length = handlers.size();
-            int i = 0;
-            while(i < length) {
-                handlers.get(i).stop();
-                Log.i(selectedTrackList.get(i).getName() + " clear and start track ", String.valueOf(0));
-                i++;
-            }
-            handlers.clear();
-        }
-        paused = true;
         size = selectedTrackList.size();
-        this.assignStartingPointsForPlaying(selectedTrackList);
+        this.assignStartingPointsForPlaying(selectedTrackList,  (int) progressListener.getCurrentProgress());
         this.assignStartingPointForSlider(selectedTrackList);
 
     }
 
-    private void assignStartingPointsForPlaying(List<SelectedTrack> selectedTrackList ) {
+    private void assignStartingPointsForPlaying(List<SelectedTrack> selectedTrackList, final int seekBarPosition ) {
         for(final SelectedTrack selectedTrack : selectedTrackList) {
-            handler.postDelayed(new Runnable() {
-                public void run() {
-                    MediaPlayerHandler mediaPlayerHandler = new MixerHandler(context);
-                    mediaPlayerHandler.playSong(selectedTrack.getGroupName() + File.separator + selectedTrack.getName());
-                }
-            }, selectedTrack.getStartPoint() * 1000); // milliseconds
+            if (selectedTrack.getStartPoint() - seekBarPosition >= 0 ) {
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                        MediaPlayerHandler mediaPlayerHandler = new MixerHandler(context);
+                        mediaPlayerHandler.playSong(selectedTrack.getGroupName() + File.separator + selectedTrack.getName());
+                        handlers.add(mediaPlayerHandler);
+                    }
+                }, (selectedTrack.getStartPoint() - seekBarPosition) * 1000);// milliseconds
+            } else {
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                        MediaPlayerHandler mediaPlayerHandler = new MixerHandler(context);
+                        mediaPlayerHandler.playSong(selectedTrack.getGroupName() + File.separator + selectedTrack.getName());
+                        mediaPlayerHandler.seekTo(seekBarPosition - selectedTrack.getStartPoint());
+                        mediaPlayerHandler.start();
+                        handlers.add(mediaPlayerHandler);
+                    }
+                }, 0);
+            }
         }
     }
     private void assignStartingPointForSlider(List<SelectedTrack> selectedTrackList) {
@@ -76,6 +67,7 @@ public class Mixer {
        // final int startPoint = (int) progressListener.getCurrentProgress(); //seconds
         handler.postDelayed(new Runnable() {
             public void run() {
+                //TODO hna mazboot
                 double  currentDuration = progressListener.getCurrentProgress(); // in seconds
                 progressListener.setProgressChange(currentDuration + 1);
                 if(currentDuration <= maximumEndPoint) {
@@ -86,7 +78,6 @@ public class Mixer {
 
             }
         }, 1000); // milliseconds
-
     }
     private int getMaximumEndPoint(List<SelectedTrack> selectedTrackList ) {
         int maximumEndPoint = 0;
@@ -99,11 +90,10 @@ public class Mixer {
     }
 
     public void pause() {
-        List<SelectedTrack> selectedTrackList = SelectedTrackContainerImp.getInstance().getTracks();
-        // milliseconds
         for (int i = 0; i < handlers.size(); i++) {
             handlers.get(i).pause();
         }
+        progressListener.pauseSeekBar();
     }
 
 
@@ -111,4 +101,25 @@ public class Mixer {
         return handlers;
     }
 
+    public void resume() {
+        List<SelectedTrack> selectedTrackList = SelectedTrackContainerImp.getInstance().getTracks();
+        if (size == selectedTrackList.size()) {
+            for (int i = 0; i < handlers.size(); i++) {
+                //TODO hna bygeeb zero azon.
+                int pos =  progressListener.getCurrentProgress();
+                handlers.get(i).seekTo(pos);
+                handlers.get(i).start();
+            }
+        } else {
+            int length = handlers.size();
+            int i = 0;
+            while(i < length) {
+                handlers.get(i).stop();
+                i++;
+            }
+            handlers.clear();
+            this.assignStartingPointsForPlaying(selectedTrackList, (int) progressListener.getCurrentProgress());
+        }
+        progressListener.resumeSeekBar();
+    }
 }

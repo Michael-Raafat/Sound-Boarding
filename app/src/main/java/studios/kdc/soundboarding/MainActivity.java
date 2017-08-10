@@ -49,11 +49,15 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
     private FloatingActionButton mixer;
     private FloatingActionButton pause_resume;
     private int scrollFactor;
+    private boolean pauseResume;
+    private boolean seekBarFlag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        pauseResume = false;
+        seekBarFlag = false;
 
 
         //////////////////////////////////MO2KATAN//////////////
@@ -91,8 +95,15 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
         this.pause_resume.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) { // TODO toggle pause resume
-                MixerController.getInstance(getApplicationContext() , MainActivity.this).pause();
-                pause_resume.setImageResource((R.drawable.paused));
+                if (!pauseResume) {
+                    MixerController.getInstance(getApplicationContext(), MainActivity.this).pause();
+                    pause_resume.setImageResource((R.drawable.paused));
+                    pauseResume = true;
+                } else {
+                    MixerController.getInstance(getApplicationContext(), MainActivity.this).resume();
+                    pause_resume.setImageResource((R.drawable.played));
+                    pauseResume = false;
+                }
             }
         });
 
@@ -234,6 +245,8 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
                       switch (item.getItemId()){
                           case R.id.remove:
                               dataController.removeTrack(linearLayout.indexOfChild(frameLayout));
+                              MixerController.getInstance(getApplicationContext(), MainActivity.this).removeHandler(
+                                      linearLayout.indexOfChild(frameLayout));
                               linearLayout.removeView(frameLayout);
                               if(linearLayout.getChildCount() < 2)
                                   mixer.setVisibility(View.GONE);
@@ -278,13 +291,25 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
     }
 
     @Override
-    public double getCurrentProgress() {
-        return (this.seekbar.getX() / Utils.SECOND_PIXEL_RATIO);
+    public void pauseSeekBar() {
+        seekBarFlag = true;
+    }
+
+    @Override
+    public void resumeSeekBar() {
+        seekBarFlag = false;
+    }
+
+    @Override
+    public int getCurrentProgress() {
+        return ((int) this.seekbar.getX() / Utils.SECOND_PIXEL_RATIO);
     }
 
     @Override
     public void setProgressChange(double seconds) {
-        this.seekbar.setX((float) (seconds *  Utils.SECOND_PIXEL_RATIO));
+        if (!seekBarFlag) {
+            this.seekbar.setX((float) (seconds * Utils.SECOND_PIXEL_RATIO));
+        }
     }
 
     @Override

@@ -14,7 +14,9 @@ public class ViewContract {
     }
     public interface mixerProgressChange {
 
-        double getCurrentProgress();
+        void resumeSeekBar();
+        void pauseSeekBar();
+        int getCurrentProgress();
         void setProgressChange(double seconds);
         void notifyTrackFinished();
 
