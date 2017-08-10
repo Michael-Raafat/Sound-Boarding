@@ -3,8 +3,10 @@ package studios.kdc.soundboarding.media.mixer;
 
 import android.content.Context;
 import android.os.Handler;
+import android.util.Log;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import studios.kdc.soundboarding.media.MediaPlayerHandler;
@@ -17,22 +19,43 @@ public class Mixer {
     private Context context;
     private Pauser pauser;
     private List<MediaPlayerHandler> handlers;
-    private boolean flag;
+    private boolean paused;
     private int size;
     private ViewContract.mixerProgressChange progressListener;
 
-    public Mixer(Context context) {
+    public Mixer(Context context, ViewContract.mixerProgressChange progressListener) {
         this.handler =new Handler();
         this.context = context;
         this.pauser = new Pauser();
         this.handlers = new ArrayList<>();
-        this.flag = false;
+        this.paused = true;
         this.size = 0;
         this.progressListener = progressListener;
     }
 
     public void mix() {
         List<SelectedTrack> selectedTrackList = SelectedTrackContainerImp.getInstance().getTracks();
+        if (!paused && size == selectedTrackList.size()) {
+            for (int i = 0; i < handlers.size(); i++) {
+                int pos = handlers.get(i).getCurrentPosition();
+                handlers.get(i).seekTo(pos);
+                handlers.get(i).start();
+                Log.i(selectedTrackList.get(i).getName() + " continue", String.valueOf(i));
+
+            }
+            return;
+        } else if (!paused) {
+            int length = handlers.size();
+            int i = 0;
+            while(i < length) {
+                handlers.get(i).stop();
+                Log.i(selectedTrackList.get(i).getName() + " clear and start track ", String.valueOf(0));
+                i++;
+            }
+            handlers.clear();
+        }
+        paused = true;
+        size = selectedTrackList.size();
         this.assignStartingPointsForPlaying(selectedTrackList);
         this.assignStartingPointForSlider(selectedTrackList);
 
@@ -45,7 +68,7 @@ public class Mixer {
                     MediaPlayerHandler mediaPlayerHandler = new MixerHandler(context);
                     mediaPlayerHandler.playSong(selectedTrack.getGroupName() + File.separator + selectedTrack.getName());
                 }
-            }, selectedTrack.getStratPoint() * 1000); // milliseconds
+            }, selectedTrack.getStartPoint() * 1000); // milliseconds
         }
     }
     private void assignStartingPointForSlider(List<SelectedTrack> selectedTrackList) {
@@ -72,6 +95,19 @@ public class Mixer {
         }
         return maximumEndPoint;
 
+    }
+
+    public void pause() {
+        List<SelectedTrack> selectedTrackList = SelectedTrackContainerImp.getInstance().getTracks();
+        // milliseconds
+        for (int i = 0; i < handlers.size(); i++) {
+            handlers.get(i).pause();
+        }
+    }
+
+
+    public List<MediaPlayerHandler> getHandlers() {
+        return handlers;
     }
 
 }

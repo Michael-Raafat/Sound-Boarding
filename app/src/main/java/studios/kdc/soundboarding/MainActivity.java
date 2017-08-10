@@ -38,7 +38,7 @@ import studios.kdc.soundboarding.view.adapters.MainAdapter;
 import studios.kdc.soundboarding.view.CustomTimelineView;
 import studios.kdc.soundboarding.view.adapters.ViewContract;
 
-public class MainActivity extends AppCompatActivity implements ViewContract.ScrollViewListener , ViewContract.SliderListener{
+public class MainActivity extends AppCompatActivity implements ViewContract.ScrollViewListener , ViewContract.SliderListener, ViewContract.mixerProgressChange{
 
     private DataController dataController;
     private MainAdapter mainAdapter;
@@ -79,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
         this.dataController.deleteReferences();
         this.dataController = null;
         MediaPlayerController.deleteInstance();
+        MixerController.deleteInstance();
         Runtime.getRuntime().gc();
     }
 
@@ -100,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
         horizontalScrollView.setScrollViewListener(this);
         this.addOnDragListenerOnTableTimeline(scrollView);
         seekbar= (ImageView) findViewById(R.id.seeker);
-        seekbar.setOnTouchListener(new HorizontalSlider(horizontalScrollView, seekbar , (View) seekbar.getParent(), null));
+       // seekbar.setOnTouchListener(new HorizontalSlider(horizontalScrollView, seekbar , (View) seekbar.getParent(), null));
     }
 
     private void initializeTimeLineView() {
@@ -149,7 +150,7 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
                         String description = event.getClipData().getDescription().getLabel().toString();
                         String[] s = description.split(getResources().getString(R.string.separator));
                         Map<String, String> trackInfo = dataController.selectTrackToMix(s[1], Integer.parseInt(s[0]));
-                        View viewGroup = ((ViewGroup)(((ViewGroup)((ViewGroup)v).getChildAt(0)).getChildAt(0))).getChildAt(1);
+                        View viewGroup = ((ViewGroup)(((ViewGroup)((ViewGroup)v).getChildAt(0)).getChildAt(0))).getChildAt(0);
                         addTrackToTimeLine(viewGroup, trackInfo);
                         if(((ViewGroup)viewGroup).getChildCount() > 1){
                             mixer.setVisibility(View.VISIBLE);
@@ -279,4 +280,20 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
 
         }
     }
+
+
+    @Override
+    public double getCurrentProgress() {
+        return (this.seekbar.getX() / Utils.SECOND_PIXEL_RATIO);
+    }
+    @Override
+    public void setProgressChange(double seconds) {
+                this.seekbar.setX((float) (seconds *  Utils.SECOND_PIXEL_RATIO));
+            }
+
+    @Override
+    public void notifyTrackFinished() {
+                this.seekbar.setX(0);
+                this.mixer.setEnabled(true);
+            }
 }
