@@ -7,15 +7,15 @@ import android.content.Context;
  */
 
 public class MixerController {
-    //TODO
-    //private Mixer mixer;
+
+    private Mixer mixer;
 
     private Context context;
     private static MixerController instance;
 
     private MixerController (Context context) {
         this.context = context;
-        //this.mixer = new Mixer(context);
+        this.mixer = new Mixer(context);
     }
 
     public static MixerController getInstance(Context context) {
@@ -26,7 +26,7 @@ public class MixerController {
     }
 
     public void mix() {
-
+      this.mixer.mix();
     }
 
 }

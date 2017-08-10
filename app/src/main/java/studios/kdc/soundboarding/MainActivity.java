@@ -15,6 +15,7 @@ import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -66,6 +67,23 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
         this.initializeTable();
         this.initializeTimeLineView();
         this.initializeSearchView();
+
+
+        Button mixer = (Button) findViewById(R.id.mix);
+        mixer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MixerController.getInstance(getApplicationContext()).mix();
+            }
+        });
+
+
+
+
+
+
+
+
     }
 
     @Override
