@@ -16,11 +16,19 @@ import studios.kdc.soundboarding.view.adapters.ViewContract;
 public class Mixer {
     private Handler handler;
     private Context context;
+    private Pauser pauser;
+    private List<MediaPlayerHandler> handlers;
+    private boolean flag;
+    private int size;
     private ViewContract.mixerProgressChange progressListener;
 
-    public Mixer(Context context, ViewContract.mixerProgressChange progressListener) {
-        this.handler = new Handler();
+    public Mixer(Context context) {
+        this.handler =new Handler();
         this.context = context;
+        this.pauser = new Pauser();
+        this.handlers = new ArrayList<>();
+        this.flag = false;
+        this.size = 0;
         this.progressListener = progressListener;
     }
 
@@ -38,7 +46,7 @@ public class Mixer {
                     MediaPlayerHandler mediaPlayerHandler = new MixerHandler(context);
                     mediaPlayerHandler.playSong(selectedTrack.getGroupName() + File.separator + selectedTrack.getName());
                 }
-            }, selectedTrack.getStartPoint() * 1000); // milliseconds
+            }, selectedTrack.getStratPoint() * 1000); // milliseconds
         }
     }
     private void assignStartingPointForSlider(List<SelectedTrack> selectedTrackList) {
