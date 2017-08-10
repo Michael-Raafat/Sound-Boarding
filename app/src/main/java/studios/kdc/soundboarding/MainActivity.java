@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.DragEvent;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -82,13 +83,19 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
         Runtime.getRuntime().gc();
     }
 
+    private boolean flag = false;
     private void initializeMixerButton(){  //TODO ENABLE BUTTON ON COMPLETION
         mixer = (FloatingActionButton) findViewById(R.id.mix);
         mixer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (flag) {
+                    MixerController.getInstance(getApplicationContext()).pause();
+                    flag = false;
+                    return;
+                }
+                flag = true;
                 MixerController.getInstance(getApplicationContext()).mix();
-                mixer.setEnabled(false);
             }
         });
 
@@ -218,6 +225,8 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
                       switch (item.getItemId()){
                           case R.id.remove:
                               dataController.removeTrack(linearLayout.indexOfChild(frameLayout));
+                              MixerController.getInstance(getApplicationContext()).removeHandler(
+                                      linearLayout.indexOfChild(frameLayout));
                               linearLayout.removeView(frameLayout);
                               if(linearLayout.getChildCount() < 2)
                                   mixer.setVisibility(View.GONE);
