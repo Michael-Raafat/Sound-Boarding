@@ -1,7 +1,9 @@
-package studios.kdc.soundboarding.mediaPlayer;
+package studios.kdc.soundboarding.media.singlePlayer;
 
 import android.content.Context;
 import android.view.View;
+
+import studios.kdc.soundboarding.media.MediaPlayerHandler;
 
 
 /**
@@ -17,7 +19,7 @@ public class MediaPlayerController implements  MediaPlayerContract.ControllerAct
 
     private MediaPlayerController(Context context) {
         name = "";
-        mediaPlayerHandler = new MediaPlayerHandler(context);
+        mediaPlayerHandler = new PlayerHandler(context);
     }
 
     public static MediaPlayerController getInstance(Context context) {

@@ -30,7 +30,8 @@ import java.util.Map;
 
 
 import rm.com.audiowave.AudioWaveView;
-import studios.kdc.soundboarding.mediaPlayer.MediaPlayerController;
+import studios.kdc.soundboarding.media.singlePlayer.MediaPlayerController;
+import studios.kdc.soundboarding.media.mixer.MixerController;
 import studios.kdc.soundboarding.view.CustomHorizontalScrollView;
 import studios.kdc.soundboarding.view.HorizontalSlider;
 import studios.kdc.soundboarding.view.adapters.MainAdapter;

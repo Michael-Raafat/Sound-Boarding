@@ -1,4 +1,4 @@
-package studios.kdc.soundboarding.mediaPlayer;
+package studios.kdc.soundboarding.media;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -11,10 +11,10 @@ import android.media.MediaPlayer;
  * Created by Michael on 8/8/2017.
  */
 
-public class MediaPlayerHandler {
+public abstract class MediaPlayerHandler {
 
-    private MediaPlayer mediaPlayer;
-    private Context context;
+    protected MediaPlayer mediaPlayer;
+    protected Context context;
     private AudioManager audioManager;
     private int maxVolume;
     private int curVolume;
@@ -54,15 +54,7 @@ public class MediaPlayerHandler {
     }
 
 
-    private void setMediaPlayerListener() {
-        this.mediaPlayer.setOnCompletionListener (new MediaPlayer.OnCompletionListener ( ) {
-            @Override
-            public void onCompletion(MediaPlayer mediaPlayer) {
-                MediaPlayerController.getInstance(context).onCompletion();
-            }
-        });
-
-    }
+    protected abstract void setMediaPlayerListener();
 
     @SuppressLint("NewApi")
     public void playSong(String name) {
