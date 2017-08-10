@@ -3,6 +3,7 @@ package studios.kdc.soundboarding;
 
 import android.content.Context;
 import android.os.Handler;
+import android.util.Log;
 
 import java.io.File;
 import java.util.List;

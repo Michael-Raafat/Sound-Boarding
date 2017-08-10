@@ -52,6 +52,5 @@ public class MediaPlayerController implements  MediaPlayerContract.ControllerAct
     public void onCompletion(){
         if(this.listener != null)
            this.listener.notifyOnTrackCompletion();
-        this.listener = null;
     }
 }

@@ -67,9 +67,9 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
         this.initializeTable();
         this.initializeTimeLineView();
         this.initializeSearchView();
+/*
 
-
-        Button mixer = (Button) findViewById(R.id.mix);
+        Button mixer = (Button) findViewById(R.id.mix); //TODO DISABLE BUTTON
         mixer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -77,13 +77,7 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
             }
         });
 
-
-
-
-
-
-
-
+*/
     }
 
     @Override
