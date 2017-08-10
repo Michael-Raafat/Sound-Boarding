@@ -3,6 +3,8 @@ package studios.kdc.soundboarding.media.mixer;
 import android.content.Context;
 import android.util.Log;
 
+import studios.kdc.soundboarding.view.adapters.ViewContract;
+
 /**
  * Created by Michael on 8/10/2017.
  */
@@ -10,22 +12,22 @@ import android.util.Log;
 public class MixerController {
 
     private Mixer mixer;
-
-    private Context context;
     private static MixerController instance;
 
-    private MixerController (Context context) {
-        this.context = context;
-        this.mixer = new Mixer(context);
+    private MixerController (Context context, ViewContract.mixerProgressChange progressListener) {
+
+        this.mixer = new Mixer(context,progressListener );
     }
 
-    public static MixerController getInstance(Context context) {
+    public static MixerController getInstance(Context context, ViewContract.mixerProgressChange progressListener) {
         if (instance == null) {
-            instance = new MixerController(context);
+            instance = new MixerController(context ,progressListener);
         }
         return instance;
     }
-
+    public static void deleteInstance() {
+        instance = null;
+    }
     public void mix() {
       this.mixer.mix();
     }

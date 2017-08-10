@@ -1,6 +1,5 @@
 package studios.kdc.soundboarding.models.imp;
 
-import android.support.annotation.NonNull;
 
 import java.util.List;
 
@@ -49,7 +48,7 @@ public class SelectedTrackImp implements SelectedTrack {
     }
 
     @Override
-    public int getStratPoint() {
+    public int getStartPoint() {
         return startPoint;
     }
 
@@ -60,7 +59,8 @@ public class SelectedTrackImp implements SelectedTrack {
 
     @Override
     public int getEndPoint() {
-        return endPoint;
+
+        return (this.startPoint + this.trackDuration);
     }
 
     @Override

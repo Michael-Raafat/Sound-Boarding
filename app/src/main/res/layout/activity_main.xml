@@ -40,31 +40,33 @@
             android:scrollbars="horizontal"
             android:id="@+id/sc"
             >
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="wrap_content"
                 android:orientation="horizontal"
                 android:layout_height="wrap_content">
 
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/seeker"
-                    android:layout_margin="2dp"
-                    android:src="@drawable/seeker"/>
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:animateLayoutChanges="true"
                     android:id="@+id/timeline_view"
                     android:orientation="vertical">
                 </LinearLayout>
 
-            </LinearLayout>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/seeker"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:src="@drawable/seeker"/>
+
+            </FrameLayout>
 
         </studios.kdc.soundboarding.view.CustomHorizontalScrollView>
-
-
     </ScrollView>
 
     <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"

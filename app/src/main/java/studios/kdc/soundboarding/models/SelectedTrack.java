@@ -8,7 +8,7 @@ public interface SelectedTrack extends Track {
 
     void setStartPoint(int interval);
 
-    int getStratPoint();
+    int getStartPoint();
 
     void setEndPoint(int interval);
 

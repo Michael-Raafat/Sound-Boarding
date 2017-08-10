@@ -26,7 +26,7 @@ public class Utils {
         out.close();
         return out.toByteArray();
     }
-/*
+
     public static int getProgressPercentage(long currentDuration, long totalDuration){
         Double percentage;
 
@@ -35,7 +35,7 @@ public class Utils {
         percentage =(((double)currentSeconds)/totalSeconds)*100;
         return percentage.intValue();
     }
-
+/*
     public static int progressToTimer(int progress, int totalDuration) {
         int currentDuration;
         totalDuration = (totalDuration / 1000);
