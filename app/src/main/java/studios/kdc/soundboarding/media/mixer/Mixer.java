@@ -3,9 +3,9 @@ package studios.kdc.soundboarding.media.mixer;
 
 import android.content.Context;
 import android.os.Handler;
-import android.util.Log;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import studios.kdc.soundboarding.media.MediaPlayerHandler;
@@ -46,7 +46,7 @@ public class Mixer {
                     MediaPlayerHandler mediaPlayerHandler = new MixerHandler(context);
                     mediaPlayerHandler.playSong(selectedTrack.getGroupName() + File.separator + selectedTrack.getName());
                 }
-            }, selectedTrack.getStratPoint() * 1000); // milliseconds
+            }, selectedTrack.getStartPoint() * 1000); // milliseconds
         }
     }
     private void assignStartingPointForSlider(List<SelectedTrack> selectedTrackList) {
