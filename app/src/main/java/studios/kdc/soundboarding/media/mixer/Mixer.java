@@ -105,7 +105,7 @@ public class Mixer {
 
     public void resume() {
         List<SelectedTrack> selectedTrackList = SelectedTrackContainerImp.getInstance().getTracks();
-        if (size == selectedTrackList.size()) {
+        if (selectedTrackList.size() == handlers.size()) {
             for (int i = 0; i < handlers.size(); i++) {
                 //TODO hna bygeeb zero azon.
                 this.trackToResume(selectedTrackList.get(i), progressListener.getCurrentProgress(),handlers.get(i));

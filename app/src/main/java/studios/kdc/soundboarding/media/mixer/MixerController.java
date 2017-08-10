@@ -37,9 +37,10 @@ public class MixerController {
     }
 
     public void removeHandler(int position) {
-        Log.i("loong", String.valueOf(position));
-        mixer.getHandlers().get(position).stop();
-        mixer.getHandlers().remove(position);
+        if (!mixer.getHandlers().isEmpty()) {
+            mixer.getHandlers().get(position).stop();
+            mixer.getHandlers().remove(position);
+        }
     }
 
     public void resume() {
