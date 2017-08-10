@@ -41,7 +41,9 @@ public class Mixer {
 
     private void assignStartingPointsForPlaying(List<SelectedTrack> selectedTrackList, final int seekBarPosition ) {
         for(final SelectedTrack selectedTrack : selectedTrackList) {
-            if (selectedTrack.getStartPoint() - seekBarPosition >= 0 ) {
+            if (selectedTrack.getEndPoint() - seekBarPosition <= 0) {
+
+            }else if (selectedTrack.getStartPoint() - seekBarPosition >= 0 ) {
                 handler.postDelayed(new Runnable() {
                     public void run() {
                         MediaPlayerHandler mediaPlayerHandler = new MixerHandler(context);
@@ -54,7 +56,7 @@ public class Mixer {
                     public void run() {
                         MediaPlayerHandler mediaPlayerHandler = new MixerHandler(context);
                         mediaPlayerHandler.playSong(selectedTrack.getGroupName() + File.separator + selectedTrack.getName());
-                        mediaPlayerHandler.seekTo(seekBarPosition - selectedTrack.getStartPoint());
+                        mediaPlayerHandler.seekTo((seekBarPosition - selectedTrack.getStartPoint()) * 1000);
                         mediaPlayerHandler.start();
                         handlers.add(mediaPlayerHandler);
                     }
@@ -105,11 +107,8 @@ public class Mixer {
         List<SelectedTrack> selectedTrackList = SelectedTrackContainerImp.getInstance().getTracks();
         if (size == selectedTrackList.size()) {
             for (int i = 0; i < handlers.size(); i++) {
-
-                Log.i("hna" , progressListener.getCurrentProgress()+"");
-                int pos =  progressListener.getCurrentProgress();
-                handlers.get(i).seekTo(pos);
-                handlers.get(i).start();
+                //TODO hna bygeeb zero azon.
+                this.trackToResume(selectedTrackList.get(i), progressListener.getCurrentProgress(),handlers.get(i));
             }
         } else {
             int length = handlers.size();
@@ -123,5 +122,21 @@ public class Mixer {
         }
         progressListener.resumeSeekBar();
     }
-}
 
+    private void trackToResume(final SelectedTrack selectedTrack, final int seekBarPosition, final MediaPlayerHandler mediaPlayerHandler) {
+        if (selectedTrack.getEndPoint() - seekBarPosition <= 0) {
+            return;
+        } else if (selectedTrack.getStartPoint() - seekBarPosition >= 0) {
+            handler.postDelayed(new Runnable() {
+                public void run() {
+                    mediaPlayerHandler.playSong(selectedTrack.getGroupName() + File.separator + selectedTrack.getName());
+                }
+            }, (selectedTrack.getStartPoint() - seekBarPosition) * 1000);// milliseconds
+        } else {
+            mediaPlayerHandler.seekTo((seekBarPosition - selectedTrack.getStartPoint()) *1000 );
+            mediaPlayerHandler.start();
+        }
+
+    }
+
+}
