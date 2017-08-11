@@ -5,7 +5,7 @@ import studios.kdc.soundboarding.view.CustomHorizontalScrollView;
 public class ViewContract {
 
     public interface ScrollViewListener {
-        void onScrollChanged(CustomHorizontalScrollView scrollView, int x, int y, int oldx, int oldy);
+        void onScrollChanged(CustomHorizontalScrollView scrollView, int x, int y, int oldX, int oldY);
 
     }
     public interface SliderListener {
@@ -19,6 +19,10 @@ public class ViewContract {
         int getCurrentProgress();
         void setProgressChange(double seconds);
         void notifyTrackFinished();
+
+    }
+    public interface waveFormListener {
+        void removeWaveForm(int position);
 
     }
 

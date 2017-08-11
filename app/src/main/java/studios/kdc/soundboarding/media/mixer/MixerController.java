@@ -39,9 +39,9 @@ public class MixerController {
 
     public void removeHandler(int position) {
 
-        if (position < mixer.getHandlers().size()) {
-            mixer.getHandlers().get(position).stop();
-            mixer.getHandlers().remove(position);
+        if (position < this.mixer.getHandlers().size()) {
+            this.mixer.getHandlers().get(position).stop();
+            this.mixer.getHandlers().remove(position);
         }
     }
 
