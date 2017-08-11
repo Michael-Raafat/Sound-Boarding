@@ -4,7 +4,6 @@ package studios.kdc.soundboarding.media.mixer;
 import android.content.Context;
 import android.os.Handler;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
