@@ -33,14 +33,14 @@ public class MixerController {
     public void pause() {
         this.mixer.pause();
     }
-
+/*
     public void removeHandler(int position) {
 
         if (position < this.mixer.getHandlers().size()) {
             this.mixer.getHandlers().get(position).stop();
             this.mixer.getHandlers().remove(position);
         }
-    }
+    }*/
 
     public void resume() {
         this.mixer.resume();

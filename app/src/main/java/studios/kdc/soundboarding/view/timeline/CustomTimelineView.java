@@ -37,19 +37,15 @@ public class CustomTimelineView  {
     private HorizontalScrollView horizontalScrollView;
     private List<ImageButton> optionButtons;
 
-    public CustomTimelineView(Activity activity , LinearLayout timelineWaves , HorizontalScrollView horizontalScrollView){
+    public CustomTimelineView(Activity activity , LinearLayout timelineWaves ,LinearLayout minSecView, HorizontalScrollView horizontalScrollView){
         this.minutesSecondsView = new MinutesSecondsView(activity);
         this.timelineWaves = timelineWaves;
         this.activity = activity;
         this.waveFormsListeners = new ArrayList<>();
         this.optionButtons = new ArrayList<>();
         this.horizontalScrollView = horizontalScrollView;
+        minSecView.addView(minutesSecondsView);
     }
-
-    public MinutesSecondsView getMinutesSecondsView() {
-        return minutesSecondsView;
-    }
-
 
     public void decreaseTimelineView(){
         this.minutesSecondsView.decreaseTimelineView();

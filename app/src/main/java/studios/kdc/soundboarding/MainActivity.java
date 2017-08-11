@@ -11,8 +11,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.DragEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -123,13 +125,13 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
         CustomHorizontalScrollView  horizontalScrollView = (CustomHorizontalScrollView) findViewById(R.id.sc);
         horizontalScrollView.setScrollViewListener(this);
         this.addOnDragListenerOnTableTimeline(scrollView);
-        seekBar= (ImageView) findViewById(R.id.seeker);
-        seekBarSlider = new CustomHorizontalSlider(horizontalScrollView, seekBar , (View) seekBar.getParent(), null);
-        seekBar.setOnTouchListener(seekBarSlider);
+        this.seekBar= (ImageView) findViewById(R.id.seeker);
+        this.seekBarSlider = new CustomHorizontalSlider(horizontalScrollView, seekBar , (View) seekBar.getParent(), null);
+        this.seekBar.setOnTouchListener(seekBarSlider);
         LinearLayout linearLayout = (LinearLayout) findViewById(R.id.timeline);
         LinearLayout linearLayout1 = (LinearLayout) findViewById(R.id.timeline_view);
-        timelineView = new CustomTimelineView(this, linearLayout1 , horizontalScrollView);
-        linearLayout.addView(timelineView.getMinutesSecondsView());
+        this.timelineView = new CustomTimelineView(this, linearLayout1 , linearLayout , horizontalScrollView);
+
     }
 
     private void initializeSearchView() {
@@ -186,7 +188,6 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
 
                 return true;
             }
-
         });
     }
 
@@ -212,12 +213,12 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
 
     @Override
     public void pauseSeekBar() {
-        seekBarFlag = true;
+        this.seekBarFlag = true;
     }
 
     @Override
     public void resumeSeekBar() {
-        seekBarFlag = false;
+        this.seekBarFlag = false;
     }
 
     @Override
@@ -227,7 +228,7 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
 
     @Override
     public void setProgressChange(double seconds) {
-        if (!seekBarFlag) {
+       if (!this.seekBarFlag) {
             this.seekBar.setX((float) (seconds * Utils.SECOND_PIXEL_RATIO));
         }
     }
@@ -246,7 +247,7 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
     @Override
     public void removeWaveForm(int position) {
             dataController.removeTrack(position);
-            MixerController.getInstance(getApplicationContext(), MainActivity.this).removeHandler(position);
+           // MixerController.getInstance(getApplicationContext(), MainActivity.this).removeHandler(position);
             this.timelineView.removeWave(position);
             if (this.timelineView.getChildCount() < 1) {
                 this.mixer.setVisibility(View.GONE);
@@ -268,7 +269,12 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
             recyclerView.setLayoutManager(layoutManager);
             recyclerView.setAdapter(mainAdapter);
+            int screenHeight = Utils.getScreenHeight(MainActivity.this);
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT
+                    ,(int) ( screenHeight /1.6 ));
+            params.setMargins(0,(screenHeight/15) ,0,0);
+            recyclerView.setLayoutParams(params);
 
         }
     }
-}
+} // h---> 1920 , w --->1080
