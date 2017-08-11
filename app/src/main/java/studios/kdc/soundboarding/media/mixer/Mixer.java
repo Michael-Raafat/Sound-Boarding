@@ -18,7 +18,6 @@ public class Mixer {
     private Handler handler;
     private Context context;
     private List<MediaPlayerHandler> handlers;
-    private int size;
     private ViewContract.mixerProgressChange progressListener;
     private List<Runnable> runList;
 
@@ -26,14 +25,12 @@ public class Mixer {
         this.handler =new Handler();
         this.context = context;
         this.handlers = new ArrayList<>();
-        this.size = 0;
         this.progressListener = progressListener;
         runList = Collections.synchronizedList(new ArrayList<Runnable>());
     }
 
     public void mix() {
         List<SelectedTrack> selectedTrackList = SelectedTrackContainerImp.getInstance().getTracks();
-        size = selectedTrackList.size();
         this.assignStartingPointsForPlaying(selectedTrackList,  progressListener.getCurrentProgress());
         this.assignStartingPointForSlider(selectedTrackList);
 
@@ -147,10 +144,6 @@ public class Mixer {
             mediaPlayerHandler.start();
         }
 
-    }
-
-    List<Runnable> getRunList() {
-        return runList;
     }
 
 }

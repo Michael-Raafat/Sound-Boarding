@@ -26,6 +26,8 @@ import android.widget.TextView;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 
@@ -51,7 +53,8 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
     private int scrollFactor;
     private boolean pauseResume;
     private boolean seekBarFlag;
-    private CustomHorizontalSlider seekbarSlider;
+    private CustomHorizontalSlider seekBarSlider;
+    private List<CustomHorizontalSlider> waveFormsListeners;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +76,7 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
         dataController = new DataController();
         new DatabaseGetter().execute();
         this.scrollFactor = 0;
+        this.waveFormsListeners = new ArrayList<>();
         this.initializeTable();
         this.initializeTimeLineView();
         this.initializeSearchView();
@@ -99,12 +103,14 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
                 if (!pauseResume) {
                     MixerController.getInstance(getApplicationContext(), MainActivity.this).pause();
                     pause_resume.setImageResource((R.drawable.paused));
-                    seekbarSlider.setEnabled(true);
+                    seekBarSlider.setEnabled(true);
+                    controlSlidingOfWaveForms(true);
                     pauseResume = true;
                 } else {
                     MixerController.getInstance(getApplicationContext(), MainActivity.this).resume();
                     pause_resume.setImageResource((R.drawable.played));
-                    seekbarSlider.setEnabled(false);
+                    seekBarSlider.setEnabled(false);
+                    controlSlidingOfWaveForms(false);
                     pauseResume = false;
                 }
             }
@@ -119,7 +125,8 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
                 MixerController.getInstance(getApplicationContext() , MainActivity.this).mix();
                 mixer.setVisibility(View.GONE);
                 pause_resume.setVisibility(View.VISIBLE);
-                seekbarSlider.setEnabled(false);
+                seekBarSlider.setEnabled(false);
+                controlSlidingOfWaveForms(false);
             }
         });
 
@@ -131,8 +138,8 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
         horizontalScrollView.setScrollViewListener(this);
         this.addOnDragListenerOnTableTimeline(scrollView);
         seekBar= (ImageView) findViewById(R.id.seeker);
-        seekbarSlider = new CustomHorizontalSlider(horizontalScrollView, seekBar , (View) seekBar.getParent(), null);
-        seekBar.setOnTouchListener(seekbarSlider);
+        seekBarSlider = new CustomHorizontalSlider(horizontalScrollView, seekBar , (View) seekBar.getParent(), null);
+        seekBar.setOnTouchListener(seekBarSlider);
     }
 
     private void initializeTimeLineView() {
@@ -183,8 +190,9 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
                         Map<String, String> trackInfo = dataController.selectTrackToMix(s[1], Integer.parseInt(s[0]));
                         View viewGroup = ((ViewGroup)(((ViewGroup)((ViewGroup)v).getChildAt(0)).getChildAt(0))).getChildAt(0);
                         addTrackToTimeLine(viewGroup, trackInfo);
-                        if(((ViewGroup)viewGroup).getChildCount() > 1){
-                            mixer.setVisibility(View.VISIBLE);
+                        if(((ViewGroup)viewGroup).getChildCount() > 0){
+                            if(pause_resume.getVisibility() == View.GONE)
+                                mixer.setVisibility(View.VISIBLE);
                         }
                         break;
                     case DragEvent.ACTION_DRAG_ENDED:
@@ -228,40 +236,50 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
             name.setGravity(Gravity.CENTER_HORIZONTAL);
             linearLayout.addView(frameLayout);
             setOnClickListenerToOptionsButton(optionsButton);
-            waveForm.setOnTouchListener(new CustomHorizontalSlider(horizontalScrollView,
-                    frameLayout , (View) frameLayout.getParent().getParent(), this));
+            CustomHorizontalSlider slider = new CustomHorizontalSlider(horizontalScrollView,
+                    frameLayout , (View) frameLayout.getParent().getParent(), this);
+            waveForm.setOnTouchListener(slider);
+            this.waveFormsListeners.add(slider);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
+    private void controlSlidingOfWaveForms(Boolean enabled) {
+        for (CustomHorizontalSlider slider : waveFormsListeners){
+            slider.setEnabled(enabled);
+        }
+    }
     private void setOnClickListenerToOptionsButton(final ImageButton options) {
 
        options.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
-               final FrameLayout frameLayout = (FrameLayout) view.getParent();
-               final LinearLayout linearLayout = (LinearLayout) frameLayout.getParent();
-               final PopupMenu popup = new PopupMenu(MainActivity.this, options);
-               popup.getMenuInflater().inflate(R.menu.delete_menu, popup.getMenu());
-               popup.show();
-               popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                   public boolean onMenuItemClick(MenuItem item) {
-                      switch (item.getItemId()){
-                          case R.id.remove:
-                              dataController.removeTrack(linearLayout.indexOfChild(frameLayout));
-                              MixerController.getInstance(getApplicationContext(), MainActivity.this).removeHandler(
-                                      linearLayout.indexOfChild(frameLayout));
-                              linearLayout.removeView(frameLayout);
-                              if(linearLayout.getChildCount() < 2)
-                                  mixer.setVisibility(View.GONE);
-                              break;
-                      }
-                       return true;
-                   }
-               });
+               if (pauseResume) {
+                   final FrameLayout frameLayout = (FrameLayout) view.getParent();
+                   final LinearLayout linearLayout = (LinearLayout) frameLayout.getParent();
+                   final PopupMenu popup = new PopupMenu(MainActivity.this, options);
+                   popup.getMenuInflater().inflate(R.menu.delete_menu, popup.getMenu());
+                   popup.show();
+                   popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                       public boolean onMenuItemClick(MenuItem item) {
+                           switch (item.getItemId()) {
+                               case R.id.remove:
+                                   dataController.removeTrack(linearLayout.indexOfChild(frameLayout));
+                                   MixerController.getInstance(getApplicationContext(), MainActivity.this).removeHandler(
+                                           linearLayout.indexOfChild(frameLayout));
+                                   linearLayout.removeView(frameLayout);
+                                   waveFormsListeners.remove(linearLayout.indexOfChild(frameLayout));
+                                   if (linearLayout.getChildCount() < 1) {
+                                       mixer.setVisibility(View.GONE);
+                                       pause_resume.setVisibility(View.GONE);
+                                   }
+                                   break;
+                           }
+                           return true;
+                       }
+                   });
+               }
            }
-
         });
     }
 
@@ -322,7 +340,9 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
         this.seekBar.setX(10);
         this.mixer.setVisibility(View.VISIBLE);
         this.pause_resume.setVisibility(View.GONE);
-        this.seekbarSlider.setEnabled(true);
+        this.pauseResume = true;
+        this.seekBarSlider.setEnabled(true);
+        this.controlSlidingOfWaveForms(true);
     }
 
 
