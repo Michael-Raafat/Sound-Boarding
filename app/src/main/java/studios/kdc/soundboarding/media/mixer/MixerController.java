@@ -48,4 +48,11 @@ public class MixerController {
     public void resume() {
         this.mixer.resume();
     }
+
+
+    public void deleteHandlers() {
+        for (int i = 0; i < mixer.getHandlers().size(); i++) {
+            mixer.getHandlers().get(i).stop();
+        }
+    }
 }

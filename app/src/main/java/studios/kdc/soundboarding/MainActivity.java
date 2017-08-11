@@ -47,7 +47,6 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        this.pauseResume = false;
         this.seekBarFlag = false;
 
 
@@ -75,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
         this.dataController.deleteReferences();
         this.dataController = null;
         MediaPlayerController.deleteInstance();
+        MixerController.getInstance(getApplicationContext(), MainActivity.this).deleteHandlers();
         MixerController.deleteInstance();
         Runtime.getRuntime().gc();
     }
@@ -110,7 +110,6 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
                 MixerController.getInstance(getApplicationContext() , MainActivity.this).mix();
                 mixer.setVisibility(View.GONE);
                 pause_resume.setVisibility(View.VISIBLE);
-                pause_resume.setImageResource((R.drawable.played));
                 pause_resume.setImageResource(R.drawable.played);
                 seekBarSlider.setEnabled(false);
                 timelineView.controlSlidingOfWaveForms(false);
@@ -239,8 +238,6 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
         this.seekBar.setX(10);
         this.mixer.setVisibility(View.VISIBLE);
         this.pause_resume.setVisibility(View.GONE);
-        this.seekBarFlag = false;
-    }
         this.pauseResume = true;
         this.seekBarSlider.setEnabled(true);
         this.timelineView.controlSlidingOfWaveForms(true);
