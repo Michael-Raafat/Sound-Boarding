@@ -51,33 +51,6 @@ public class Mixer {
             else {
 
                 temp= new CustomRunnable(selectedTrack.getName() , selectedTrack.getGroupName(), ((seekBarPosition - selectedTrack.getStartPoint()) * 1000) , context);
-            /*Runnable temp;
-            if (selectedTrack.getEndPoint() - seekBarPosition <= 0) {
-
-            }else if (selectedTrack.getStartPoint() - seekBarPosition >= 0 ) {
-                temp = new Runnable() {
-                    public void run() {
-                        MediaPlayerHandler mediaPlayerHandler = new MixerHandler(context);
-                        mediaPlayerHandler.playSong(selectedTrack.getGroupName() + File.separator + selectedTrack.getName());
-                        handlers.add(mediaPlayerHandler);
-                    }
-                };
-                runList.add(temp);
-                handler.postDelayed(temp, (selectedTrack.getStartPoint() - seekBarPosition) * 1000);// milliseconds
-            } else {
-                temp = new Runnable() {
-                    public void run() {
-                        MediaPlayerHandler mediaPlayerHandler = new MixerHandler(context);
-                        mediaPlayerHandler.playSong(selectedTrack.getGroupName() + File.separator + selectedTrack.getName());
-                        mediaPlayerHandler.seekTo((seekBarPosition - selectedTrack.getStartPoint()) * 1000);
-                        mediaPlayerHandler.start();
-                        handlers.add(mediaPlayerHandler);
-                    }
-                };
-
-
-                */
-
                 runList.add(temp);
         }
             handler.postDelayed(temp, (selectedTrack.getStartPoint() - seekBarPosition) * 1000);
@@ -101,9 +74,6 @@ public class Mixer {
     }
 
     public void pause() {
-       /* for (int i = 0; i < handlers.size(); i++) {
-            handlers.get(i).pause();
-        }*/
         progressListener.pauseSeekBar();
         for (int i = 0; i < runList.size(); i++) {
             handler.removeCallbacks(runList.get(i));
@@ -118,39 +88,7 @@ public class Mixer {
         this.seekBarRunnable.setMaxEndPoint(this.getMaximumEndPoint(selectedTrackList));
         this.assignStartingPointsForPlaying(selectedTrackList , progressListener.getCurrentProgress());
         progressListener.resumeSeekBar();
-        /*if (selectedTrackList.size() == handlers.size()) {
-            for (int i = 0; i < handlers.size(); i++) {
-                this.trackToResume(selectedTrackList.get(i), progressListener.getCurrentProgress(),handlers.get(i));
-            }
-        } else {
-            int length = handlers.size();
-            int i = 0;
-            while(i < length) {
-                handlers.get(i).stop();
-                i++;
-            }
-            handlers.clear();
-            this.assignStartingPointsForPlaying(selectedTrackList, progressListener.getCurrentProgress());
-        }
-        progressListener.resumeSeekBar();*/
+
     }
-
-   /* private void trackToResume(final SelectedTrack selectedTrack, final int seekBarPosition, final MediaPlayerHandler mediaPlayerHandler) {
-        if (selectedTrack.getEndPoint() - seekBarPosition <= 0) {
-            return;
-        } else if (selectedTrack.getStartPoint() - seekBarPosition >= 0) {
-            Runnable temp = new Runnable() {
-                public void run() {
-                    mediaPlayerHandler.playSong(selectedTrack.getGroupName() + File.separator + selectedTrack.getName());
-                }
-            };
-            runList.add(temp);
-            handler.postDelayed(temp, (selectedTrack.getStartPoint() - seekBarPosition) * 1000);// milliseconds
-        } else {
-            mediaPlayerHandler.seekTo((seekBarPosition - selectedTrack.getStartPoint()) *1000 );
-            mediaPlayerHandler.start();
-        }
-
-    }*/
 
 }

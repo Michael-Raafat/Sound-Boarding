@@ -248,8 +248,7 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
 
     @Override
     public void removeWaveForm(int position) {
-            dataController.removeTrack(position);
-           // MixerController.getInstance(getApplicationContext(), MainActivity.this).removeHandler(position);
+            this.dataController.removeTrack(position);
             this.timelineView.removeWave(position);
             if (this.timelineView.getChildCount() < 1) {
                 this.mixer.setVisibility(View.GONE);
@@ -280,4 +279,4 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
 
         }
     }
-} // h---> 1920 , w --->1080
+}
