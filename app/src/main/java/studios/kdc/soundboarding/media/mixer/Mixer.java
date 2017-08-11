@@ -55,6 +55,7 @@ public class Mixer {
                         handlers.add(mediaPlayerHandler);
                     }
                 };
+                runList.add(temp);
                 handler.postDelayed(temp, (selectedTrack.getStartPoint() - seekBarPosition) * 1000);// milliseconds
             } else {
                 temp = new Runnable() {
@@ -76,9 +77,9 @@ public class Mixer {
        // final int startPoint = (int) progressListener.getCurrentProgress(); //seconds
         handler.postDelayed(new Runnable() {
             public void run() {
-                //TODO hna mazboot
                 double  currentDuration = progressListener.getCurrentProgress(); // in seconds
                 progressListener.setProgressChange(currentDuration + 1.5);
+                Log.i("progresListener ", String.valueOf(progressListener.getCurrentProgress()));
                 if(currentDuration <= maximumEndPoint) {
                     handler.postDelayed(this, 1000);
                 } else {
@@ -137,11 +138,13 @@ public class Mixer {
         if (selectedTrack.getEndPoint() - seekBarPosition <= 0) {
             return;
         } else if (selectedTrack.getStartPoint() - seekBarPosition >= 0) {
-            handler.postDelayed(new Runnable() {
+            Runnable temp = new Runnable() {
                 public void run() {
                     mediaPlayerHandler.playSong(selectedTrack.getGroupName() + File.separator + selectedTrack.getName());
                 }
-            }, (selectedTrack.getStartPoint() - seekBarPosition) * 1000);// milliseconds
+            };
+            runList.add(temp);
+            handler.postDelayed(temp, (selectedTrack.getStartPoint() - seekBarPosition) * 1000);// milliseconds
         } else {
             mediaPlayerHandler.seekTo((seekBarPosition - selectedTrack.getStartPoint()) *1000 );
             mediaPlayerHandler.start();

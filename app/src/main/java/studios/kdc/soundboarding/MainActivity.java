@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.DragEvent;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -100,6 +101,7 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
                     pause_resume.setImageResource((R.drawable.paused));
                     pauseResume = true;
                 } else {
+                    Log.i("I am here", "zew");
                     MixerController.getInstance(getApplicationContext(), MainActivity.this).resume();
                     pause_resume.setImageResource((R.drawable.played));
                     pauseResume = false;
@@ -116,6 +118,8 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
                 MixerController.getInstance(getApplicationContext() , MainActivity.this).mix();
                 mixer.setVisibility(View.GONE);
                 pause_resume.setVisibility(View.VISIBLE);
+                pause_resume.setImageResource((R.drawable.played));
+                pauseResume = false;
             }
         });
 
@@ -317,6 +321,7 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
         this.seekbar.setX(10);
         this.mixer.setVisibility(View.VISIBLE);
         this.pause_resume.setVisibility(View.GONE);
+        this.seekBarFlag = false;
     }
 
 

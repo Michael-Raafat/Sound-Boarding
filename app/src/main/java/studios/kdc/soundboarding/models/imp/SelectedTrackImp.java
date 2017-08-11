@@ -27,7 +27,7 @@ public class SelectedTrackImp implements SelectedTrack {
         this.trackDuration = Integer.valueOf(data.get(1));
         this.path = data.get(2);
         this.extension = data.get(3);
-        this.startPoint = 0;
+        this.startPoint = 2;
         this.endPoint = 0;
         this.groupName = groupName;
     }
@@ -37,7 +37,7 @@ public class SelectedTrackImp implements SelectedTrack {
         this.trackDuration = trackDuration;
         this.path = path;
         this.extension = extension;
-        this.startPoint = 0;
+        this.startPoint = 3;
         this.endPoint = 0;
     }
 
