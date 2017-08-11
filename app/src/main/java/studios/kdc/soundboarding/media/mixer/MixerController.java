@@ -1,8 +1,6 @@
 package studios.kdc.soundboarding.media.mixer;
 
 import android.content.Context;
-import android.util.Log;
-
 import studios.kdc.soundboarding.view.adapters.ViewContract;
 
 /**
@@ -37,9 +35,10 @@ public class MixerController {
     }
 
     public void removeHandler(int position) {
-        if (!mixer.getHandlers().isEmpty()) {
-            mixer.getHandlers().get(position).stop();
-            mixer.getHandlers().remove(position);
+
+        if (position < this.mixer.getHandlers().size()) {
+            this.mixer.getHandlers().get(position).stop();
+            this.mixer.getHandlers().remove(position);
         }
     }
 

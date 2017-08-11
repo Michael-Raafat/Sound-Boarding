@@ -1,7 +1,6 @@
 package studios.kdc.soundboarding;
 
 import android.content.SharedPreferences;
-import android.content.res.AssetManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -9,43 +8,30 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.DragEvent;
-import android.view.Gravity;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
-import java.io.File;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
-
-import rm.com.audiowave.AudioWaveView;
 import studios.kdc.soundboarding.media.mixer.MixerController;
 import studios.kdc.soundboarding.media.singlePlayer.MediaPlayerController;
 import studios.kdc.soundboarding.view.CustomHorizontalScrollView;
 import studios.kdc.soundboarding.view.CustomHorizontalSlider;
 import studios.kdc.soundboarding.view.adapters.MainAdapter;
-import studios.kdc.soundboarding.view.CustomTimelineView;
+import studios.kdc.soundboarding.view.timeline.CustomTimelineView;
 import studios.kdc.soundboarding.view.adapters.ViewContract;
 
 public class MainActivity extends AppCompatActivity implements ViewContract.ScrollViewListener
-        , ViewContract.SliderListener , ViewContract.mixerProgressChange{
+        , ViewContract.SliderListener , ViewContract.mixerProgressChange , ViewContract.waveFormListener{
 
     private DataController dataController;
     private MainAdapter mainAdapter;
-    private CustomHorizontalScrollView horizontalScrollView;
     private CustomTimelineView timelineView;
     private ImageView seekBar;
     private FloatingActionButton mixer;
@@ -54,14 +40,14 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
     private boolean pauseResume;
     private boolean seekBarFlag;
     private CustomHorizontalSlider seekBarSlider;
-    private List<CustomHorizontalSlider> waveFormsListeners;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        pauseResume = false;
-        seekBarFlag = false;
+        this.pauseResume = false;
+        this.seekBarFlag = false;
 
 
         //////////////////////////////////MO2KATAN//////////////
@@ -76,8 +62,6 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
         dataController = new DataController();
         new DatabaseGetter().execute();
         this.scrollFactor = 0;
-        this.waveFormsListeners = new ArrayList<>();
-        this.initializeTable();
         this.initializeTimeLineView();
         this.initializeSearchView();
         this.initializeMixerButton();
@@ -99,18 +83,18 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
         this.pause_resume = (FloatingActionButton) findViewById(R.id.pause_resume);
         this.pause_resume.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) { // TODO toggle pause resume
+            public void onClick(View view) {
                 if (!pauseResume) {
                     MixerController.getInstance(getApplicationContext(), MainActivity.this).pause();
                     pause_resume.setImageResource((R.drawable.paused));
                     seekBarSlider.setEnabled(true);
-                    controlSlidingOfWaveForms(true);
+                    timelineView.controlSlidingOfWaveForms(true);
                     pauseResume = true;
                 } else {
                     MixerController.getInstance(getApplicationContext(), MainActivity.this).resume();
                     pause_resume.setImageResource((R.drawable.played));
                     seekBarSlider.setEnabled(false);
-                    controlSlidingOfWaveForms(false);
+                    timelineView.controlSlidingOfWaveForms(false);
                     pauseResume = false;
                 }
             }
@@ -125,27 +109,27 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
                 MixerController.getInstance(getApplicationContext() , MainActivity.this).mix();
                 mixer.setVisibility(View.GONE);
                 pause_resume.setVisibility(View.VISIBLE);
+                pause_resume.setImageResource(R.drawable.played);
                 seekBarSlider.setEnabled(false);
-                controlSlidingOfWaveForms(false);
+                timelineView.controlSlidingOfWaveForms(false);
+                pauseResume = false;
             }
         });
 
     }
 
-    private void initializeTable() {
+    private void initializeTimeLineView() {
         ScrollView scrollView = (ScrollView) findViewById(R.id.table_scroll);
-        horizontalScrollView = (CustomHorizontalScrollView) findViewById(R.id.sc);
+        CustomHorizontalScrollView  horizontalScrollView = (CustomHorizontalScrollView) findViewById(R.id.sc);
         horizontalScrollView.setScrollViewListener(this);
         this.addOnDragListenerOnTableTimeline(scrollView);
         seekBar= (ImageView) findViewById(R.id.seeker);
         seekBarSlider = new CustomHorizontalSlider(horizontalScrollView, seekBar , (View) seekBar.getParent(), null);
         seekBar.setOnTouchListener(seekBarSlider);
-    }
-
-    private void initializeTimeLineView() {
         LinearLayout linearLayout = (LinearLayout) findViewById(R.id.timeline);
-        timelineView = new CustomTimelineView(this);
-        linearLayout.addView(timelineView);
+        LinearLayout linearLayout1 = (LinearLayout) findViewById(R.id.timeline_view);
+        timelineView = new CustomTimelineView(this, linearLayout1 , horizontalScrollView);
+        linearLayout.addView(timelineView.getMinutesSecondsView());
     }
 
     private void initializeSearchView() {
@@ -188,9 +172,8 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
                         String description = event.getClipData().getDescription().getLabel().toString();
                         String[] s = description.split(getResources().getString(R.string.separator));
                         Map<String, String> trackInfo = dataController.selectTrackToMix(s[1], Integer.parseInt(s[0]));
-                        View viewGroup = ((ViewGroup)(((ViewGroup)((ViewGroup)v).getChildAt(0)).getChildAt(0))).getChildAt(0);
-                        addTrackToTimeLine(viewGroup, trackInfo);
-                        if(((ViewGroup)viewGroup).getChildCount() > 0){
+                        timelineView.addWaveFormsToTimeline(trackInfo);
+                        if(timelineView.getChildCount() > 0){
                             if(pause_resume.getVisibility() == View.GONE)
                                 mixer.setVisibility(View.VISIBLE);
                         }
@@ -207,93 +190,7 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
         });
     }
 
-    private void addTrackToTimeLine(View table, Map<String, String> trackInfo) {
-        try {
-            LinearLayout linearLayout = (LinearLayout) table;
-            FrameLayout frameLayout = new FrameLayout(getApplicationContext());
-            TextView name = new TextView(getApplicationContext());
-            //TODO track extension
-            byte[] soundBytes = getWaveFormByteArray(trackInfo.get("grpName") , trackInfo.get("name") , ".mp3" );
-            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(Integer.parseInt(trackInfo.get("duration")) * Utils.SECOND_PIXEL_RATIO, 100);
-            LinearLayout.LayoutParams frameParam = new LinearLayout.LayoutParams(Utils.TIMELINE_LENGTH_LIMIT , ViewGroup.LayoutParams.WRAP_CONTENT);
-            frameParam.setMargins(10,10,10,10);
-            frameLayout.setLayoutParams(frameParam);
-            name.setLayoutParams(params);
-            AudioWaveView waveForm = new AudioWaveView(getApplicationContext());
-            waveForm.setWaveColor(Color.WHITE);
-            waveForm.setExpansionAnimated(false);
-            waveForm.setLayoutParams(params);
-            waveForm.setRawData(soundBytes);
-            name.setText(trackInfo.get("grpName") + " - " + trackInfo.get("name"));
-            name.setTextColor(Color.WHITE);
-            ImageButton optionsButton = new ImageButton(this);
-            optionsButton.setBackgroundColor(Color.CYAN);
-            FrameLayout.LayoutParams optionsParams = new FrameLayout.LayoutParams(30 , 30);
-            optionsButton.setLayoutParams(optionsParams);
-            frameLayout.addView(waveForm);
-            frameLayout.addView(name);
-            frameLayout.addView(optionsButton);
-            name.setGravity(Gravity.CENTER_HORIZONTAL);
-            linearLayout.addView(frameLayout);
-            setOnClickListenerToOptionsButton(optionsButton);
-            CustomHorizontalSlider slider = new CustomHorizontalSlider(horizontalScrollView,
-                    frameLayout , (View) frameLayout.getParent().getParent(), this);
-            waveForm.setOnTouchListener(slider);
-            this.waveFormsListeners.add(slider);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    private void controlSlidingOfWaveForms(Boolean enabled) {
-        for (CustomHorizontalSlider slider : waveFormsListeners){
-            slider.setEnabled(enabled);
-        }
-    }
-    private void setOnClickListenerToOptionsButton(final ImageButton options) {
 
-       options.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View view) {
-               if (pauseResume) {
-                   final FrameLayout frameLayout = (FrameLayout) view.getParent();
-                   final LinearLayout linearLayout = (LinearLayout) frameLayout.getParent();
-                   final PopupMenu popup = new PopupMenu(MainActivity.this, options);
-                   popup.getMenuInflater().inflate(R.menu.delete_menu, popup.getMenu());
-                   popup.show();
-                   popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                       public boolean onMenuItemClick(MenuItem item) {
-                           switch (item.getItemId()) {
-                               case R.id.remove:
-                                   dataController.removeTrack(linearLayout.indexOfChild(frameLayout));
-                                   MixerController.getInstance(getApplicationContext(), MainActivity.this).removeHandler(
-                                           linearLayout.indexOfChild(frameLayout));
-                                   linearLayout.removeView(frameLayout);
-                                   waveFormsListeners.remove(linearLayout.indexOfChild(frameLayout));
-                                   if (linearLayout.getChildCount() < 1) {
-                                       mixer.setVisibility(View.GONE);
-                                       pause_resume.setVisibility(View.GONE);
-                                   }
-                                   break;
-                           }
-                           return true;
-                       }
-                   });
-               }
-           }
-        });
-    }
-
-
-    private byte[] getWaveFormByteArray(String grpName , String trackName , String extension) {
-        AssetManager am = getAssets(); //TODO l 7ta deh msh htnf3 lw l path msh assets
-        try {
-            InputStream inputStream = am.open(grpName + File.separator + trackName + extension);
-            return  Utils.toByteArray(inputStream);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
     @Override
     public void onScrollChanged(CustomHorizontalScrollView scrollView, int x, int y, int oldX, int oldY) {
@@ -301,7 +198,7 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
         int delta = x - oldX;
         if((delta > 0) && ((scrollFactor + 1 ) * 150 < x) ) {
             scrollFactor++;
-            timelineView.IncreaseTimelineView();
+            timelineView.increaseTimelineView();
         } else if((delta < 0) &&  ((scrollFactor - 1 ) * 150 >= x)) {
             scrollFactor--;
             timelineView.decreaseTimelineView();
@@ -342,10 +239,21 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
         this.pause_resume.setVisibility(View.GONE);
         this.pauseResume = true;
         this.seekBarSlider.setEnabled(true);
-        this.controlSlidingOfWaveForms(true);
+        this.timelineView.controlSlidingOfWaveForms(true);
+        this.seekBarFlag = false;
     }
 
+    @Override
+    public void removeWaveForm(int position) {
+            dataController.removeTrack(position);
+            MixerController.getInstance(getApplicationContext(), MainActivity.this).removeHandler(position);
+            this.timelineView.removeWave(position);
+            if (this.timelineView.getChildCount() < 1) {
+                this.mixer.setVisibility(View.GONE);
+                this.pause_resume.setVisibility(View.GONE);
+            }
 
+    }
     private class DatabaseGetter extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... voids) {

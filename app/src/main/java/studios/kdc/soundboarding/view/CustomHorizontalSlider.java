@@ -58,8 +58,9 @@ public class CustomHorizontalSlider implements View.OnTouchListener {
                 }
             }
             this.scrollView.requestDisallowInterceptTouchEvent(false);
+            return false;
         }
-        return false;
+      return true;
     }
 }
 
