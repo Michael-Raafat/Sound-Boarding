@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.res.AssetManager;
 import android.graphics.Color;
 import android.support.v7.widget.PopupMenu;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;

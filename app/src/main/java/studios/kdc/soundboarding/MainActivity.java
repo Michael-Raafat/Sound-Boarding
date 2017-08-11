@@ -240,8 +240,6 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
         this.seekBar.setX(10);
         this.mixer.setVisibility(View.VISIBLE);
         this.pause_resume.setVisibility(View.GONE);
-        this.seekBarFlag = false;
-    }
         this.pauseResume = true;
         this.seekBarSlider.setEnabled(true);
         this.timelineView.controlSlidingOfWaveForms(true);
@@ -256,6 +254,7 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
             if (this.timelineView.getChildCount() < 1) {
                 this.mixer.setVisibility(View.GONE);
                 this.pause_resume.setVisibility(View.GONE);
+                this.seekBar.setX(10);
             }
 
     }

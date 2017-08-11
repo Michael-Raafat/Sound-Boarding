@@ -8,7 +8,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import studios.kdc.soundboarding.media.MediaPlayerHandler;
+import studios.kdc.soundboarding.media.mixer.runnable.CustomRunnable;
+import studios.kdc.soundboarding.media.mixer.runnable.SeekBarRunnable;
 import studios.kdc.soundboarding.models.SelectedTrack;
 import studios.kdc.soundboarding.models.imp.SelectedTrackContainerImp;
 import studios.kdc.soundboarding.view.adapters.ViewContract;
@@ -16,17 +17,16 @@ import studios.kdc.soundboarding.view.adapters.ViewContract;
 public class Mixer {
     private Handler handler;
     private Context context;
-    private List<MediaPlayerHandler> handlers;
     private ViewContract.mixerProgressChange progressListener;
+    private SeekBarRunnable seekBarRunnable;
     private List<CustomRunnable> runList;
-    private int maximumEndPoint;
 
     public Mixer(Context context, ViewContract.mixerProgressChange progressListener) {
         this.handler =new Handler();
         this.context = context;
-        this.handlers = new ArrayList<>();
         this.progressListener = progressListener;
-        runList = Collections.synchronizedList(new ArrayList<CustomRunnable>());
+        this.runList = Collections.synchronizedList(new ArrayList<CustomRunnable>());
+        this.seekBarRunnable = new SeekBarRunnable(this.progressListener , this.handler);
     }
 
     public void mix() {
@@ -38,7 +38,7 @@ public class Mixer {
 
     private void assignStartingPointsForPlaying(List<SelectedTrack> selectedTrackList, final int seekBarPosition ) {
         int count = 0;
-        int size = runList.size();
+        int size = this.runList.size();
         for(final SelectedTrack selectedTrack : selectedTrackList) {
             CustomRunnable temp;
              if(count < size){
@@ -84,21 +84,12 @@ public class Mixer {
         }
     }
     private void assignStartingPointForSlider(List<SelectedTrack> selectedTrackList) {
-
-        this.maximumEndPoint = this.getMaximumEndPoint(selectedTrackList);
-        handler.postDelayed(new Runnable() {
-            public void run() {
-                double  currentDuration = progressListener.getCurrentProgress(); // in seconds
-                progressListener.setProgressChange(currentDuration + 1.5);
-                if(currentDuration < maximumEndPoint) {
-                    handler.postDelayed(this, 1000);
-                } else {
-                    progressListener.notifyTrackFinished();
-                }
-
-            }
-        }, 0); // milliseconds
+        this.progressListener.resumeSeekBar();
+        this.seekBarRunnable.setMaxEndPoint(this.getMaximumEndPoint(selectedTrackList));
+        this.handler.postDelayed(seekBarRunnable, 0); // milliseconds
     }
+
+
     private int getMaximumEndPoint(List<SelectedTrack> selectedTrackList ) {
         int maximumEndPoint = 0;
         for(SelectedTrack selectedTrack : selectedTrackList) {
@@ -121,15 +112,10 @@ public class Mixer {
 
     }
 
-
-    public List<MediaPlayerHandler> getHandlers() {
-        return handlers;
-    }
-
     public void resume() {
 
         List<SelectedTrack> selectedTrackList = SelectedTrackContainerImp.getInstance().getTracks();
-        this.maximumEndPoint = this.getMaximumEndPoint(selectedTrackList);
+        this.seekBarRunnable.setMaxEndPoint(this.getMaximumEndPoint(selectedTrackList));
         this.assignStartingPointsForPlaying(selectedTrackList , progressListener.getCurrentProgress());
         progressListener.resumeSeekBar();
         /*if (selectedTrackList.size() == handlers.size()) {
