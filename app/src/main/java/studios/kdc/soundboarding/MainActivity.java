@@ -33,7 +33,7 @@ import rm.com.audiowave.AudioWaveView;
 import studios.kdc.soundboarding.media.mixer.MixerController;
 import studios.kdc.soundboarding.media.singlePlayer.MediaPlayerController;
 import studios.kdc.soundboarding.view.CustomHorizontalScrollView;
-import studios.kdc.soundboarding.view.HorizontalSlider;
+import studios.kdc.soundboarding.view.CustomHorizontalSlider;
 import studios.kdc.soundboarding.view.adapters.MainAdapter;
 import studios.kdc.soundboarding.view.CustomTimelineView;
 import studios.kdc.soundboarding.view.adapters.ViewContract;
@@ -45,12 +45,13 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
     private MainAdapter mainAdapter;
     private CustomHorizontalScrollView horizontalScrollView;
     private CustomTimelineView timelineView;
-    private ImageView seekbar;
+    private ImageView seekBar;
     private FloatingActionButton mixer;
     private FloatingActionButton pause_resume;
     private int scrollFactor;
     private boolean pauseResume;
     private boolean seekBarFlag;
+    private CustomHorizontalSlider seekbarSlider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,10 +99,12 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
                 if (!pauseResume) {
                     MixerController.getInstance(getApplicationContext(), MainActivity.this).pause();
                     pause_resume.setImageResource((R.drawable.paused));
+                    seekbarSlider.setEnabled(true);
                     pauseResume = true;
                 } else {
                     MixerController.getInstance(getApplicationContext(), MainActivity.this).resume();
                     pause_resume.setImageResource((R.drawable.played));
+                    seekbarSlider.setEnabled(false);
                     pauseResume = false;
                 }
             }
@@ -116,6 +119,7 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
                 MixerController.getInstance(getApplicationContext() , MainActivity.this).mix();
                 mixer.setVisibility(View.GONE);
                 pause_resume.setVisibility(View.VISIBLE);
+                seekbarSlider.setEnabled(false);
             }
         });
 
@@ -126,8 +130,9 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
         horizontalScrollView = (CustomHorizontalScrollView) findViewById(R.id.sc);
         horizontalScrollView.setScrollViewListener(this);
         this.addOnDragListenerOnTableTimeline(scrollView);
-        seekbar= (ImageView) findViewById(R.id.seeker);
-        seekbar.setOnTouchListener(new HorizontalSlider(horizontalScrollView, seekbar , (View) seekbar.getParent(), null));
+        seekBar= (ImageView) findViewById(R.id.seeker);
+        seekbarSlider = new CustomHorizontalSlider(horizontalScrollView, seekBar , (View) seekBar.getParent(), null);
+        seekBar.setOnTouchListener(seekbarSlider);
     }
 
     private void initializeTimeLineView() {
@@ -223,7 +228,7 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
             name.setGravity(Gravity.CENTER_HORIZONTAL);
             linearLayout.addView(frameLayout);
             setOnClickListenerToOptionsButton(optionsButton);
-            waveForm.setOnTouchListener(new HorizontalSlider(horizontalScrollView,
+            waveForm.setOnTouchListener(new CustomHorizontalSlider(horizontalScrollView,
                     frameLayout , (View) frameLayout.getParent().getParent(), this));
         } catch (Exception e) {
             e.printStackTrace();
@@ -302,21 +307,22 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
 
     @Override
     public int getCurrentProgress() {
-        return ((int) this.seekbar.getX() / Utils.SECOND_PIXEL_RATIO);
+        return ((int) this.seekBar.getX() / Utils.SECOND_PIXEL_RATIO);
     }
 
     @Override
     public void setProgressChange(double seconds) {
         if (!seekBarFlag) {
-            this.seekbar.setX((float) (seconds * Utils.SECOND_PIXEL_RATIO));
+            this.seekBar.setX((float) (seconds * Utils.SECOND_PIXEL_RATIO));
         }
     }
 
     @Override
     public void notifyTrackFinished() {
-        this.seekbar.setX(10);
+        this.seekBar.setX(10);
         this.mixer.setVisibility(View.VISIBLE);
         this.pause_resume.setVisibility(View.GONE);
+        this.seekbarSlider.setEnabled(true);
     }
 
 

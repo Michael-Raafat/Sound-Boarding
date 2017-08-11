@@ -3,7 +3,6 @@ package studios.kdc.soundboarding.media.mixer;
 
 import android.content.Context;
 import android.os.Handler;
-import android.os.HandlerThread;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -18,7 +17,6 @@ import studios.kdc.soundboarding.view.adapters.ViewContract;
 public class Mixer {
     private Handler handler;
     private Context context;
-   // private Pauser pauser;
     private List<MediaPlayerHandler> handlers;
     private int size;
     private ViewContract.mixerProgressChange progressListener;
@@ -27,7 +25,6 @@ public class Mixer {
     public Mixer(Context context, ViewContract.mixerProgressChange progressListener) {
         this.handler =new Handler();
         this.context = context;
-       // this.pauser = new Pauser();
         this.handlers = new ArrayList<>();
         this.size = 0;
         this.progressListener = progressListener;
@@ -55,6 +52,7 @@ public class Mixer {
                         handlers.add(mediaPlayerHandler);
                     }
                 };
+                runList.add(temp);
                 handler.postDelayed(temp, (selectedTrack.getStartPoint() - seekBarPosition) * 1000);// milliseconds
             } else {
                 temp = new Runnable() {
@@ -106,6 +104,7 @@ public class Mixer {
         for (int i = 0; i < runList.size(); i++) {
             handler.removeCallbacks(runList.get(i));
         }
+
     }
 
 
@@ -136,13 +135,15 @@ public class Mixer {
         if (selectedTrack.getEndPoint() - seekBarPosition <= 0) {
             return;
         } else if (selectedTrack.getStartPoint() - seekBarPosition >= 0) {
-            handler.postDelayed(new Runnable() {
+            Runnable temp = new Runnable() {
                 public void run() {
                     mediaPlayerHandler.playSong(selectedTrack.getGroupName() + File.separator + selectedTrack.getName());
                 }
-            }, (selectedTrack.getStartPoint() - seekBarPosition) * 1000);// milliseconds
+            };
+            runList.add(temp);
+            handler.postDelayed(temp, (selectedTrack.getStartPoint() - seekBarPosition) * 1000);// milliseconds
         } else {
-            mediaPlayerHandler.seekTo((seekBarPosition - selectedTrack.getStartPoint()) * 1000 );
+            mediaPlayerHandler.seekTo((seekBarPosition - selectedTrack.getStartPoint()) *1000 );
             mediaPlayerHandler.start();
         }
 
