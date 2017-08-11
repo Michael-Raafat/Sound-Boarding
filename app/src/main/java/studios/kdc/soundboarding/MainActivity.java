@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.DragEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -111,6 +112,7 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
                 MixerController.getInstance(getApplicationContext() , MainActivity.this).mix();
                 mixer.setVisibility(View.GONE);
                 pause_resume.setVisibility(View.VISIBLE);
+                pause_resume.setImageResource((R.drawable.played));
                 pause_resume.setImageResource(R.drawable.played);
                 seekBarSlider.setEnabled(false);
                 timelineView.controlSlidingOfWaveForms(false);
@@ -238,6 +240,8 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
         this.seekBar.setX(10);
         this.mixer.setVisibility(View.VISIBLE);
         this.pause_resume.setVisibility(View.GONE);
+        this.seekBarFlag = false;
+    }
         this.pauseResume = true;
         this.seekBarSlider.setEnabled(true);
         this.timelineView.controlSlidingOfWaveForms(true);
