@@ -7,6 +7,7 @@ import android.util.Log;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import studios.kdc.soundboarding.media.MediaPlayerHandler;
@@ -21,6 +22,7 @@ public class Mixer {
     private List<MediaPlayerHandler> handlers;
     private int size;
     private ViewContract.mixerProgressChange progressListener;
+    private List<Runnable> runList;
 
     public Mixer(Context context, ViewContract.mixerProgressChange progressListener) {
         this.handler =new Handler();
@@ -29,6 +31,7 @@ public class Mixer {
         this.handlers = new ArrayList<>();
         this.size = 0;
         this.progressListener = progressListener;
+        runList = Collections.synchronizedList(new ArrayList<Runnable>());
     }
 
     public void mix() {
@@ -41,18 +44,20 @@ public class Mixer {
 
     private void assignStartingPointsForPlaying(List<SelectedTrack> selectedTrackList, final int seekBarPosition ) {
         for(final SelectedTrack selectedTrack : selectedTrackList) {
+            Runnable temp;
             if (selectedTrack.getEndPoint() - seekBarPosition <= 0) {
 
             }else if (selectedTrack.getStartPoint() - seekBarPosition >= 0 ) {
-                handler.postDelayed(new Runnable() {
+                temp = new Runnable() {
                     public void run() {
                         MediaPlayerHandler mediaPlayerHandler = new MixerHandler(context);
                         mediaPlayerHandler.playSong(selectedTrack.getGroupName() + File.separator + selectedTrack.getName());
                         handlers.add(mediaPlayerHandler);
                     }
-                }, (selectedTrack.getStartPoint() - seekBarPosition) * 1000);// milliseconds
+                };
+                handler.postDelayed(temp, (selectedTrack.getStartPoint() - seekBarPosition) * 1000);// milliseconds
             } else {
-                handler.postDelayed(new Runnable() {
+                temp = new Runnable() {
                     public void run() {
                         MediaPlayerHandler mediaPlayerHandler = new MixerHandler(context);
                         mediaPlayerHandler.playSong(selectedTrack.getGroupName() + File.separator + selectedTrack.getName());
@@ -60,7 +65,9 @@ public class Mixer {
                         mediaPlayerHandler.start();
                         handlers.add(mediaPlayerHandler);
                     }
-                }, 0);
+                };
+                runList.add(temp);
+                handler.postDelayed(temp, 0);
             }
         }
     }
@@ -71,7 +78,7 @@ public class Mixer {
             public void run() {
                 //TODO hna mazboot
                 double  currentDuration = progressListener.getCurrentProgress(); // in seconds
-                progressListener.setProgressChange(currentDuration + 1);
+                progressListener.setProgressChange(currentDuration + 1.5);
                 if(currentDuration <= maximumEndPoint) {
                     handler.postDelayed(this, 1000);
                 } else {
@@ -79,7 +86,7 @@ public class Mixer {
                 }
 
             }
-        }, 1000); // milliseconds
+        }, 0); // milliseconds
     }
     private int getMaximumEndPoint(List<SelectedTrack> selectedTrackList ) {
         int maximumEndPoint = 0;
@@ -96,6 +103,9 @@ public class Mixer {
             handlers.get(i).pause();
         }
         progressListener.pauseSeekBar();
+        for (int i = 0; i < runList.size(); i++) {
+            handler.removeCallbacks(runList.get(i));
+        }
     }
 
 
@@ -137,6 +147,10 @@ public class Mixer {
             mediaPlayerHandler.start();
         }
 
+    }
+
+    List<Runnable> getRunList() {
+        return runList;
     }
 
 }
