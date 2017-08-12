@@ -44,8 +44,8 @@ public class DataServiceSingleton {
     public void loadDefaultDatabase() {
 
         database.execSQL("CREATE TABLE IF NOT EXISTS groups (name VARCHAR, color VARCHAR, imagePath VARCHAR)");
-        database.execSQL("INSERT INTO groups (name, color) VALUES ('Car', '#ff00ff')");
-        database.execSQL("INSERT INTO groups (name, color) VALUES ('Nature', '#0000ff')");
+        database.execSQL("INSERT INTO groups (name, color) VALUES ('Car', '#106198')");
+        database.execSQL("INSERT INTO groups (name, color) VALUES ('Nature', '#C9A1A1')");
         database.execSQL("INSERT INTO groups (name, color) VALUES ('Animal', '#46bde4')");
         database.execSQL("INSERT INTO groups (name, color) VALUES ('War', '#672543')");
         database.execSQL("INSERT INTO groups (name, color) VALUES ('Cartoon', '#c8498b')");
@@ -122,6 +122,18 @@ public class DataServiceSingleton {
         return groups;
     }
 
+
+    public List<String> getGroupNamesInDatabase() {
+        Cursor cursor = database.rawQuery("SELECT * FROM groups", null);
+        int nameIndex = cursor.getColumnIndex("name");
+        cursor.moveToFirst();
+        List<String> groups = new ArrayList<>();
+        while (!cursor.isAfterLast()) {
+            groups.add(cursor.getString(nameIndex));
+            cursor.moveToNext();
+        }
+        return groups;
+    }
 
     public List<List<String>> getTracksInTable(String tableName) {
         Cursor cursor = database.rawQuery("SELECT * FROM "+ tableName, null);

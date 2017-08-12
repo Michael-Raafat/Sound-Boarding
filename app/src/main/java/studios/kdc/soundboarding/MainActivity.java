@@ -59,7 +59,6 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        this.pauseResume = false;
         this.seekBarFlag = false;
 
         SharedPreferences sharedPreferences = this.getSharedPreferences("studios.kdc.soundboarding", MODE_PRIVATE);
@@ -177,7 +176,6 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
                 MixerController.getInstance(getApplicationContext() , MainActivity.this).mix();
                 mixer.setVisibility(View.GONE);
                 pause_resume.setVisibility(View.VISIBLE);
-                pause_resume.setImageResource((R.drawable.played));
                 pause_resume.setImageResource(R.drawable.played);
                 seekBarSlider.setEnabled(false);
                 timelineView.controlSlidingOfWaveForms(false);
