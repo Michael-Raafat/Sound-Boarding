@@ -11,4 +11,5 @@
         <item>About</item>
     </array>
     <string name="title_activity_track_uploader">Upload Track</string>
+    <string name="grp_name">Group Name</string>
 </resources>

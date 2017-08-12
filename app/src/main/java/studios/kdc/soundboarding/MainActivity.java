@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
         this.initializeSearchView();
         this.initializeMixerButton();
         this.initializePauseButton();
-        this.initializeDrawer();
+         this.initializeDrawer();
     }
 
     @Override
