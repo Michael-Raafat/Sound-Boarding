@@ -1,5 +1,6 @@
 package studios.kdc.soundboarding;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.database.sqlite.SQLiteDatabase;
@@ -132,6 +133,8 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             switch (position){
             case 0:
+                Intent i = new Intent(getApplicationContext() , TrackUploader.class);
+                startActivity(i);
                 break;
             case 1:
                 break;

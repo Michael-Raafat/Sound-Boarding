@@ -9,5 +9,5 @@
         <item>Create Group</item>
         <item>About</item>
     </array>
-    <string name="title_activity_track_uploader">TrackUploader</string>
+    <string name="title_activity_track_uploader">Upload Track</string>
 </resources>
