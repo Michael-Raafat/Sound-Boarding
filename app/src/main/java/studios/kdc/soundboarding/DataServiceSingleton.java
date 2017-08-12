@@ -123,6 +123,18 @@ public class DataServiceSingleton {
     }
 
 
+    public List<String> getGroupNamesInDatabase() {
+        Cursor cursor = database.rawQuery("SELECT * FROM groups", null);
+        int nameIndex = cursor.getColumnIndex("name");
+        cursor.moveToFirst();
+        List<String> groups = new ArrayList<>();
+        while (!cursor.isAfterLast()) {
+            groups.add(cursor.getString(nameIndex));
+            cursor.moveToNext();
+        }
+        return groups;
+    }
+
     public List<List<String>> getTracksInTable(String tableName) {
         Cursor cursor = database.rawQuery("SELECT * FROM "+ tableName, null);
         int nameIndex = cursor.getColumnIndex("name");

@@ -120,4 +120,8 @@ public class DataController {
         selectedTracksContainer.getTracks().get(position).setStartPoint(interval);
     }
 
+    public List<String> getGroupNames() {
+        return DataServiceSingleton.getInstance().getGroupNamesInDatabase();
+    }
+
 }
