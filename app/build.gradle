@@ -31,4 +31,5 @@ dependencies {
     compile 'com.github.alxrm:audiowave-progressbar:0.8'
     compile 'com.android.support:design:26.+'
     testCompile 'junit:junit:4.12'
+    compile 'com.github.florent37:materialtextfield:1.0.7'
 }

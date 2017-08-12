@@ -9,16 +9,24 @@
     tools:context="studios.kdc.soundboarding.TrackUploader"
     tools:showIn="@layout/activity_track_uploader">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
-    <TextView
-        android:layout_width="wrap_content"
+    <com.github.florent37.materialtextfield.MaterialTextField
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:text="@string/name"/>
-</LinearLayout>
+        app:mtf_image="@drawable/logo"
+        android:padding="10dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
+        >
+
+        <EditText
+            android:id="@+id/track_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/name"
+            android:textColor="#333"
+            android:background="@color/cardview_shadow_start_color"
+            android:textColorHint="#666"
+            android:textSize="20sp" />
+
+    </com.github.florent37.materialtextfield.MaterialTextField>
 </android.support.constraint.ConstraintLayout>
