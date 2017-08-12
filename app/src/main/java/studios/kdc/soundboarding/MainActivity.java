@@ -1,20 +1,27 @@
 package studios.kdc.soundboarding;
 
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.DragEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.SearchView;
@@ -31,7 +38,7 @@ import studios.kdc.soundboarding.view.timeline.CustomTimelineView;
 import studios.kdc.soundboarding.view.adapters.ViewContract;
 
 public class MainActivity extends AppCompatActivity implements ViewContract.ScrollViewListener
-        , ViewContract.SliderListener , ViewContract.mixerProgressChange , ViewContract.waveFormListener{
+        , ViewContract.SliderListener , ViewContract.mixerProgressChange , ViewContract.waveFormListener {
 
     private DataController dataController;
     private MainAdapter mainAdapter;
@@ -43,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
     private boolean pauseResume;
     private boolean seekBarFlag;
     private CustomHorizontalSlider seekBarSlider;
+    private  ActionBarDrawerToggle mDrawerToggle;
 
 
     @Override
@@ -52,27 +60,25 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
         this.pauseResume = false;
         this.seekBarFlag = false;
 
-
-        //////////////////////////////////MO2KATAN//////////////
-        SharedPreferences  sharedPreferences = this.getSharedPreferences("studios.kdc.soundboarding", MODE_PRIVATE);
-        SQLiteDatabase  tracksDatabase = this.openOrCreateDatabase("Data", MODE_PRIVATE, null);
+        SharedPreferences sharedPreferences = this.getSharedPreferences("studios.kdc.soundboarding", MODE_PRIVATE);
+        SQLiteDatabase tracksDatabase = this.openOrCreateDatabase("Data", MODE_PRIVATE, null);
         DataServiceSingleton.getInstance(tracksDatabase);
         if (!sharedPreferences.getBoolean("Start", false)) {
             DataServiceSingleton.getInstance(tracksDatabase).loadDefaultDatabase();
             sharedPreferences.edit().putBoolean("Start", true).apply();
         }
-        ///////////////////////////////////////////////////////
-        dataController = new DataController();
+        this.dataController = new DataController();
         new DatabaseGetter().execute();
         this.scrollFactor = 0;
         this.initializeTimeLineView();
         this.initializeSearchView();
         this.initializeMixerButton();
         this.initializePauseButton();
+        this.initializeDrawer();
     }
 
     @Override
-    protected  void onDestroy() {
+    protected void onDestroy() {
         super.onDestroy();
         this.dataController.deleteReferences();
         this.dataController = null;
@@ -81,6 +87,60 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
         Runtime.getRuntime().gc();
     }
 
+    private void initializeDrawer() {
+
+        ListView mDrawerList = (ListView) findViewById(R.id.left_drawer);
+        String[] items = getResources().getStringArray(R.array.options);
+        mDrawerList.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, items));
+        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+        DrawerLayout mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerToggle = new ActionBarDrawerToggle(
+                this, mDrawerLayout, R.string.open, R.string.close
+        ) {
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+            }
+
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+            }
+        };
+        mDrawerLayout.addDrawerListener(mDrawerToggle);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
+   }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return  (mDrawerToggle.onOptionsItemSelected(item)) || (super.onOptionsItemSelected(item));
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        mDrawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    private class DrawerItemClickListener implements ListView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            switch (position){
+            case 0:
+                break;
+            case 1:
+                break;
+                case 2:
+                break;
+
+        }
+    }
+    }
 
     private void initializePauseButton(){
         this.pause_resume = (FloatingActionButton) findViewById(R.id.pause_resume);
