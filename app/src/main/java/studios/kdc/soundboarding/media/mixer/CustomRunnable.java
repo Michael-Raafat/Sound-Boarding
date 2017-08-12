@@ -22,38 +22,27 @@ public class CustomRunnable implements Runnable {
     }
 
 
-
-
     @Override
     public void run() {
-        mediaPlayerHandler.playSong(this.groupName + File.separator + this.trackName);
-        mediaPlayerHandler.seekTo(seekPosition);
-        mediaPlayerHandler.start();
+            mediaPlayerHandler.playSong(this.groupName + File.separator + this.trackName);
+            mediaPlayerHandler.seekTo(seekPosition);
+            mediaPlayerHandler.start();
     }
 
 
     public void stopTrack(){
         this.mediaPlayerHandler.stop();
     }
-    public String getTrackName() {
-        return trackName;
-    }
 
     public void setTrackName(String trackName) {
         this.trackName = trackName;
     }
 
-    public String getGroupName() {
-        return groupName;
-    }
 
     public void setGroupName(String groupName) {
         this.groupName = groupName;
     }
 
-    public int getSeekPosition() {
-        return seekPosition;
-    }
 
     public void setSeekPosition(int seekPosition) {
         this.seekPosition = seekPosition;
