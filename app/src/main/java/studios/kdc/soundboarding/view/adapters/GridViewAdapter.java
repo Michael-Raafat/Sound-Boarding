@@ -1,6 +1,7 @@
 package studios.kdc.soundboarding.view.adapters;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.ClipData;
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import java.util.List;
 
 
+import studios.kdc.soundboarding.Utils;
 import studios.kdc.soundboarding.media.singlePlayer.MediaPlayerContract;
 import studios.kdc.soundboarding.media.singlePlayer.MediaPlayerController;
 import studios.kdc.soundboarding.R;
@@ -62,8 +64,10 @@ public class GridViewAdapter extends BaseAdapter   {
         if (view == null) {
             view = inflater.inflate(R.layout.track_content, parent, false);
             holder = new ViewHolder(view);
-
             holder.getTextView().setTextColor(this.color);
+            /*RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams((Utils.getScreenWidth(context.getApplicationContext()) / 4 ),
+                    Utils.getScreenHeight((Activity)context) / 7);
+            holder.getCardView().setLayoutParams(params);*/
             GradientDrawable drawable = (GradientDrawable) holder.getColor().getBackground();
             drawable.setColor(this.color);
             view.setTag(holder);
@@ -136,7 +140,6 @@ public class GridViewAdapter extends BaseAdapter   {
             ClipData data = ClipData.newPlainText( String.valueOf(this.position) + context.getResources().getString(R.string.separator) +  name, "");
             View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
             view.startDrag(data, shadowBuilder, view, 0);
-           // view.setVisibility(View.INVISIBLE);
             return true;
 
         }
@@ -167,18 +170,18 @@ public class GridViewAdapter extends BaseAdapter   {
           if(card.getCardBackgroundColor() == context.getResources().getColorStateList(R.color.cardview_shadow_end_color))
                setColorOnPlaying();
            else if(card.getCardBackgroundColor() == context.getResources().getColorStateList(R.color.light_grey))
-               setColorOnCompleteion();
+               setColorOnCompletion();
         }
 
         private void setColorOnPlaying(){
             card.setCardBackgroundColor(context.getResources().getColorStateList(R.color.light_grey));
         }
-        private void setColorOnCompleteion(){
+        private void setColorOnCompletion(){
             card.setCardBackgroundColor(context.getResources().getColorStateList(R.color.cardview_shadow_end_color));
         }
         @Override
         public void notifyOnTrackCompletion() {
-            setColorOnCompleteion();
+            setColorOnCompletion();
         }
     }
 

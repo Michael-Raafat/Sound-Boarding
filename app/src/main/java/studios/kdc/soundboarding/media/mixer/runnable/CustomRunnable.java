@@ -1,4 +1,4 @@
-package studios.kdc.soundboarding.media.mixer;
+package studios.kdc.soundboarding.media.mixer.runnable;
 
 
 import android.content.Context;
@@ -6,6 +6,7 @@ import android.content.Context;
 import java.io.File;
 
 import studios.kdc.soundboarding.media.MediaPlayerHandler;
+import studios.kdc.soundboarding.media.mixer.MixerHandler;
 
 public class CustomRunnable implements Runnable {
 
