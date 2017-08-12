@@ -51,7 +51,8 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
     private boolean pauseResume;
     private boolean seekBarFlag;
     private CustomHorizontalSlider seekBarSlider;
-    private  ActionBarDrawerToggle mDrawerToggle;
+    private ActionBarDrawerToggle mDrawerToggle;
+    private DrawerLayout mDrawerLayout;
 
 
     @Override
@@ -94,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
         String[] items = getResources().getStringArray(R.array.options);
         mDrawerList.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, items));
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-        DrawerLayout mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerToggle = new ActionBarDrawerToggle(
                 this, mDrawerLayout, R.string.open, R.string.close
         ) {
@@ -131,6 +132,7 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            mDrawerLayout.closeDrawers();
             switch (position){
             case 0:
                 Intent i = new Intent(getApplicationContext() , TrackUploader.class);

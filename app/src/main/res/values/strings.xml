@@ -2,6 +2,7 @@
     <string name="app_name">Sound Boarding</string>
     <string name="separator">&amp;&amp;@</string>
     <string name="remove_option">Remove</string>
+    <string name="name">Name</string>
     <string name="close">close</string>
     <string name="open">open</string>
     <array name="options">
