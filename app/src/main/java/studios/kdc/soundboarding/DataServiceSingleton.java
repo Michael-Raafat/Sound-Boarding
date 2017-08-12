@@ -44,8 +44,8 @@ public class DataServiceSingleton {
     public void loadDefaultDatabase() {
 
         database.execSQL("CREATE TABLE IF NOT EXISTS groups (name VARCHAR, color VARCHAR, imagePath VARCHAR)");
-        database.execSQL("INSERT INTO groups (name, color) VALUES ('Car', '#ff00ff')");
-        database.execSQL("INSERT INTO groups (name, color) VALUES ('Nature', '#0000ff')");
+        database.execSQL("INSERT INTO groups (name, color) VALUES ('Car', '#106198')");
+        database.execSQL("INSERT INTO groups (name, color) VALUES ('Nature', '#C9A1A1')");
         database.execSQL("INSERT INTO groups (name, color) VALUES ('Animal', '#46bde4')");
         database.execSQL("INSERT INTO groups (name, color) VALUES ('War', '#672543')");
         database.execSQL("INSERT INTO groups (name, color) VALUES ('Cartoon', '#c8498b')");

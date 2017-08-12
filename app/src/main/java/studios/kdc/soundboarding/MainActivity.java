@@ -82,7 +82,6 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
         this.dataController.deleteReferences();
         this.dataController = null;
         MediaPlayerController.deleteInstance();
-        MixerController.getInstance(getApplicationContext(), MainActivity.this).deleteHandlers();
         MixerController.deleteInstance();
         Runtime.getRuntime().gc();
     }
