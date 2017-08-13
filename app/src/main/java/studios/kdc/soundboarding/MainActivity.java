@@ -128,19 +128,21 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            mDrawerLayout.closeDrawers();
+          mDrawerLayout.closeDrawers();
+            Intent i;
             switch (position){
             case 0:
-                Intent i = new Intent(getApplicationContext() , TrackUploader.class);
+                i = new Intent(getApplicationContext() , TrackUploader.class);
                 startActivity(i);
                 break;
             case 1:
                 break;
-                case 2:
+             case 2:
                 break;
 
         }
-    }
+         //   finish();
+        }
     }
 
     private void initializePauseButton(){
