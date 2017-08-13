@@ -40,20 +40,21 @@ public class Mixer {
         int count = 0;
         int size = this.runList.size();
         for(final SelectedTrack selectedTrack : selectedTrackList) {
-            CustomRunnable temp;
-             if(count < size){
-                 temp = runList.get(count);
-                 temp.setGroupName(selectedTrack.getGroupName());
-                 temp.setTrackName(selectedTrack.getName());
-                 temp.setSeekPosition( ((seekBarPosition - selectedTrack.getStartPoint()) * 1000));
-                 count++;
-             }
-            else {
+            if ((selectedTrack.getEndPoint() - seekBarPosition) >= 0) {
+                CustomRunnable temp;
+                if (count < size) {
+                    temp = runList.get(count);
+                    temp.setGroupName(selectedTrack.getGroupName());
+                    temp.setTrackName(selectedTrack.getName());
+                    temp.setSeekPosition(((seekBarPosition - selectedTrack.getStartPoint()) * 1000));
+                    count++;
+                } else {
 
-                temp= new CustomRunnable(selectedTrack.getName() , selectedTrack.getGroupName(), ((seekBarPosition - selectedTrack.getStartPoint()) * 1000) , context);
-                runList.add(temp);
-        }
-            handler.postDelayed(temp, (selectedTrack.getStartPoint() - seekBarPosition) * 1000);
+                    temp = new CustomRunnable(selectedTrack.getName(), selectedTrack.getGroupName(), ((seekBarPosition - selectedTrack.getStartPoint()) * 1000), context);
+                    runList.add(temp);
+                }
+                handler.postDelayed(temp, (selectedTrack.getStartPoint() - seekBarPosition) * 1000);
+            }
         }
     }
     private void assignStartingPointForSlider(List<SelectedTrack> selectedTrackList) {

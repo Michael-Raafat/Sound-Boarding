@@ -30,12 +30,11 @@
 
     </com.github.florent37.materialtextfield.MaterialTextField>
 
-<LinearLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_below="@+id/name"
-    android:orientation="horizontal"
-    android:id="@+id/linearLayout">
+<RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/name"
+        android:id="@+id/relative1">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -52,11 +51,62 @@
         android:id="@+id/groups"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="7dp"
-        android:layout_marginStart="5dp"
+        android:background="@color/white"
+        android:padding="5dp"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_toRightOf="@+id/group_name"
+        android:layout_toEndOf="@+id/group_name"
+        android:textAlignment="center"
        />
-</LinearLayout>
+</RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/relative2"
+        android:layout_below="@+id/relative1">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:padding="10dp"
+            android:text="@string/upload_track"
+            android:layout_marginTop="7dp"
+            android:layout_marginLeft="7dp"
+            android:layout_marginStart="7dp"
+            android:textSize="18sp"
+            android:id="@+id/upload_track" />
+
+        <ImageButton
+            android:id="@+id/upload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/grey"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_toRightOf="@+id/upload_track"
+            android:layout_toEndOf="@+id/upload_track"
+            android:src="@drawable/upload"
+            />
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:gravity="center_horizontal"
+        android:layout_below="@+id/relative2"
+        android:layout_marginTop="30dp"
+        android:textAllCaps="false"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:layout_centerInParent="true"
+        android:text="@string/save_track" />
 
 
 </RelativeLayout>

@@ -13,7 +13,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.DragEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,7 +40,6 @@ import studios.kdc.soundboarding.view.adapters.ViewContract;
 public class MainActivity extends AppCompatActivity implements ViewContract.ScrollViewListener
         , ViewContract.SliderListener , ViewContract.mixerProgressChange , ViewContract.waveFormListener {
 
-    private DataController dataController;
     private MainAdapter mainAdapter;
     private CustomTimelineView timelineView;
     private ImageView seekBar;
@@ -68,7 +66,6 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
             DataServiceSingleton.getInstance(tracksDatabase).loadDefaultDatabase();
             sharedPreferences.edit().putBoolean("Start", true).apply();
         }
-        this.dataController = new DataController();
         new DatabaseGetter().execute();
         this.scrollFactor = 0;
         this.initializeTimeLineView();
@@ -81,8 +78,8 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        this.dataController.deleteReferences();
-        this.dataController = null;
+        DataController.getInstance().deleteReferences();
+        DataController.deleteInstance();
         MediaPlayerController.deleteInstance();
         MixerController.deleteInstance();
         Runtime.getRuntime().gc();
@@ -216,7 +213,7 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
 
             @Override
             public boolean onQueryTextChange(String s) {
-                dataController.searchTracksInGroups(s);
+                DataController.getInstance().searchTracksInGroups(s);
                 if(mainAdapter != null)
                     mainAdapter.notifyDataSetChanged();
                 return true;
@@ -238,7 +235,7 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
                     case DragEvent.ACTION_DROP:
                         String description = event.getClipData().getDescription().getLabel().toString();
                         String[] s = description.split(getResources().getString(R.string.separator));
-                        Map<String, String> trackInfo = dataController.selectTrackToMix(s[1], Integer.parseInt(s[0]));
+                        Map<String, String> trackInfo = DataController.getInstance().selectTrackToMix(s[1], Integer.parseInt(s[0]));
                         timelineView.addWaveFormsToTimeline(trackInfo);
                         if(timelineView.getChildCount() > 0){
                             if(pause_resume.getVisibility() == View.GONE)
@@ -273,7 +270,7 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
 
     @Override
     public void onSlideChanged(int startSeconds, int position) {
-      this.dataController.setStartPointTrack(position , startSeconds);
+      DataController.getInstance().setStartPointTrack(position , startSeconds);
     }
 
     @Override
@@ -311,7 +308,7 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
 
     @Override
     public void removeWaveForm(int position) {
-            this.dataController.removeTrack(position);
+            DataController.getInstance().removeTrack(position);
             this.timelineView.removeWave(position);
             if (this.timelineView.getChildCount() < 1) {
                 this.mixer.setVisibility(View.GONE);
@@ -323,20 +320,20 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
     private class DatabaseGetter extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... voids) {
-            dataController.importDatabase();
+            DataController.getInstance().importDatabase();
             return null;
         }
         @Override
         protected void onPostExecute(Void v) {
             RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
             mainAdapter = new MainAdapter(getApplicationContext());
-            dataController.setMainAdapterList(mainAdapter);
+            DataController.getInstance().setMainAdapterList(mainAdapter);
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
             recyclerView.setLayoutManager(layoutManager);
             recyclerView.setAdapter(mainAdapter);
             int screenHeight = Utils.getScreenHeight(MainActivity.this);
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT
-                    ,(int) ( screenHeight /1.6 ));
+                    ,(int) ( screenHeight /1.6));
             params.setMargins(0,(screenHeight/15) ,0,0);
             recyclerView.setLayoutParams(params);
 

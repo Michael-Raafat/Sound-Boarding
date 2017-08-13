@@ -1,9 +1,6 @@
 package studios.kdc.soundboarding.media.mixer;
 
 import android.content.Context;
-import android.util.Log;
-
-import studios.kdc.soundboarding.models.imp.SelectedTrackContainerImp;
 import studios.kdc.soundboarding.view.adapters.ViewContract;
 
 /**
@@ -36,14 +33,6 @@ public class MixerController {
     public void pause() {
         this.mixer.pause();
     }
-/*
-    public void removeHandler(int position) {
-
-        if (position < this.mixer.getHandlers().size()) {
-            this.mixer.getHandlers().get(position).stop();
-            this.mixer.getHandlers().remove(position);
-        }
-    }*/
 
     public void resume() {
         this.mixer.resume();
