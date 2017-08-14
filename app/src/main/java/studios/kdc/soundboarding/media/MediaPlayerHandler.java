@@ -73,7 +73,7 @@ public abstract class MediaPlayerHandler {
             return;
         }
         this.mediaPlayer.reset();
-        try {
+        try {  //todo call to playing strategy
             AssetFileDescriptor afd = context.getAssets().openFd(name + ".mp3");
             this.mediaPlayer.setDataSource(afd.getFileDescriptor(),afd.getStartOffset(),afd.getLength());
             this.mediaPlayer.prepare();
