@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,7 +19,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -27,12 +27,14 @@ import android.widget.ScrollView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import java.util.Arrays;
 import java.util.Map;
 
 import studios.kdc.soundboarding.media.mixer.MixerController;
 import studios.kdc.soundboarding.media.singlePlayer.MediaPlayerController;
 import studios.kdc.soundboarding.view.CustomHorizontalScrollView;
 import studios.kdc.soundboarding.view.CustomHorizontalSlider;
+import studios.kdc.soundboarding.view.adapters.CustomListViewAdapter;
 import studios.kdc.soundboarding.view.adapters.MainAdapter;
 import studios.kdc.soundboarding.view.timeline.CustomTimelineView;
 import studios.kdc.soundboarding.view.ViewContract;
@@ -88,8 +90,8 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
     private void initializeDrawer() {
 
         ListView mDrawerList = (ListView) findViewById(R.id.left_drawer);
-        String[] items = getResources().getStringArray(R.array.options);
-        mDrawerList.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, items));
+        String[] myResArray = getResources().getStringArray(R.array.options);
+        mDrawerList.setAdapter(new CustomListViewAdapter(this, Arrays.asList(myResArray)));
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerToggle = new ActionBarDrawerToggle(
@@ -104,8 +106,11 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
             }
         };
         mDrawerLayout.addDrawerListener(mDrawerToggle);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        ActionBar ab = getSupportActionBar();
+        if(ab != null) {
+            ab.setDisplayHomeAsUpEnabled(true);
+            ab.setHomeButtonEnabled(true);
+        }
 
    }
     @Override
@@ -142,8 +147,7 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
              case 2:
                 break;
 
-        }
-         //   finish();
+           }
         }
     }
 
