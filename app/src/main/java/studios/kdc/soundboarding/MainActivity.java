@@ -6,6 +6,7 @@ import android.content.res.Configuration;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -53,14 +54,14 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
     private CustomHorizontalSlider seekBarSlider;
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
-
+    private Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         this.seekBarFlag = false;
-
+        this.handler = new Handler();
         SharedPreferences sharedPreferences = this.getSharedPreferences("studios.kdc.soundboarding", MODE_PRIVATE);
         SQLiteDatabase tracksDatabase = this.openOrCreateDatabase("Data", MODE_PRIVATE, null);
         DataServiceSingleton.getInstance(tracksDatabase);
@@ -111,7 +112,6 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
             ab.setDisplayHomeAsUpEnabled(true);
             ab.setHomeButtonEnabled(true);
         }
-
    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -133,21 +133,26 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-          mDrawerLayout.closeDrawers();
+
             Intent i;
             switch (position){
-            case 0:
-                i = new Intent(getApplicationContext() , TrackUploader.class);
-                startActivity(i);
-                break;
-            case 1:
-                i = new Intent(getApplicationContext() , GroupCreator.class);
-                startActivity(i);
-                break;
-             case 2:
-                break;
-
-           }
+                case 0:
+                    i = new Intent(getApplicationContext() , TrackUploader.class);
+                    startActivity(i);
+                    break;
+                case 1:
+                    i = new Intent(getApplicationContext() , GroupCreator.class);
+                    startActivity(i);
+                    break;
+                case 2:
+                    break;
+            }
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mDrawerLayout.closeDrawers();
+                }
+            }, 250);
         }
     }
 

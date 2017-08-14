@@ -58,8 +58,8 @@ public class TrackUploader extends AppCompatActivity {
                     Toast.makeText(getApplicationContext() ,"You must choose track to upload" , Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(getApplicationContext() ,"Track is successfully uploaded" , Toast.LENGTH_LONG).show();
-                    // INSERT INTO DB
-                    finish(); //update list
+                    // TODO INSERT INTO DB && updating list
+                    finish();
                 }
             }
         });
@@ -95,8 +95,4 @@ public class TrackUploader extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    /* private void returnToParentActivity(){
-        Intent i = new Intent(getApplication().getBaseContext(),MainActivity.class);
-        startActivity(i);
-    }*/
 }
