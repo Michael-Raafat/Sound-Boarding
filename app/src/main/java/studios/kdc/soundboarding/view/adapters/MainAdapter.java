@@ -1,17 +1,12 @@
 package studios.kdc.soundboarding.view.adapters;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
-import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -20,8 +15,6 @@ import studios.kdc.soundboarding.R;
 import studios.kdc.soundboarding.models.Group;
 
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
-
-
 
     private List<Group> groups;
     private Context context;
@@ -73,10 +66,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         private TextView getGroupName() {
             return groupName;
         }
-
-
         private TextView groupName;
-
 
 
         private ViewHolder(final View itemView) {
