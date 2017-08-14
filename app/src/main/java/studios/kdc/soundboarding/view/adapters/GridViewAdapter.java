@@ -1,6 +1,7 @@
 package studios.kdc.soundboarding.view.adapters;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.ClipData;
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
@@ -26,17 +27,21 @@ public class GridViewAdapter extends BaseAdapter   {
     private LayoutInflater inflater;
     private int color;
     private int cardPosition;
-    private Context context;
+    private Activity context;
     private String groupName;
+    private int cardWidth;
+    private int cardHeight;
     private MediaPlayerController mediaPlayerController;
 
-    public GridViewAdapter(Context context, List<Track> media, int color , int cardPosition, String groupName) {
+    public GridViewAdapter(Activity context, List<Track> media, int color , int cardPosition, String groupName , int cardWidth , int cardHeight) {
         this.inflater = LayoutInflater.from(context);
         this.allItemsResourceID = media;
         this.color = color;
         this.cardPosition = cardPosition;
         this.context = context;
         this.groupName = groupName;
+        this.cardHeight = cardHeight;
+        this.cardWidth = cardWidth;
         this.mediaPlayerController = MediaPlayerController.getInstance(context);
     }
 
@@ -63,9 +68,8 @@ public class GridViewAdapter extends BaseAdapter   {
             view = inflater.inflate(R.layout.track_content, parent, false);
             holder = new ViewHolder(view);
             holder.getTextView().setTextColor(this.color);
-            /*RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams((Utils.getScreenWidth(context.getApplicationContext()) / 4 ),
-                    Utils.getScreenHeight((Activity)context) / 7);
-            holder.getCardView().setLayoutParams(params);*/
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams((cardWidth), cardHeight);
+            holder.getCardView().setLayoutParams(params);
             GradientDrawable drawable = (GradientDrawable) holder.getColor().getBackground();
             drawable.setColor(this.color);
             view.setTag(holder);

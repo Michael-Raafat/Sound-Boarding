@@ -339,7 +339,7 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
         @Override
         protected void onPostExecute(Void v) {
             RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-            mainAdapter = new MainAdapter(getApplicationContext());
+            mainAdapter = new MainAdapter(MainActivity.this);
             DataController.getInstance().setMainAdapterList(mainAdapter);
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
             recyclerView.setLayoutManager(layoutManager);
