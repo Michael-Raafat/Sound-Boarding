@@ -136,6 +136,8 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
                 startActivity(i);
                 break;
             case 1:
+                i = new Intent(getApplicationContext() , GroupCreator.class);
+                startActivity(i);
                 break;
              case 2:
                 break;

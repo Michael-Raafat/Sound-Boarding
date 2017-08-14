@@ -31,7 +31,8 @@ public class TrackUploader extends AppCompatActivity {
         this.trackUserName = (EditText) findViewById(R.id.track_name);
         setSupportActionBar(toolbar);
         ActionBar ab = getSupportActionBar();
-        ab.setDisplayHomeAsUpEnabled(true);
+        if(ab != null)
+           ab.setDisplayHomeAsUpEnabled(true);
         this.initializeSpinner();
         this.initializeUploadButton();
         this.initializeSaveButton();
