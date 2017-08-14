@@ -6,8 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 
-import studios.kdc.soundboarding.view.adapters.ViewContract;
-
 public class CustomHorizontalSlider implements View.OnTouchListener {
 
     private boolean isDragging = false;

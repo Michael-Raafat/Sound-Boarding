@@ -12,4 +12,8 @@
     </array>
     <string name="title_activity_track_uploader">Upload Track</string>
     <string name="grp_name">Group Name</string>
+    <string name="upload_track">Choose File</string>
+    <string name="choose_color">Choose Color</string>
+    <string name="save">Save</string>
+    <string name="title_activity_group_creator">GroupCreator</string>
 </resources>

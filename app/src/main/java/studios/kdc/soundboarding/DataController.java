@@ -1,8 +1,5 @@
 package studios.kdc.soundboarding;
 
-
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,8 +22,19 @@ import studios.kdc.soundboarding.view.adapters.MainAdapter;
 public class DataController {
     private GroupContainerImp groupContainer;
     private SelectedTracksContainer selectedTracksContainer;
+    private static DataController instance;
 
-    public DataController() {
+
+
+    public static DataController getInstance(){
+        if(instance == null)
+            instance = new DataController();
+        return instance;
+    }
+    public static void deleteInstance(){
+        instance = null;
+    }
+    private DataController() {
         groupContainer = GroupContainerImp.getInstance();
         selectedTracksContainer = SelectedTrackContainerImp.getInstance();
 

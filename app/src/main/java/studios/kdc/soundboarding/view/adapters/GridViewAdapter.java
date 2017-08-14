@@ -1,7 +1,6 @@
 package studios.kdc.soundboarding.view.adapters;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.ClipData;
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
@@ -16,7 +15,6 @@ import android.widget.TextView;
 import java.util.List;
 
 
-import studios.kdc.soundboarding.Utils;
 import studios.kdc.soundboarding.media.singlePlayer.MediaPlayerContract;
 import studios.kdc.soundboarding.media.singlePlayer.MediaPlayerController;
 import studios.kdc.soundboarding.R;

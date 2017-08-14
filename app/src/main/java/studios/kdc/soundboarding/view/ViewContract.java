@@ -1,6 +1,5 @@
-package studios.kdc.soundboarding.view.adapters;
+package studios.kdc.soundboarding.view;
 
-import studios.kdc.soundboarding.view.CustomHorizontalScrollView;
 
 public class ViewContract {
 

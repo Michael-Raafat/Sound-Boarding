@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.res.AssetManager;
 import android.graphics.Color;
 import android.support.v7.widget.PopupMenu;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,7 +25,7 @@ import rm.com.audiowave.AudioWaveView;
 import studios.kdc.soundboarding.R;
 import studios.kdc.soundboarding.Utils;
 import studios.kdc.soundboarding.view.CustomHorizontalSlider;
-import studios.kdc.soundboarding.view.adapters.ViewContract;
+import studios.kdc.soundboarding.view.ViewContract;
 
 
 public class CustomTimelineView  {
@@ -61,7 +60,9 @@ public class CustomTimelineView  {
         return this.timelineWaves.getChildCount();
     }
 
-
+    public int getTextViewWidth() {
+        return this.minutesSecondsView.getTextViewWidth();
+    }
     public void controlSlidingOfWaveForms(Boolean enabled) {
         for (CustomHorizontalSlider slider : waveFormsListeners){
             slider.setEnabled(enabled);
@@ -159,18 +160,19 @@ public class CustomTimelineView  {
         private int numberOfTextViews;
         private Activity context;
         private LinearLayout.LayoutParams params;
+        private int textViewWidth;
 
 
         private MinutesSecondsView (Activity context) {
             super(context);
             this.minutes = 0;
             this.seconds = 0;
-            int textViewWidth = 150;
+            this.textViewWidth = (Utils.getScreenWidth(context) / 7);
             this.context = context;
             this.setOrientation(HORIZONTAL);
             this.params = new LinearLayout.LayoutParams(textViewWidth, ViewGroup.LayoutParams.WRAP_CONTENT);
-            this.params.setMargins(0, 0, 5, 0);
-            this.numberOfTextViews = (Utils.getScreenWidth(context) + textViewWidth) / textViewWidth;
+            this.params.setMargins(0, 0, (int)(Utils.getScreenWidth(context) / 216), 0);
+            this.numberOfTextViews = (Utils.getScreenWidth(context) + this.textViewWidth) / this.textViewWidth;
             this.initializeTextViews();
         }
 
@@ -184,10 +186,12 @@ public class CustomTimelineView  {
                 this.addView(tv);
             }
         }
-
+        private int getTextViewWidth() {
+            return textViewWidth;
+        }
         private void calculateMinSec() {
-            formatMinSec();
-            increaseMinSec();
+            this.formatMinSec();
+            this.increaseMinSec();
         }
 
         private void formatMinSec() {
@@ -198,7 +202,7 @@ public class CustomTimelineView  {
 
         private void increaseMinSec() {
             this.seconds += 15;
-            if (seconds >= 60) {
+            if (this.seconds >= 60) {
                 this.seconds = 0;
                 this.minutes++;
             }
@@ -227,8 +231,8 @@ public class CustomTimelineView  {
             String[] s = textviewAfter.split(":");
             this.seconds = Integer.parseInt(s[1]);
             this.minutes = Integer.parseInt(s[0]);
-            increaseMinSec();
-            formatMinSec();
+            this.increaseMinSec();
+            this.formatMinSec();
             return this.finalMinSec;
         }
 
@@ -237,14 +241,14 @@ public class CustomTimelineView  {
             String[] s = textviewAfter.split(":");
             this.seconds = Integer.parseInt(s[1]);
             this.minutes = Integer.parseInt(s[0]);
-            decreaseMinSec();
-            formatMinSec();
+            this.decreaseMinSec();
+            this.formatMinSec();
             return this.finalMinSec;
         }
 
         private void decreaseMinSec() {
             this.seconds -= 15;
-            if (seconds <= 0) {
+            if (this.seconds <= 0) {
                 this.seconds = 45;
                 this.minutes--;
                 if (this.minutes < 0) {
@@ -252,7 +256,6 @@ public class CustomTimelineView  {
                     this.seconds = 0;
                 }
             }
-
         }
 
     }

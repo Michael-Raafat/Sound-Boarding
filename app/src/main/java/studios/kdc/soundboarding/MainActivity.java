@@ -6,20 +6,20 @@ import android.content.res.Configuration;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.DragEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -28,20 +28,21 @@ import android.widget.ScrollView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import java.util.Arrays;
 import java.util.Map;
 
 import studios.kdc.soundboarding.media.mixer.MixerController;
 import studios.kdc.soundboarding.media.singlePlayer.MediaPlayerController;
 import studios.kdc.soundboarding.view.CustomHorizontalScrollView;
 import studios.kdc.soundboarding.view.CustomHorizontalSlider;
+import studios.kdc.soundboarding.view.adapters.CustomListViewAdapter;
 import studios.kdc.soundboarding.view.adapters.MainAdapter;
 import studios.kdc.soundboarding.view.timeline.CustomTimelineView;
-import studios.kdc.soundboarding.view.adapters.ViewContract;
+import studios.kdc.soundboarding.view.ViewContract;
 
 public class MainActivity extends AppCompatActivity implements ViewContract.ScrollViewListener
         , ViewContract.SliderListener , ViewContract.mixerProgressChange , ViewContract.waveFormListener {
 
-    private DataController dataController;
     private MainAdapter mainAdapter;
     private CustomTimelineView timelineView;
     private ImageView seekBar;
@@ -53,14 +54,14 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
     private CustomHorizontalSlider seekBarSlider;
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
-
+    private Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         this.seekBarFlag = false;
-
+        this.handler = new Handler();
         SharedPreferences sharedPreferences = this.getSharedPreferences("studios.kdc.soundboarding", MODE_PRIVATE);
         SQLiteDatabase tracksDatabase = this.openOrCreateDatabase("Data", MODE_PRIVATE, null);
         DataServiceSingleton.getInstance(tracksDatabase);
@@ -68,21 +69,20 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
             DataServiceSingleton.getInstance(tracksDatabase).loadDefaultDatabase();
             sharedPreferences.edit().putBoolean("Start", true).apply();
         }
-        this.dataController = new DataController();
         new DatabaseGetter().execute();
         this.scrollFactor = 0;
         this.initializeTimeLineView();
         this.initializeSearchView();
         this.initializeMixerButton();
         this.initializePauseButton();
-         this.initializeDrawer();
+        this.initializeDrawer();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        this.dataController.deleteReferences();
-        this.dataController = null;
+        DataController.getInstance().deleteReferences();
+        DataController.deleteInstance();
         MediaPlayerController.deleteInstance();
         MixerController.deleteInstance();
         Runtime.getRuntime().gc();
@@ -91,8 +91,8 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
     private void initializeDrawer() {
 
         ListView mDrawerList = (ListView) findViewById(R.id.left_drawer);
-        String[] items = getResources().getStringArray(R.array.options);
-        mDrawerList.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, items));
+        String[] myResArray = getResources().getStringArray(R.array.options);
+        mDrawerList.setAdapter(new CustomListViewAdapter(this, Arrays.asList(myResArray)));
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerToggle = new ActionBarDrawerToggle(
@@ -107,43 +107,53 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
             }
         };
         mDrawerLayout.addDrawerListener(mDrawerToggle);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-
+        ActionBar ab = getSupportActionBar();
+        if(ab != null) {
+            ab.setDisplayHomeAsUpEnabled(true);
+            ab.setHomeButtonEnabled(true);
+        }
    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        return  (mDrawerToggle.onOptionsItemSelected(item)) || (super.onOptionsItemSelected(item));
+        return  (this.mDrawerToggle.onOptionsItemSelected(item)) || (super.onOptionsItemSelected(item));
     }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        mDrawerToggle.syncState();
+        this.mDrawerToggle.syncState();
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        mDrawerToggle.onConfigurationChanged(newConfig);
+        this.mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            mDrawerLayout.closeDrawers();
-            switch (position){
-            case 0:
-                Intent i = new Intent(getApplicationContext() , TrackUploader.class);
-                startActivity(i);
-                break;
-            case 1:
-                break;
-                case 2:
-                break;
 
+            Intent i;
+            switch (position){
+                case 0:
+                    i = new Intent(getApplicationContext() , TrackUploader.class);
+                    startActivity(i);
+                    break;
+                case 1:
+                    i = new Intent(getApplicationContext() , GroupCreator.class);
+                    startActivity(i);
+                    break;
+                case 2:
+                    break;
+            }
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mDrawerLayout.closeDrawers();
+                }
+            }, 250);
         }
-    }
     }
 
     private void initializePauseButton(){
@@ -216,7 +226,7 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
 
             @Override
             public boolean onQueryTextChange(String s) {
-                dataController.searchTracksInGroups(s);
+                DataController.getInstance().searchTracksInGroups(s);
                 if(mainAdapter != null)
                     mainAdapter.notifyDataSetChanged();
                 return true;
@@ -238,7 +248,7 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
                     case DragEvent.ACTION_DROP:
                         String description = event.getClipData().getDescription().getLabel().toString();
                         String[] s = description.split(getResources().getString(R.string.separator));
-                        Map<String, String> trackInfo = dataController.selectTrackToMix(s[1], Integer.parseInt(s[0]));
+                        Map<String, String> trackInfo = DataController.getInstance().selectTrackToMix(s[1], Integer.parseInt(s[0]));
                         timelineView.addWaveFormsToTimeline(trackInfo);
                         if(timelineView.getChildCount() > 0){
                             if(pause_resume.getVisibility() == View.GONE)
@@ -262,18 +272,19 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
     public void onScrollChanged(CustomHorizontalScrollView scrollView, int x, int y, int oldX, int oldY) {
 
         int delta = x - oldX;
-        if((delta > 0) && ((scrollFactor + 1 ) * 150 < x) ) {
-            scrollFactor++;
-            timelineView.increaseTimelineView();
-        } else if((delta < 0) &&  ((scrollFactor - 1 ) * 150 >= x)) {
-            scrollFactor--;
-            timelineView.decreaseTimelineView();
+        int screenWidth = this.timelineView.getTextViewWidth();
+        if((delta > 0) && ((this.scrollFactor + 1 ) *  screenWidth < x) ) {
+            this.scrollFactor++;
+            this.timelineView.increaseTimelineView();
+        } else if((delta < 0) &&  ((this.scrollFactor - 1 ) *  screenWidth >= x)) {
+            this.scrollFactor--;
+            this.timelineView.decreaseTimelineView();
         }
     }
 
     @Override
     public void onSlideChanged(int startSeconds, int position) {
-      this.dataController.setStartPointTrack(position , startSeconds);
+      DataController.getInstance().setStartPointTrack(position , startSeconds);
     }
 
     @Override
@@ -293,9 +304,8 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
 
     @Override
     public void setProgressChange(double seconds) {
-       if (!this.seekBarFlag) {
+       if (!this.seekBarFlag)
             this.seekBar.setX((float) (seconds * Utils.SECOND_PIXEL_RATIO));
-        }
     }
 
     @Override
@@ -311,7 +321,7 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
 
     @Override
     public void removeWaveForm(int position) {
-            this.dataController.removeTrack(position);
+            DataController.getInstance().removeTrack(position);
             this.timelineView.removeWave(position);
             if (this.timelineView.getChildCount() < 1) {
                 this.mixer.setVisibility(View.GONE);
@@ -323,23 +333,22 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
     private class DatabaseGetter extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... voids) {
-            dataController.importDatabase();
+            DataController.getInstance().importDatabase();
             return null;
         }
         @Override
         protected void onPostExecute(Void v) {
             RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
             mainAdapter = new MainAdapter(getApplicationContext());
-            dataController.setMainAdapterList(mainAdapter);
+            DataController.getInstance().setMainAdapterList(mainAdapter);
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
             recyclerView.setLayoutManager(layoutManager);
             recyclerView.setAdapter(mainAdapter);
             int screenHeight = Utils.getScreenHeight(MainActivity.this);
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT
-                    ,(int) ( screenHeight /1.6 ));
-            params.setMargins(0,(screenHeight/15) ,0,0);
+                    ,(int) ( screenHeight / 1.6));
+            params.setMargins(0,(screenHeight / 15), 0, 0);
             recyclerView.setLayoutParams(params);
-
         }
     }
 }

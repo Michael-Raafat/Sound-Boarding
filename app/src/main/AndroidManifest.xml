@@ -10,11 +10,11 @@
         android:icon="@drawable/music_icon"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
+        android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
             >
             <intent-filter>
@@ -26,6 +26,12 @@
         <activity
             android:name=".TrackUploader"
             android:label="@string/title_activity_track_uploader"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".GroupCreator"
+            android:parentActivityName=".MainActivity"
+            android:label="@string/title_activity_group_creator"
             android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
