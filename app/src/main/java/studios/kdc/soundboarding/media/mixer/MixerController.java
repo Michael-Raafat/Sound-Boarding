@@ -1,7 +1,7 @@
 package studios.kdc.soundboarding.media.mixer;
 
 import android.content.Context;
-import studios.kdc.soundboarding.view.adapters.ViewContract;
+import studios.kdc.soundboarding.view.ViewContract;
 
 /**
  * Created by Michael on 8/10/2017.

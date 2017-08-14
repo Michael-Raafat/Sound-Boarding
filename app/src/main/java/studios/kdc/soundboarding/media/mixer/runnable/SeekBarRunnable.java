@@ -4,7 +4,7 @@ package studios.kdc.soundboarding.media.mixer.runnable;
 import android.os.Handler;
 
 import studios.kdc.soundboarding.models.imp.SelectedTrackContainerImp;
-import studios.kdc.soundboarding.view.adapters.ViewContract;
+import studios.kdc.soundboarding.view.ViewContract;
 
 public class SeekBarRunnable implements Runnable{
     private int maximumEndPoint;

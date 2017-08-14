@@ -5,8 +5,6 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.HorizontalScrollView;
 
-import studios.kdc.soundboarding.view.adapters.ViewContract;
-
 
 public class CustomHorizontalScrollView extends HorizontalScrollView{
 

@@ -35,7 +35,7 @@ import studios.kdc.soundboarding.view.CustomHorizontalScrollView;
 import studios.kdc.soundboarding.view.CustomHorizontalSlider;
 import studios.kdc.soundboarding.view.adapters.MainAdapter;
 import studios.kdc.soundboarding.view.timeline.CustomTimelineView;
-import studios.kdc.soundboarding.view.adapters.ViewContract;
+import studios.kdc.soundboarding.view.ViewContract;
 
 public class MainActivity extends AppCompatActivity implements ViewContract.ScrollViewListener
         , ViewContract.SliderListener , ViewContract.mixerProgressChange , ViewContract.waveFormListener {
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
         this.initializeSearchView();
         this.initializeMixerButton();
         this.initializePauseButton();
-         this.initializeDrawer();
+        this.initializeDrawer();
     }
 
     @Override
@@ -110,19 +110,19 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        return  (mDrawerToggle.onOptionsItemSelected(item)) || (super.onOptionsItemSelected(item));
+        return  (this.mDrawerToggle.onOptionsItemSelected(item)) || (super.onOptionsItemSelected(item));
     }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        mDrawerToggle.syncState();
+        this.mDrawerToggle.syncState();
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        mDrawerToggle.onConfigurationChanged(newConfig);
+        this.mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
@@ -261,12 +261,13 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
     public void onScrollChanged(CustomHorizontalScrollView scrollView, int x, int y, int oldX, int oldY) {
 
         int delta = x - oldX;
-        if((delta > 0) && ((scrollFactor + 1 ) * 150 < x) ) {
-            scrollFactor++;
-            timelineView.increaseTimelineView();
-        } else if((delta < 0) &&  ((scrollFactor - 1 ) * 150 >= x)) {
-            scrollFactor--;
-            timelineView.decreaseTimelineView();
+        int screenWidth = this.timelineView.getTextViewWidth();
+        if((delta > 0) && ((this.scrollFactor + 1 ) *  screenWidth < x) ) {
+            this.scrollFactor++;
+            this.timelineView.increaseTimelineView();
+        } else if((delta < 0) &&  ((this.scrollFactor - 1 ) *  screenWidth >= x)) {
+            this.scrollFactor--;
+            this.timelineView.decreaseTimelineView();
         }
     }
 
@@ -292,9 +293,8 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
 
     @Override
     public void setProgressChange(double seconds) {
-       if (!this.seekBarFlag) {
+       if (!this.seekBarFlag)
             this.seekBar.setX((float) (seconds * Utils.SECOND_PIXEL_RATIO));
-        }
     }
 
     @Override
@@ -335,10 +335,9 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
             recyclerView.setAdapter(mainAdapter);
             int screenHeight = Utils.getScreenHeight(MainActivity.this);
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT
-                    ,(int) ( screenHeight /1.6));
-            params.setMargins(0,(screenHeight/15) ,0,0);
+                    ,(int) ( screenHeight / 1.6));
+            params.setMargins(0,(screenHeight / 15), 0, 0);
             recyclerView.setLayoutParams(params);
-
         }
     }
 }

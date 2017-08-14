@@ -12,7 +12,7 @@ import studios.kdc.soundboarding.media.mixer.runnable.CustomRunnable;
 import studios.kdc.soundboarding.media.mixer.runnable.SeekBarRunnable;
 import studios.kdc.soundboarding.models.SelectedTrack;
 import studios.kdc.soundboarding.models.imp.SelectedTrackContainerImp;
-import studios.kdc.soundboarding.view.adapters.ViewContract;
+import studios.kdc.soundboarding.view.ViewContract;
 
 public class Mixer {
     private Handler handler;
