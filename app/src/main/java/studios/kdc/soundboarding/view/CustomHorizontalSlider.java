@@ -1,6 +1,7 @@
 package studios.kdc.soundboarding.view;
 
 
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,7 +44,6 @@ public class CustomHorizontalSlider implements View.OnTouchListener {
                     if (v.getX() + event.getX() - deltaX >= parentLimit.getX() && (v.getX() + event.getX() - deltaX + view.getWidth()) <= parentLimit.getWidth()) {
                         v.setX(v.getX() + event.getX() - deltaX);
                         v.setY(v.getY());
-
                     }
                     return true;
                 } else if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL) {

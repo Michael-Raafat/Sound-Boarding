@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
     private Handler handler;
+    private float initialSeekBarPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -200,7 +201,8 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
         CustomHorizontalScrollView  horizontalScrollView = (CustomHorizontalScrollView) findViewById(R.id.sc);
         horizontalScrollView.setScrollViewListener(this);
         this.addOnDragListenerOnTableTimeline(scrollView);
-        this.seekBar= (ImageView) findViewById(R.id.seeker);
+        this.seekBar = (ImageView) findViewById(R.id.seeker);
+        this.initialSeekBarPosition = this.seekBar.getX();
         this.seekBarSlider = new CustomHorizontalSlider(horizontalScrollView, seekBar , (View) seekBar.getParent(), null);
         this.seekBar.setOnTouchListener(seekBarSlider);
         LinearLayout linearLayout = (LinearLayout) findViewById(R.id.timeline);
@@ -239,12 +241,6 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
             @Override
             public boolean onDrag(View v, DragEvent event) {
                 switch (event.getAction()) {
-                    case DragEvent.ACTION_DRAG_STARTED:
-                        break;
-                    case DragEvent.ACTION_DRAG_ENTERED:
-                        break;
-                    case DragEvent.ACTION_DRAG_EXITED:
-                        break;
                     case DragEvent.ACTION_DROP:
                         String description = event.getClipData().getDescription().getLabel().toString();
                         String[] s = description.split(getResources().getString(R.string.separator));
@@ -255,17 +251,13 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
                                 mixer.setVisibility(View.VISIBLE);
                         }
                         break;
-                    case DragEvent.ACTION_DRAG_ENDED:
-                        break;
                     default:
                         break;
                 }
-
                 return true;
             }
         });
     }
-
 
 
     @Override
@@ -310,7 +302,7 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
 
     @Override
     public void notifyTrackFinished() {
-        this.seekBar.setX(10);
+        this.seekBar.setX(this.initialSeekBarPosition);
         this.mixer.setVisibility(View.VISIBLE);
         this.pause_resume.setVisibility(View.GONE);
         this.pauseResume = true;
@@ -326,7 +318,7 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
             if (this.timelineView.getChildCount() < 1) {
                 this.mixer.setVisibility(View.GONE);
                 this.pause_resume.setVisibility(View.GONE);
-                this.seekBar.setX(10);
+                this.seekBar.setX(this.initialSeekBarPosition);
             }
 
     }

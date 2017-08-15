@@ -35,49 +35,7 @@
         android:layout_below="@+id/recycler_view"
         android:orientation="horizontal"/>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/timeline"
-        android:fillViewport="true"
-        android:background="@drawable/timeline"
-        android:id="@+id/table_scroll"
-        >
-
-        <studios.kdc.soundboarding.view.CustomHorizontalScrollView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fillViewport="true"
-            android:scrollbars="horizontal"
-            android:id="@+id/sc"
-            >
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:orientation="horizontal"
-                android:layout_height="wrap_content">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginStart="10dp"
-                    android:animateLayoutChanges="true"
-                    android:id="@+id/timeline_view"
-                    android:orientation="vertical">
-                </LinearLayout>
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/seeker"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginStart="10dp"
-                    android:src="@drawable/seeker"/>
-
-            </FrameLayout>
-
-        </studios.kdc.soundboarding.view.CustomHorizontalScrollView>
-    </ScrollView>
+    <include layout="@layout/timeline_view"/>
 
     <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
 

@@ -29,8 +29,8 @@ public class SeekBarRunnable implements Runnable{
     @Override
     public void run() {
         double  currentDuration = progressListener.getCurrentProgress(); // in seconds
-        progressListener.setProgressChange(currentDuration + 1.5);
-        if(currentDuration < maximumEndPoint && !SelectedTrackContainerImp.getInstance().getTracks().isEmpty()) {
+        progressListener.setProgressChange(currentDuration + 1);
+        if(currentDuration < maximumEndPoint - 1 && !SelectedTrackContainerImp.getInstance().getTracks().isEmpty()) {
             handler.postDelayed(this, 1000);
         } else {
             progressListener.notifyTrackFinished();
