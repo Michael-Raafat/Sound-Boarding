@@ -264,11 +264,11 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
     public void onScrollChanged(CustomHorizontalScrollView scrollView, int x, int y, int oldX, int oldY) {
 
         int delta = x - oldX;
-        int screenWidth = this.timelineView.getTextViewWidth();
-        if((delta > 0) && ((this.scrollFactor + 1 ) *  screenWidth < x) ) {
+        int textViewWidth = this.timelineView.getTextViewWidth();
+        if((delta > 0) && ((this.scrollFactor + 1 ) *  textViewWidth < x) ) {
             this.scrollFactor++;
             this.timelineView.increaseTimelineView();
-        } else if((delta < 0) &&  ((this.scrollFactor - 1 ) *  screenWidth >= x)) {
+        } else if((delta < 0) &&  ((this.scrollFactor - 1 ) *  textViewWidth >= x)) {
             this.scrollFactor--;
             this.timelineView.decreaseTimelineView();
         }

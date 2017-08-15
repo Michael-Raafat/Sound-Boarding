@@ -1,11 +1,11 @@
 package studios.kdc.soundboarding.view;
 
-
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
+
+import studios.kdc.soundboarding.Utils;
 
 public class CustomHorizontalSlider implements View.OnTouchListener {
 
@@ -43,14 +43,15 @@ public class CustomHorizontalSlider implements View.OnTouchListener {
                 if (action == MotionEvent.ACTION_MOVE) {
                     if (v.getX() + event.getX() - deltaX >= parentLimit.getX() && (v.getX() + event.getX() - deltaX + view.getWidth()) <= parentLimit.getWidth()) {
                         v.setX(v.getX() + event.getX() - deltaX);
-                        v.setY(v.getY());
+                    } else if(v.getX() + event.getX() - deltaX < parentLimit.getX() ){
+                        v.setX(parentLimit.getX());
                     }
                     return true;
                 } else if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL) {
                     isDragging = false;
                     if (listener != null) {
                         ViewGroup parent = (ViewGroup) v.getParent();
-                        listener.onSlideChanged((int) (v.getX() / 10), parent.indexOfChild(v));
+                        listener.onSlideChanged((int) (v.getX() / Utils.SECOND_PIXEL_RATIO), parent.indexOfChild(v));
                     }
                     return true;
                 }

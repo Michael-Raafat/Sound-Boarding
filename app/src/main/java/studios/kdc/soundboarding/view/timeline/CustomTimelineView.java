@@ -74,14 +74,15 @@ public class CustomTimelineView  {
 
     public void addWaveFormsToTimeline(Map<String, String> trackInfo){
         try {
-
+            int screenHeight = Utils.getScreenHeight(activity);
+            int screenWidth = Utils.getScreenWidth(activity);
             FrameLayout frameLayout = new FrameLayout(activity.getApplicationContext());
             TextView name = new TextView(activity.getApplicationContext());
             //TODO track extension
             byte[] soundBytes = getWaveFormByteArray(trackInfo.get("grpName") , trackInfo.get("name") , ".mp3" );
-            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(Integer.parseInt(trackInfo.get("duration")) * Utils.SECOND_PIXEL_RATIO, 100);
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(Integer.parseInt(trackInfo.get("duration")) * Utils.SECOND_PIXEL_RATIO, (int)(screenHeight / 19.2));
             LinearLayout.LayoutParams frameParam = new LinearLayout.LayoutParams(Utils.TIMELINE_LENGTH_LIMIT , ViewGroup.LayoutParams.WRAP_CONTENT);
-            frameParam.setMargins(10,10,10,10);
+            frameParam.setMargins(0,0,0, (screenHeight / 192));
             frameLayout.setLayoutParams(frameParam);
             name.setLayoutParams(params);
             AudioWaveView waveForm = new AudioWaveView(activity.getApplicationContext());
@@ -92,8 +93,8 @@ public class CustomTimelineView  {
             name.setText(trackInfo.get("grpName") + " - " + trackInfo.get("name"));
             name.setTextColor(Color.WHITE);
             ImageButton optionsButton = new ImageButton(activity.getApplicationContext());
-            optionsButton.setBackgroundColor(Color.CYAN);
-            FrameLayout.LayoutParams optionsParams = new FrameLayout.LayoutParams(30 , 30);
+            optionsButton.setBackgroundColor(activity.getResources().getColor(R.color.cyan));
+            FrameLayout.LayoutParams optionsParams = new FrameLayout.LayoutParams((screenWidth / 36) ,(screenHeight / 64));
             optionsButton.setLayoutParams(optionsParams);
             frameLayout.addView(waveForm);
             frameLayout.addView(name);
@@ -171,7 +172,7 @@ public class CustomTimelineView  {
             this.context = context;
             this.setOrientation(HORIZONTAL);
             this.params = new LinearLayout.LayoutParams(textViewWidth, ViewGroup.LayoutParams.WRAP_CONTENT);
-            this.params.setMargins(0, 0, (int)(Utils.getScreenWidth(context) / 216), 0);
+            this.params.setMargins(0, 0, (Utils.getScreenWidth(context) / 216), 0);
             this.numberOfTextViews = (Utils.getScreenWidth(context) + this.textViewWidth) / this.textViewWidth;
             this.initializeTextViews();
         }

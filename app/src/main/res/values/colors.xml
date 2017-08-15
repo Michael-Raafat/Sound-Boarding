@@ -20,4 +20,5 @@
     <color name="white_translucent">#80FFFFFF</color>
     <color name="white">#FFFFFF</color>
     <color name="light_grey">#c0c0c0c0</color>
+    <color name="cyan">#69ACD8</color>
 </resources>
