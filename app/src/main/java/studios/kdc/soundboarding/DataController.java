@@ -119,8 +119,9 @@ public class DataController {
         trackInfo.put("name" , trackData.get(0));
         trackInfo.put("path" , trackData.get(2));
         trackInfo.put("duration" , String.valueOf(trackData.get(1)));
+        trackInfo.put("extension", trackData.get(3));
+        trackInfo.put("type", trackData.get(4));
         trackInfo.put("grpName" , group.getName());
-
         return trackInfo;
     }
 
@@ -134,6 +135,14 @@ public class DataController {
 
     public List<String> getGroupNames() {
         return DataServiceSingleton.getInstance().getGroupNamesInDatabase();
+    }
+
+    public String getTrackPathByName(String trackName, String groupName) {
+        return this.groupContainer.getGroupByName(groupName).getTrackByName(trackName).getPath();
+    }
+
+    public String getTrackTypeByName(String trackName, String groupName) {
+        return this.groupContainer.getGroupByName(groupName).getTrackByName(trackName).getType();
     }
 
     public void createGroup(String name, int color) {

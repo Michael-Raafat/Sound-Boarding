@@ -3,6 +3,7 @@ package studios.kdc.soundboarding.media.singlePlayer;
 import android.content.Context;
 import android.view.View;
 
+import studios.kdc.soundboarding.DataController;
 import studios.kdc.soundboarding.media.MediaPlayerHandler;
 
 
@@ -38,7 +39,9 @@ public class MediaPlayerController implements  MediaPlayerContract.ControllerAct
            this.listener.notifyOnTrackCompletion();
        }
         this.listener = listener;
-        mediaPlayerHandler.playSong(groupName + "/" + name);
+        String path = DataController.getInstance().getTrackPathByName(groupName, name);
+        String type = DataController.getInstance().getTrackTypeByName(groupName, name);
+        mediaPlayerHandler.playSong(type, path);
     }
 
     @Override
