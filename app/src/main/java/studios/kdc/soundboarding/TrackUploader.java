@@ -52,13 +52,15 @@ public class TrackUploader extends AppCompatActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(trackUserName.getText().toString().isEmpty()){
+                if(trackUserName.getText().toString().trim().isEmpty() &&
+                        trackUserName.getText().toString().trim().toString().replace("\n","").isEmpty()){
                     Toast.makeText(getApplicationContext() ,"Name is required" , Toast.LENGTH_LONG).show();
                 } else if (trackUploadName.getText().toString().isEmpty()) {
                     Toast.makeText(getApplicationContext() ,"You must choose track to upload" , Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(getApplicationContext() ,"Track is successfully uploaded" , Toast.LENGTH_LONG).show();
-                    // TODO INSERT INTO DB && updating list
+                    //TODO PATH and GROUPNAME
+                    DataController.getInstance().createTrack(trackUserName.getText().toString().trim(), "", "");
                     finish();
                 }
             }
