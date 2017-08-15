@@ -138,8 +138,9 @@ public class DataController {
     }
 
     public void createGroup(String name, int color) {
-        Group group = new GroupImp(name, "#"+ Integer.toHexString(color));
+        Group group = new GroupImp(name, color);
         groupContainer.addGroup(group);
+        notify();
         DataServiceSingleton.getInstance().addGroup(group);
     }
 

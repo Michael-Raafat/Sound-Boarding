@@ -54,6 +54,12 @@ public class GroupImp implements Group {
         this.name = name;
     }
 
+    public GroupImp(String name, int color){
+        tracks = new ArrayList<Track>();
+        this.color = color;
+        this.imagePath = "";
+        this.name = name;
+    }
 
     @Override
     public void setName(String name) {

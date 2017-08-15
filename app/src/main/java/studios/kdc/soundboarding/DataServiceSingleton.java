@@ -59,7 +59,7 @@ public class DataServiceSingleton {
         database.execSQL("INSERT INTO War (name, duration, path, extension, type) VALUES" +
                 " ('battle', 5, 'War/battle.mp3', 'mp3', 'assets')");
         database.execSQL("INSERT INTO War (name, duration, path, extension, type) VALUES" +
-                " ('artillery', 1, 'artillery.mp3', 'mp3', 'assets')");
+                " ('artillery', 1, 'War/artillery.mp3', 'mp3', 'assets')");
         database.execSQL("INSERT INTO War (name, duration, path, extension, type) VALUES" +
                 " ('chainsaw', 4, 'War/chainsaw.mp3', 'mp3', 'assets')");
         database.execSQL("INSERT INTO War (name, duration, path, extension, type) VALUES" +
@@ -100,7 +100,7 @@ public class DataServiceSingleton {
         database.execSQL("INSERT INTO Cartoon (name, duration, path, extension, type) VALUES" +
                 " ('bush_baby', 99, 'Cartoon/bush_baby.mp3', 'mp3', 'assets')");
         database.execSQL("INSERT INTO Cartoon (name, duration, path, extension, type) VALUES" +
-                " ('popcorn', 75, 'Cartoon/bush_baby.mp3', 'mp3', 'assets')");
+                " ('popcorn', 75, 'Cartoon/popcorn.mp3', 'mp3', 'assets')");
         database.execSQL("INSERT INTO Cartoon (name, duration, path, extension, type) VALUES" +
                 " ('Tom and Jerry', 24, 'Cartoon/Tom and Jerry.mp3', 'mp3', 'assets')");
 
