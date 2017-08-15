@@ -34,13 +34,11 @@ public class MediaPlayerController implements  MediaPlayerContract.ControllerAct
     }
 
     @Override
-    public void singlePlayAndPauseTrack(String groupName, String name, MediaPlayerContract.OnCompletionListener listener) {
+    public void singlePlayAndPauseTrack(String type, String path, MediaPlayerContract.OnCompletionListener listener) {
        if(this.listener != null && this.listener != listener ) {
            this.listener.notifyOnTrackCompletion();
        }
         this.listener = listener;
-        String path = DataController.getInstance().getTrackPathByName(groupName, name);
-        String type = DataController.getInstance().getTrackTypeByName(groupName, name);
         mediaPlayerHandler.playSong(type, path);
     }
 

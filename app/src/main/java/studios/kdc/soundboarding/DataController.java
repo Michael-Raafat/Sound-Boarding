@@ -137,14 +137,6 @@ public class DataController {
         return DataServiceSingleton.getInstance().getGroupNamesInDatabase();
     }
 
-    public String getTrackPathByName(String trackName, String groupName) {
-        return this.groupContainer.getGroupByName(groupName).getTrackByName(trackName).getPath();
-    }
-
-    public String getTrackTypeByName(String trackName, String groupName) {
-        return this.groupContainer.getGroupByName(groupName).getTrackByName(trackName).getType();
-    }
-
     public void createGroup(String name, int color) {
         Group group = new GroupImp(name, Integer.toHexString(color));
         groupContainer.addGroup(group);
