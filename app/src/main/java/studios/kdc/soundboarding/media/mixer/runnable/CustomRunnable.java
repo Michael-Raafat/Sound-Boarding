@@ -26,9 +26,9 @@ public class CustomRunnable implements Runnable {
 
     @Override
     public void run() {
-            mediaPlayerHandler.playSong(this.trackType, this.trackPath);
-            mediaPlayerHandler.seekTo(seekPosition);
-            mediaPlayerHandler.start();
+            this.mediaPlayerHandler.playSong(this.trackType, this.trackPath);
+            this.mediaPlayerHandler.seekTo(seekPosition);
+            this.mediaPlayerHandler.start();
     }
 
 
@@ -43,10 +43,6 @@ public class CustomRunnable implements Runnable {
 
     public void setTrackType(String trackType) {
         this.trackType = trackType;
-    }
-
-    public String getTrackPath() {
-        return trackPath;
     }
 
     public void setTrackPath(String trackPath) {

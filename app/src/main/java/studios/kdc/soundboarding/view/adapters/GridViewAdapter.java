@@ -80,9 +80,8 @@ public class GridViewAdapter extends BaseAdapter   {
             holder.getTextView().setText(allItemsResourceID.get(position).getName());
         }
         setOnLongClickListener(view, this.cardPosition , holder.getTextView().getText().toString());
-        if (mediaPlayerController.checkTrackChanged(view, this.cardPosition, holder.getTextView().getText().toString())) {
-            setOnClickListener(view, holder.getCardView() , holder.getTextView().getText().toString(), context);
-        }
+        if (mediaPlayerController.checkTrackChanged(view, this.cardPosition, holder.getTextView().getText().toString()))
+            setOnClickListener(view, holder.getCardView() , allItemsResourceID.get(position).getType() ,allItemsResourceID.get(position).getPath(), context);
         return view;
     }
 
@@ -91,27 +90,28 @@ public class GridViewAdapter extends BaseAdapter   {
     }
 
 
-    private void setOnClickListener(View v, CardView card ,  String name, Context context) {
-        v.setOnClickListener(new ChoiceClickListener(card ,name, groupName, context));
+    private void setOnClickListener(View v, CardView card ,  String type, String path , Context context) {
+        v.setOnClickListener(new ChoiceClickListener(card, type, path, context));
     }
 
     private class ViewHolder {
-        private TextView getTextView() {
-            return textView;
-        }
 
-        private RelativeLayout getColor() {
-            return color;
-        }
 
         private TextView textView;
         private RelativeLayout color;
+        private CardView cardView;
 
+        private TextView getTextView() {
+            return textView;
+        }
+        private RelativeLayout getColor() {
+            return color;
+        }
         private CardView getCardView() {
             return cardView;
         }
 
-        private CardView cardView;
+
 
         ViewHolder(View view) {
             color = view.findViewById(R.id.color_div);
@@ -129,7 +129,6 @@ public class GridViewAdapter extends BaseAdapter   {
         private int position;
         private String name;
         private Context context;
-
 
         private ChoiceTouchListener(int position, String name, Context context) {
             this.position = position;
@@ -150,21 +149,21 @@ public class GridViewAdapter extends BaseAdapter   {
 
     private class ChoiceClickListener implements View.OnClickListener, MediaPlayerContract.OnCompletionListener {
 
-        private String name;
-        private String groupName;
+        private String type;
+        private String path;
         private CardView card;
         private Context context;
-        private ChoiceClickListener(CardView cardView ,String name, String groupName , Context context) {
+        private ChoiceClickListener(CardView cardView ,String type, String path , Context context) {
 
-            this.name = name;
-            this.groupName = groupName;
+            this.type = type;
+            this.path = path;
             this.card = cardView;
             this.context = context;
         }
 
         @Override
         public void onClick(View view) {
-            mediaPlayerController.singlePlayAndPauseTrack(this.groupName, name, this);
+            mediaPlayerController.singlePlayAndPauseTrack(this.type, this.path, this);
             this.toggleCardColor();
         }
 
