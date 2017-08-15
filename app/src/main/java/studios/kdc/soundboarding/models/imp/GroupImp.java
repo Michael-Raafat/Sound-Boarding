@@ -45,9 +45,10 @@ public class GroupImp implements Group {
         this.imagePath = imagePath;
     }
 
-    public GroupImp(String name){
+    public GroupImp(String name, String color){
         tracks = new ArrayList<Track>();
-        this.color = Color.parseColor("#41494c");
+        this.color = Color.parseColor(color);
+        this.imagePath = "";
         this.name = name;
     }
 

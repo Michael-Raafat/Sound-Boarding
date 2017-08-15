@@ -42,11 +42,13 @@ public class GroupCreator extends AppCompatActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(grpName.getText().toString().isEmpty()){
+                if(grpName.getText().toString().trim().isEmpty() &&
+                        grpName.getText().toString().trim().replace("\n","").isEmpty()){
                     Toast.makeText(getApplicationContext() ,"Name is required" , Toast.LENGTH_LONG).show();
                 }else {
                     Toast.makeText(getApplicationContext() ,"Group is successfully created" , Toast.LENGTH_LONG).show();
                     // TODO INSERT INTO DB && updating list
+                    DataController.getInstance().createGroup(grpName.getText().toString(), chosenColor) ;
                     finish();
                 }
             }

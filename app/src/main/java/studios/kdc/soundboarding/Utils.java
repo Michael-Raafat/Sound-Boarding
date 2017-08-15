@@ -2,6 +2,7 @@ package studios.kdc.soundboarding;
 
 
 import android.app.Activity;
+import android.media.MediaPlayer;
 import android.util.DisplayMetrics;
 
 import java.io.ByteArrayOutputStream;
@@ -38,6 +39,17 @@ public class Utils {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         return displayMetrics.heightPixels;
+    }
+
+    public static int getTrackDuration(String path){
+        MediaPlayer mediaPlayer = new MediaPlayer();
+        try {
+            mediaPlayer.setDataSource(path);
+            return mediaPlayer.getDuration();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
 }

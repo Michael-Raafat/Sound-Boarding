@@ -132,4 +132,22 @@ public class DataController {
         return DataServiceSingleton.getInstance().getGroupNamesInDatabase();
     }
 
+    public void createGroup(String name, int color) {
+        Group group = new GroupImp(name, Integer.toHexString(color));
+        groupContainer.addGroup(group);
+        notify();
+        DataServiceSingleton.getInstance().addGroup(group);
+    }
+
+    public void createTrack(String trackName, String path, String groupName) {
+        List<String> trackData = new ArrayList<>();
+        trackData.add(trackName);
+        trackData.add(String.valueOf(Utils.getTrackDuration(path)));
+        trackData.add(path);
+        trackData.add(".mp3");
+        Track newTrack = new TrackImp(trackData);
+        groupContainer.getGroupByName(groupName).addTrack(newTrack);
+        DataServiceSingleton.getInstance().addTrack(newTrack, groupName);
+    }
+
 }

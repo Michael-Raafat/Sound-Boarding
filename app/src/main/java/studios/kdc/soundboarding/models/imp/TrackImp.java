@@ -33,22 +33,18 @@ public class TrackImp implements Track{
         this.extension = data.get(3);
     }
 
-    public TrackImp(String name, Group group) {
-        this.name = name;
-        this.path = "";
-        this.trackDuration = 0;
-    }
-
-    public TrackImp(String name, Group group, int trackDuration) {
-        this.name = name;
-        this.path = "";
-        this.trackDuration = trackDuration;
-    }
-
-    public TrackImp(String name, String path, Group group, int trackDuration) {
+    public TrackImp(String name, String path, String extension, int trackDuration) {
         this.name = name;
         this.path = path;
         this.trackDuration = trackDuration;
+        this.extension = extension;
+    }
+
+    public TrackImp(String name, String path, int trackDuration) {
+        this.name = name;
+        this.path = path;
+        this.trackDuration = trackDuration;
+        this.extension = "";
     }
     @Override
     public void setName(String name) {
