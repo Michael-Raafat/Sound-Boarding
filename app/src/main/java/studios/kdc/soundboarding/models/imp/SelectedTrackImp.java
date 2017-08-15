@@ -19,6 +19,7 @@ public class SelectedTrackImp implements SelectedTrack {
     private int startPoint;
     private int endPoint;
     private String groupName;
+    private String type;
 
 
 
@@ -27,16 +28,18 @@ public class SelectedTrackImp implements SelectedTrack {
         this.trackDuration = Integer.valueOf(data.get(1));
         this.path = data.get(2);
         this.extension = data.get(3);
+        this.type = data.get(4);
         this.startPoint = 0;
         this.endPoint = 0;
         this.groupName = groupName;
     }
 
-    public SelectedTrackImp(String name, int trackDuration, String path, String extension) {
+    public SelectedTrackImp(String name, int trackDuration, String path, String extension, String type) {
         this.name = name;
         this.trackDuration = trackDuration;
         this.path = path;
         this.extension = extension;
+        this.type = type;
         this.startPoint = 0;
         this.endPoint = 0;
     }
@@ -111,6 +114,16 @@ public class SelectedTrackImp implements SelectedTrack {
     @Override
     public String getExtension() {
         return extension;
+    }
+
+    @Override
+    public String getType() {
+        return type;
+    }
+
+    @Override
+    public void setType(String type) {
+        this.type = type;
     }
 
 

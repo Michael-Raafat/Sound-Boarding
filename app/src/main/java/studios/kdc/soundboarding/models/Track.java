@@ -45,4 +45,7 @@ public interface Track {
 
     String getExtension();
 
+    String getType();
+
+    void setType(String type);
 }

@@ -50,50 +50,76 @@ public class DataServiceSingleton {
         database.execSQL("INSERT INTO groups (name, color) VALUES ('War', '#672543')");
         database.execSQL("INSERT INTO groups (name, color) VALUES ('Cartoon', '#c8498b')");
 
-        database.execSQL("CREATE TABLE IF NOT EXISTS War (name VARCHAR, duration INTEGER, path VARCHAR, extension VARCHAR)");
-        database.execSQL("INSERT INTO War (name, duration, path, extension) VALUES ('explode', 1, 'file:///assets/War/explode.mp3', 'mp3')");
-        database.execSQL("INSERT INTO War (name, duration, path, extension) VALUES ('bazooka', 1, 'file:///assets/War/bazooka.mp3', 'mp3')");
-        database.execSQL("INSERT INTO War (name, duration, path, extension) VALUES ('battle', 5, 'file:///assets/War/battle.mp3', 'mp3')");
-        database.execSQL("INSERT INTO War (name, duration, path, extension) VALUES ('artillery', 1, 'file:///assets/War/artillery.mp3', 'mp3')");
-        database.execSQL("INSERT INTO War (name, duration, path, extension) VALUES ('chainsaw', 4, 'file:///assets/War/chainsaw.mp3', 'mp3')");
-        database.execSQL("INSERT INTO War (name, duration, path, extension) VALUES ('bomb', 2, 'file:///assets/War/bomb.mp3', 'mp3')");
+        database.execSQL("CREATE TABLE IF NOT EXISTS War" +
+                " (name VARCHAR, duration INTEGER, path VARCHAR, extension VARCHAR, type VARCHAR)");
+        database.execSQL("INSERT INTO War (name, duration, path, extension, type) VALUES" +
+                " ('explode', 1, 'War/explode.mp3', 'mp3', 'assets')");
+        database.execSQL("INSERT INTO War (name, duration, path, extension, type) VALUES" +
+                " ('bazooka', 1, 'War/bazooka.mp3', 'mp3', 'assets')");
+        database.execSQL("INSERT INTO War (name, duration, path, extension, type) VALUES" +
+                " ('battle', 5, 'War/battle.mp3', 'mp3', 'assets')");
+        database.execSQL("INSERT INTO War (name, duration, path, extension, type) VALUES" +
+                " ('artillery', 1, 'artillery.mp3', 'mp3', 'assets')");
+        database.execSQL("INSERT INTO War (name, duration, path, extension, type) VALUES" +
+                " ('chainsaw', 4, 'War/chainsaw.mp3', 'mp3', 'assets')");
+        database.execSQL("INSERT INTO War (name, duration, path, extension, type) VALUES" +
+                " ('bomb', 2, 'War/bomb.mp3', 'mp3', 'assets')");
 
 
-        //TODO path of assets
-        database.execSQL("CREATE TABLE IF NOT EXISTS Nature (name VARCHAR, duration INTEGER, path VARCHAR, extension VARCHAR)");
-        database.execSQL("INSERT INTO Nature (name, duration, path, extension) VALUES ('hurricane', 4, 'file:///assets/Nature/hurricane.mp3', 'mp3')");
-        database.execSQL("INSERT INTO Nature (name, duration, path, extension) VALUES ('wind01', 9, 'file:///assets/Nature/wind01.mp3', 'mp3')");
-        database.execSQL("INSERT INTO Nature (name, duration, path, extension) VALUES ('storm-thunder', 3, 'file:///assets/Nature/storm-thunder.mp3', 'mp3')");
-        database.execSQL("INSERT INTO Nature (name, duration, path, extension) VALUES ('earthquake', 2, 'file:///assets/Nature/earthquake.mp3', 'mp3')");
-        database.execSQL("INSERT INTO Nature (name, duration, path, extension) VALUES ('rain', 4, 'file:///assets/Nature/rain.mp3', 'mp3')");
-        database.execSQL("INSERT INTO Nature (name, duration, path, extension) VALUES ('water', 50, 'file:///assets/Nature/water.mp3', 'mp3')");
+        database.execSQL("CREATE TABLE IF NOT EXISTS Nature" +
+                " (name VARCHAR, duration INTEGER, path VARCHAR, extension VARCHAR, type VARCHAR)");
+        database.execSQL("INSERT INTO Nature (name, duration, path, extension, type) VALUES" +
+                " ('hurricane', 4, 'Nature/hurricane.mp3', 'mp3', 'assets')");
+        database.execSQL("INSERT INTO Nature (name, duration, path, extension, type) VALUES" +
+                " ('wind01', 9, 'Nature/wind01.mp3', 'mp3', 'assets')");
+        database.execSQL("INSERT INTO Nature (name, duration, path, extension, type) VALUES" +
+                " ('storm-thunder', 3, 'Nature/storm-thunder.mp3', 'mp3', 'assets')");
+        database.execSQL("INSERT INTO Nature (name, duration, path, extension, type) VALUES" +
+                " ('earthquake', 2, 'Nature/earthquake.mp3', 'mp3', 'assets')");
+        database.execSQL("INSERT INTO Nature (name, duration, path, extension, type) VALUES" +
+                " ('rain', 4, 'Nature/rain.mp3', 'mp3', 'assets')");
+        database.execSQL("INSERT INTO Nature (name, duration, path, extension, type) VALUES" +
+                " ('water', 50, 'Nature/water.mp3', 'mp3', 'assets')");
 
-        database.execSQL("CREATE TABLE IF NOT EXISTS Animal (name VARCHAR, duration INTEGER, path VARCHAR, extension VARCHAR)");
-        database.execSQL("INSERT INTO Animal (name, duration, path, extension) VALUES ('Dog', 47, 'file:///assets/Animal/Dog.mp3', 'mp3')");
-        database.execSQL("INSERT INTO Animal (name, duration, path, extension) VALUES ('Kitty-noises', 3, 'file:///assets/Animal/Kitty-noises.mp3', 'mp3')");
+        database.execSQL("CREATE TABLE IF NOT EXISTS Animal" +
+                " (name VARCHAR, duration INTEGER, path VARCHAR, extension VARCHAR, type VARCHAR)");
+        database.execSQL("INSERT INTO Animal (name, duration, path, extension, type) VALUES" +
+                " ('Dog', 47, 'Animal/Dog.mp3', 'mp3', 'assets')");
+        database.execSQL("INSERT INTO Animal (name, duration, path, extension, type) VALUES" +
+                " ('Kitty-noises', 3, 'Animal/Kitty-noises.mp3', 'mp3', 'assets')");
 
-        database.execSQL("CREATE TABLE IF NOT EXISTS Car (name VARCHAR, duration INTEGER, path VARCHAR, extension VARCHAR)");
-        database.execSQL("INSERT INTO Car (name, duration, path, extension) VALUES ('vehicle162', 6, 'file:///assets/Car/vehicle162.mp3', 'mp3')");
-        database.execSQL("INSERT INTO Car (name, duration, path, extension) VALUES ('vehicle165', 6, 'file:///assets/Car/vehicle165.mp3', 'mp3')");
+        database.execSQL("CREATE TABLE IF NOT EXISTS Car" +
+                " (name VARCHAR, duration INTEGER, path VARCHAR, extension VARCHAR, type VARCHAR)");
+        database.execSQL("INSERT INTO Car (name, duration, path, extension, type) VALUES" +
+                " ('vehicle162', 6, 'Car/vehicle162.mp3', 'mp3', 'assets')");
+        database.execSQL("INSERT INTO Car (name, duration, path, extension, type) VALUES" +
+                " ('vehicle165', 6, 'Car/vehicle165.mp3', 'mp3', 'assets')");
 
-        database.execSQL("CREATE TABLE IF NOT EXISTS Cartoon (name VARCHAR, duration INTEGER, path VARCHAR, extension VARCHAR)");
-        database.execSQL("INSERT INTO Cartoon (name, duration, path, extension) VALUES ('bush_baby', 99, 'file:///assets/Cartoon/bush_baby.mp3', 'mp3')");
-        database.execSQL("INSERT INTO Cartoon (name, duration, path, extension) VALUES ('popcorn', 75, 'file:///assets/Cartoon/bush_baby.mp3', 'mp3')");
-        database.execSQL("INSERT INTO Cartoon (name, duration, path, extension) VALUES ('Tom and Jerry', 24, 'file:///assets/Cartoon/Tom and Jerry.mp3', 'mp3')");
+        database.execSQL("CREATE TABLE IF NOT EXISTS Cartoon" +
+                " (name VARCHAR, duration INTEGER, path VARCHAR, extension VARCHAR, type VARCHAR)");
+        database.execSQL("INSERT INTO Cartoon (name, duration, path, extension, type) VALUES" +
+                " ('bush_baby', 99, 'Cartoon/bush_baby.mp3', 'mp3', 'assets')");
+        database.execSQL("INSERT INTO Cartoon (name, duration, path, extension, type) VALUES" +
+                " ('popcorn', 75, 'Cartoon/bush_baby.mp3', 'mp3', 'assets')");
+        database.execSQL("INSERT INTO Cartoon (name, duration, path, extension, type) VALUES" +
+                " ('Tom and Jerry', 24, 'Cartoon/Tom and Jerry.mp3', 'mp3', 'assets')");
 
 
     }
 
     public void addGroup(Group group) {
-        database.execSQL("CREATE TABLE IF NOT EXISTS " + group.getName() + " (name VARCHAR, duration INTEGER, path VARCHAR, extension VARCHAR)");
+        database.execSQL("CREATE TABLE IF NOT EXISTS " +
+                group.getName() + " (name VARCHAR, duration INTEGER, path VARCHAR, extension VARCHAR, type VARCHAR)");
         database.execSQL("INSERT INTO groups (name, color, imagePath) VALUES ('"+ group.getName() +
                 "', "+ group.getColor() +"', '"+ group.getImagePath()
                 +"')");
     }
 
     public void addTrack(Track track, String groupName) {
-        database.execSQL("INSERT INTO "+ groupName +" (name, duration, path, extension) VALUES ('"+
-                track.getName() +"', "+ String.valueOf(track.getTrackDuration()) +", '"+ track.getPath() +"', '"+ track.getExtension() +"')");
+        database.execSQL("INSERT INTO "+ groupName +" (name, duration, path, extension, type) VALUES ('"+
+                track.getName() + "', " + String.valueOf(track.getTrackDuration()) + ", '"+
+                track.getPath() +"', '"+ track.getExtension() +"', '"+
+                track.getType() + "')");
     }
 
     public void removeTrack(Track track, String groupName) {
@@ -141,6 +167,7 @@ public class DataServiceSingleton {
         int durationIndex = cursor.getColumnIndex("duration");
         int pathIndex = cursor.getColumnIndex("path");
         int extensionIndex = cursor.getColumnIndex("extension");
+        int typeIndex = cursor.getColumnIndex("type");
         cursor.moveToFirst();
         List<List<String>> tracks = new ArrayList<>();
         while (!cursor.isAfterLast()) {
@@ -149,6 +176,7 @@ public class DataServiceSingleton {
             trackInfo.add(String.valueOf(cursor.getInt(durationIndex)));
             trackInfo.add(cursor.getString(pathIndex));
             trackInfo.add(cursor.getString(extensionIndex));
+            trackInfo.add(cursor.getString(typeIndex));
             tracks.add(trackInfo);
             cursor.moveToNext();
         }
@@ -205,12 +233,14 @@ public class DataServiceSingleton {
         int durationIndex = tracksCursor.getColumnIndex("duration");
         int pathIndex = tracksCursor.getColumnIndex("path");
         int extensionIndex = tracksCursor.getColumnIndex("extension");
+        int typeIndex = tracksCursor.getColumnIndex("type");
         tracksCursor.moveToFirst();
         List<String> trackData = new ArrayList<>();
         trackData.add(tracksCursor.getString(nameIndex));
         trackData.add(String.valueOf(tracksCursor.getInt(durationIndex)));
         trackData.add(tracksCursor.getString(pathIndex));
         trackData.add(tracksCursor.getString(extensionIndex));
+        trackData.add(tracksCursor.getString(typeIndex));
         return trackData;
     }
 

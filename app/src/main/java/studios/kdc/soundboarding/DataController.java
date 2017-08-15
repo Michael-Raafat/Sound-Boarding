@@ -143,12 +143,13 @@ public class DataController {
         DataServiceSingleton.getInstance().addGroup(group);
     }
 
-    public void createTrack(String trackName, String path, String groupName) {
+    public void createTrack(String trackName, String path, String type, String groupName) {
         List<String> trackData = new ArrayList<>();
         trackData.add(trackName);
         trackData.add(String.valueOf(Utils.getTrackDuration(path)));
         trackData.add(path);
         trackData.add(".mp3");
+        trackData.add(type);
         Track newTrack = new TrackImp(trackData);
         this.groupContainer.getGroupByName(groupName).addTrack(newTrack);
         this.notifierListener.notifyDataChanged();

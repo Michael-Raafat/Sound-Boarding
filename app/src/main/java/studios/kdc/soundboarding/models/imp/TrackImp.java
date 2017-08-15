@@ -26,18 +26,23 @@ public class TrackImp implements Track{
      */
     private String path;
 
+    private String type;
+
+
     public TrackImp(List<String> data) {
         this.name = data.get(0);
         this.trackDuration = Integer.valueOf(data.get(1));
         this.path = data.get(2);
         this.extension = data.get(3);
+        this.type = data.get(4);
     }
 
-    public TrackImp(String name, String path, String extension, int trackDuration) {
+    public TrackImp(String name, int trackDuration, String path, String extension, String type) {
         this.name = name;
         this.path = path;
         this.trackDuration = trackDuration;
         this.extension = extension;
+        this.type = type;
     }
 
     public TrackImp(String name, String path, int trackDuration) {
@@ -45,6 +50,7 @@ public class TrackImp implements Track{
         this.path = path;
         this.trackDuration = trackDuration;
         this.extension = "";
+        this.type = "";
     }
     @Override
     public void setName(String name) {
@@ -85,5 +91,15 @@ public class TrackImp implements Track{
     public String getExtension() {
         return this.extension;
     }
+
+    @Override
+    public String getType() {
+        return type;
+    }
+    @Override
+    public void setType(String type) {
+        this.type = type;
+    }
+
 
 }

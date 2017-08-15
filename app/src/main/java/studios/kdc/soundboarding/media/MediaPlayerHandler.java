@@ -6,6 +6,9 @@ import android.content.res.AssetFileDescriptor;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 
+import studios.kdc.soundboarding.media.playerStrategy.MediaPlayerStrategy;
+import studios.kdc.soundboarding.media.playerStrategy.PlayerStrategyFactory;
+
 
 /**
  * Created by Michael on 8/8/2017.
@@ -57,28 +60,29 @@ public abstract class MediaPlayerHandler {
     protected abstract void setMediaPlayerListener();
 
     @SuppressLint("NewApi")
-    public void playSong(String name) {
+    public void playSong(String type, String path) {
         if (mediaPlayer.getDuration() != -1) {
-            if(mediaPlayer.isPlaying() && this.trackName.equals(name)) {
+            if(mediaPlayer.isPlaying() && this.trackName.equals(type)) {
                 mediaPlayer.pause();
                 this.currentPosition = mediaPlayer.getCurrentPosition();
                 flag = true;
                 return;
             }
         }
-        if (trackName != null && trackName.equals(name) && flag) {
+        if (trackName != null && trackName.equals(type) && flag) {
             this.seekTo(currentPosition);
             this.start();
             flag = false;
             return;
         }
         this.mediaPlayer.reset();
-        try {  //todo call to playing strategy
-            AssetFileDescriptor afd = context.getAssets().openFd(name + ".mp3");
-            this.mediaPlayer.setDataSource(afd.getFileDescriptor(),afd.getStartOffset(),afd.getLength());
+        try {
+            PlayerStrategyFactory playerStrategyFactory = new PlayerStrategyFactory(context);
+            MediaPlayerStrategy mediaPlayerStrategy = playerStrategyFactory.createPlayerStrategy(type);
+            mediaPlayerStrategy.playMedia(this.mediaPlayer, path);
             this.mediaPlayer.prepare();
             this.mediaPlayer.start();
-            this.trackName = name;
+            this.trackName = type;
         } catch (Exception e) {
             e.printStackTrace();
         }

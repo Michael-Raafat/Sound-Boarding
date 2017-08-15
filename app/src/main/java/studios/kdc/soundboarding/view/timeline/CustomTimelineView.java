@@ -79,7 +79,7 @@ public class CustomTimelineView  {
             FrameLayout frameLayout = new FrameLayout(activity.getApplicationContext());
             TextView name = new TextView(activity.getApplicationContext());
             //TODO track extension
-            byte[] soundBytes = getWaveFormByteArray(trackInfo.get("grpName") , trackInfo.get("name") , ".mp3" );
+            byte[] soundBytes = getWaveFormByteArray(trackInfo.get("grpName") , trackInfo.get("name") , trackInfo.get("extension") );
             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(Integer.parseInt(trackInfo.get("duration")) * Utils.SECOND_PIXEL_RATIO, (int)(screenHeight / 19.2));
             LinearLayout.LayoutParams frameParam = new LinearLayout.LayoutParams(Utils.TIMELINE_LENGTH_LIMIT , ViewGroup.LayoutParams.WRAP_CONTENT);
             frameParam.setMargins(0,0,0, (screenHeight / 192));

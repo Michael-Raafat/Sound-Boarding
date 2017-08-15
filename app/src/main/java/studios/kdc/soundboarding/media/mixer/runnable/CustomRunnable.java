@@ -10,22 +10,23 @@ import studios.kdc.soundboarding.media.mixer.MixerHandler;
 
 public class CustomRunnable implements Runnable {
 
-    private String trackName;
-    private String groupName;
+
+    private String trackPath;
+    private String trackType;
     private int seekPosition;
     private MediaPlayerHandler mediaPlayerHandler;
 
-    public CustomRunnable(String trackName, String groupName, int seekPosition , Context context){
-        this.groupName = groupName;
-        this.trackName = trackName;
+    public CustomRunnable(String trackPath, String trackType, int seekPosition , Context context){
         this.seekPosition = seekPosition;
         this.mediaPlayerHandler = new MixerHandler(context);
+        this.trackType = trackType;
+        this.trackPath = trackPath;
     }
 
 
     @Override
     public void run() {
-            mediaPlayerHandler.playSong(this.groupName + File.separator + this.trackName);
+            mediaPlayerHandler.playSong(this.trackType, this.trackPath);
             mediaPlayerHandler.seekTo(seekPosition);
             mediaPlayerHandler.start();
     }
@@ -35,19 +36,21 @@ public class CustomRunnable implements Runnable {
         this.mediaPlayerHandler.stop();
     }
 
-    public void setTrackName(String trackName) {
-        this.trackName = trackName;
-    }
-
-
-    public void setGroupName(String groupName) {
-        this.groupName = groupName;
-    }
-
-
     public void setSeekPosition(int seekPosition) {
         this.seekPosition = seekPosition;
     }
 
+
+    public void setTrackType(String trackType) {
+        this.trackType = trackType;
+    }
+
+    public String getTrackPath() {
+        return trackPath;
+    }
+
+    public void setTrackPath(String trackPath) {
+        this.trackPath = trackPath;
+    }
 
 }

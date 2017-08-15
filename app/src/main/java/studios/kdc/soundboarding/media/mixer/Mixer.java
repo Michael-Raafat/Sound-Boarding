@@ -44,13 +44,14 @@ public class Mixer {
                 CustomRunnable temp;
                 if (count < size) {
                     temp = runList.get(count);
-                    temp.setGroupName(selectedTrack.getGroupName());
-                    temp.setTrackName(selectedTrack.getName());
+                    temp.setTrackPath(selectedTrack.getPath());
+                    temp.setTrackType(selectedTrack.getType());
                     temp.setSeekPosition(((seekBarPosition - selectedTrack.getStartPoint()) * 1000));
                     count++;
                 } else {
 
-                    temp = new CustomRunnable(selectedTrack.getName(), selectedTrack.getGroupName(), ((seekBarPosition - selectedTrack.getStartPoint()) * 1000), context);
+                    temp = new CustomRunnable(selectedTrack.getPath(),
+                            selectedTrack.getType(), ((seekBarPosition - selectedTrack.getStartPoint()) * 1000), context);
                     runList.add(temp);
                 }
                 handler.postDelayed(temp, (selectedTrack.getStartPoint() - seekBarPosition) * 1000);
