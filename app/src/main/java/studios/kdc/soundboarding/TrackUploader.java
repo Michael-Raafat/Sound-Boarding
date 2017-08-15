@@ -61,7 +61,6 @@ public class TrackUploader extends AppCompatActivity {
                     Toast.makeText(getApplicationContext() ,"You must choose track to upload" , Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(getApplicationContext() ,"Track is successfully uploaded" , Toast.LENGTH_LONG).show();
-                    Log.i("hna" ,  spinner.getSelectedItem().toString());
                     DataController.getInstance().createTrack(trackUserName.getText().toString().trim(),
                             path, "mobile",  spinner.getSelectedItem().toString());
                     finish();

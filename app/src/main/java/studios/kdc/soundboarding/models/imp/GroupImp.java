@@ -48,7 +48,6 @@ public class GroupImp implements Group {
 
     public GroupImp(String name, String color){
         tracks = new ArrayList<Track>();
-        Log.i("hna" , color);
         this.color = Color.parseColor(color);
         this.imagePath = "";
         this.name = name;
