@@ -13,6 +13,7 @@ import studios.kdc.soundboarding.models.imp.GroupImp;
 import studios.kdc.soundboarding.models.imp.SelectedTrackContainerImp;
 import studios.kdc.soundboarding.models.imp.SelectedTrackImp;
 import studios.kdc.soundboarding.models.imp.TrackImp;
+import studios.kdc.soundboarding.view.ViewContract;
 import studios.kdc.soundboarding.view.adapters.MainAdapter;
 
 /**
@@ -20,11 +21,11 @@ import studios.kdc.soundboarding.view.adapters.MainAdapter;
  */
 
 public class DataController {
+
     private GroupContainerImp groupContainer;
     private SelectedTracksContainer selectedTracksContainer;
     private static DataController instance;
-
-
+    private ViewContract.dataChangedNotifier notifierListener;
 
     public static DataController getInstance(){
         if(instance == null)
@@ -33,6 +34,9 @@ public class DataController {
     }
     public static void deleteInstance(){
         instance = null;
+    }
+    public void setNotifierListener(ViewContract.dataChangedNotifier notifierListener){
+        this.notifierListener = notifierListener;
     }
     private DataController() {
         groupContainer = GroupContainerImp.getInstance();
@@ -146,7 +150,8 @@ public class DataController {
         trackData.add(path);
         trackData.add(".mp3");
         Track newTrack = new TrackImp(trackData);
-        groupContainer.getGroupByName(groupName).addTrack(newTrack);
+        this.groupContainer.getGroupByName(groupName).addTrack(newTrack);
+        this.notifierListener.notifyDataChanged();
         DataServiceSingleton.getInstance().addTrack(newTrack, groupName);
     }
 

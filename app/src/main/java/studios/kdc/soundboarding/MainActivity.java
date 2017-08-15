@@ -41,7 +41,7 @@ import studios.kdc.soundboarding.view.timeline.CustomTimelineView;
 import studios.kdc.soundboarding.view.ViewContract;
 
 public class MainActivity extends AppCompatActivity implements ViewContract.ScrollViewListener
-        , ViewContract.SliderListener , ViewContract.mixerProgressChange , ViewContract.waveFormListener {
+        , ViewContract.SliderListener , ViewContract.mixerProgressChange , ViewContract.waveFormListener , ViewContract.dataChangedNotifier{
 
     private MainAdapter mainAdapter;
     private CustomTimelineView timelineView;
@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
         this.initializeMixerButton();
         this.initializePauseButton();
         this.initializeDrawer();
+        DataController.getInstance().setNotifierListener(this);
     }
 
     @Override
@@ -129,6 +130,11 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         this.mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    public void notifyDataChanged() {
+        this.mainAdapter.notifyDataSetChanged();
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {

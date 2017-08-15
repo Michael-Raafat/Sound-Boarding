@@ -107,7 +107,7 @@ public class GridViewAdapter extends BaseAdapter   {
         private TextView textView;
         private RelativeLayout color;
 
-        public CardView getCardView() {
+        private CardView getCardView() {
             return cardView;
         }
 

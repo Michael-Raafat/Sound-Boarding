@@ -8,6 +8,7 @@ import android.provider.OpenableColumns;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -21,7 +22,8 @@ import android.widget.Toast;
 public class TrackUploader extends AppCompatActivity {
     private TextView trackUploadName;
     private EditText trackUserName;
-
+    private String path;
+    private Spinner spinner;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,10 +42,10 @@ public class TrackUploader extends AppCompatActivity {
     }
 
     private void initializeSpinner() {
-        Spinner spinner = (Spinner) findViewById(R.id.groups);
+        this.spinner = (Spinner) findViewById(R.id.groups);
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, DataController.getInstance().getGroupNames());
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(spinnerArrayAdapter);
+        this.spinner.setAdapter(spinnerArrayAdapter);
     }
 
 
@@ -53,14 +55,14 @@ public class TrackUploader extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(trackUserName.getText().toString().trim().isEmpty() &&
-                        trackUserName.getText().toString().trim().toString().replace("\n","").isEmpty()){
+                        trackUserName.getText().toString().trim().replace("\n","").isEmpty()){
                     Toast.makeText(getApplicationContext() ,"Name is required" , Toast.LENGTH_LONG).show();
                 } else if (trackUploadName.getText().toString().isEmpty()) {
                     Toast.makeText(getApplicationContext() ,"You must choose track to upload" , Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(getApplicationContext() ,"Track is successfully uploaded" , Toast.LENGTH_LONG).show();
-                    //TODO PATH and GROUPNAME
-                    DataController.getInstance().createTrack(trackUserName.getText().toString().trim(), "", "");
+                    Log.i("hna" ,  spinner.getSelectedItem().toString());
+                    DataController.getInstance().createTrack(trackUserName.getText().toString().trim(), path,  spinner.getSelectedItem().toString());
                     finish();
                 }
             }
@@ -85,6 +87,7 @@ public class TrackUploader extends AppCompatActivity {
         if(requestCode == 1){
             if(resultCode == RESULT_OK){
                Uri uri= data.getData();
+                path = uri.toString();
                 if (uri.getScheme().equals("content")) {
                     Cursor cursor = getContentResolver().query(uri, null, null, null, null);
                         if (cursor != null && cursor.moveToFirst()) {

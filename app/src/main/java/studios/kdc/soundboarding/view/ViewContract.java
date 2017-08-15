@@ -24,5 +24,8 @@ public class ViewContract {
         void removeWaveForm(int position);
 
     }
+    public interface dataChangedNotifier {
+        void notifyDataChanged();
+    }
 
 }

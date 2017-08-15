@@ -78,7 +78,7 @@ public abstract class MediaPlayerHandler {
             this.mediaPlayer.setDataSource(afd.getFileDescriptor(),afd.getStartOffset(),afd.getLength());
             this.mediaPlayer.prepare();
             this.mediaPlayer.start();
-            this.trackName= name;
+            this.trackName = name;
         } catch (Exception e) {
             e.printStackTrace();
         }
