@@ -15,7 +15,7 @@ public class PlayerStrategyFactory {
     public PlayerStrategyFactory(Context context){
 
         this.assetsPlayer = new AssetsPlayer(context);
-        this.sdCardPlayer = new SdCardPlayer();
+        this.sdCardPlayer = new SdCardPlayer(context);
     }
 
     public MediaPlayerStrategy createPlayerStrategy(String path) {

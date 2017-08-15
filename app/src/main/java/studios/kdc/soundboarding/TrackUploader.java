@@ -75,24 +75,23 @@ public class TrackUploader extends AppCompatActivity {
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent_upload = new Intent();
-                intent_upload.setType("audio/*.mp3");
-                intent_upload.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(intent_upload,1);
+                Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, 10);
             }
         });
     }
     @Override
     protected void onActivityResult(int requestCode,int resultCode,Intent data){
 
-        if(requestCode == 1){
+        if(requestCode == 10){
             if(resultCode == RESULT_OK){
                Uri uri= data.getData();
                 path = uri.toString();
                 if (uri.getScheme().equals("content")) {
                     Cursor cursor = getContentResolver().query(uri, null, null, null, null);
                         if (cursor != null && cursor.moveToFirst()) {
-                            trackUploadName.setText(cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)));
+                            String name = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                            trackUploadName.setText(name);
                             cursor.close();
                         }
                 }
