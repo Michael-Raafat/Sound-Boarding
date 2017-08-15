@@ -1,6 +1,7 @@
 package studios.kdc.soundboarding.models.imp;
 
 import android.graphics.Color;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -47,6 +48,7 @@ public class GroupImp implements Group {
 
     public GroupImp(String name, String color){
         tracks = new ArrayList<Track>();
+        Log.i("hna" , color);
         this.color = Color.parseColor(color);
         this.imagePath = "";
         this.name = name;
