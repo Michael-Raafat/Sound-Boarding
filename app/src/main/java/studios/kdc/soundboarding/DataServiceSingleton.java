@@ -1,5 +1,6 @@
 package studios.kdc.soundboarding;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -111,7 +112,7 @@ public class DataServiceSingleton {
         database.execSQL("CREATE TABLE IF NOT EXISTS " +
                 group.getName() + " (name VARCHAR, duration INTEGER, path VARCHAR, extension VARCHAR, type VARCHAR)");
         database.execSQL("INSERT INTO groups (name, color, imagePath) VALUES ('"+ group.getName() +
-                "', "+ group.getColor() +"', '"+ group.getImagePath()
+                "', '"+ Integer.toHexString(group.getColor()) +"', '"+ group.getImagePath()
                 +"')");
     }
 
