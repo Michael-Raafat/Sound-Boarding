@@ -131,13 +131,25 @@ public class DataController {
     }
 
     public void deleteTrack(int trackPosition, int groupPosition) {
-        DataServiceSingleton.getInstance().removeTrack(
-                groupContainer.getGrps().get(groupPosition).getTracks().get(trackPosition),
+        Track track = groupContainer.getGrps().get(groupPosition).getTracks().get(trackPosition);
+        DataServiceSingleton.getInstance().removeTrack( track,
                 groupContainer.getGrps().get(groupPosition).getName());
+        selectedTracksContainer.removeTrackByName(track.getName());
         groupContainer.getGrps().get(groupPosition).getTracks().remove(trackPosition);
 
     }
 
+    public void deleteGroup(int groupPosition) {
+        DataServiceSingleton.getInstance().removeGroup(
+                groupContainer.getGrps().get(groupPosition).getName());
+        int size = groupContainer.getGrps().get(groupPosition).getTracks().size();
+        for (int i = 0; i < size; i++) {
+            selectedTracksContainer.removeTrackByName(
+                    groupContainer.getGrps().get(groupPosition).getTracks().get(i).getName());
+        }
+        groupContainer.getGrps().get(groupPosition).getTracks().clear();
+        groupContainer.getGrps().remove(groupPosition);
+    }
     public void setStartPointTrack(int position, int interval) {
         selectedTracksContainer.getTracks().get(position).setStartPoint(interval);
     }
