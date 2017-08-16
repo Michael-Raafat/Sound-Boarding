@@ -1,7 +1,10 @@
 package studios.kdc.soundboarding.view.adapters;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.ClipData;
 import android.content.Context;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,6 +58,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
             holder.getGroupName().setBackgroundColor(this.groups.get(position).getColor());
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(this.groups.get(position).getTracks().size() * cardWidth, LinearLayout.LayoutParams.WRAP_CONTENT);
             holder.getGridView().setLayoutParams(params);
+            holder.getCardView().setOnLongClickListener(new OnCardDragListener(position));
         //}
     }
 
@@ -72,22 +76,50 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         }
         private TextView groupName;
 
+      public CardView getCardView() {
+          return cardView;
+      }
+
+      private CardView cardView;
 
         private ViewHolder(final View itemView) {
             super(itemView);
             gridView = itemView.findViewById(R.id.gridview);
             groupName = itemView.findViewById(R.id.group_name);
-
+            cardView = itemView.findViewById(R.id.card_view);
         }
 
 
         private GridView getGridView() {
             return gridView;
         }
-
-
-
   }
+
+
+
+
+
+
+    private class OnCardDragListener implements View.OnLongClickListener {
+        @SuppressLint("NewApi")
+        private int groupPosition;
+
+        private OnCardDragListener(int position) {
+            this.groupPosition = position;
+        }
+
+        @Override
+        public boolean onLongClick(View view) {
+            ClipData data = ClipData.newPlainText( String.valueOf(this.groupPosition) , "");
+            View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
+            view.startDrag(data, shadowBuilder, view, 0);
+            return true;
+
+        }
+    }
+
+
+
 
 
 }

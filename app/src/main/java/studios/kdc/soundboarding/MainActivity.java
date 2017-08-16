@@ -18,7 +18,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -194,13 +193,22 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
 
 
     private void initializeDeleteButton(){
-        ImageButton deleteButton = (ImageButton) findViewById(R.id.delete);
+        final ImageButton deleteButton = (ImageButton) findViewById(R.id.delete);
         deleteButton .setOnDragListener(new View.OnDragListener() {
             @Override
             public boolean onDrag(View v, DragEvent event) {
                 switch (event.getAction()) {
+                    case DragEvent.ACTION_DRAG_LOCATION:
+                       deleteButton.setImageResource(R.drawable.delete_red);
+                        break;
                     case DragEvent.ACTION_DROP:
-                     Log.i("hna" , "dropped");
+                        Log.i("hna" , "");
+                        break;
+                    case DragEvent.ACTION_DRAG_EXITED:
+                        deleteButton.setImageResource(R.drawable.delete_white);
+                        break;
+                    case DragEvent.ACTION_DRAG_ENDED:
+                        deleteButton.setImageResource(R.drawable.delete_white);
                         break;
                     default:
                         break;

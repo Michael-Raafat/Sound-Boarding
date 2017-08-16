@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:id="@+id/delete"
-        android:src="@drawable/delete"/>
+        android:src="@drawable/delete_white"/>
 
 
 </LinearLayout>
