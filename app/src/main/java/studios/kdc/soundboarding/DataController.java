@@ -1,6 +1,7 @@
 package studios.kdc.soundboarding;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -130,25 +131,34 @@ public class DataController {
         selectedTracksContainer.getTracks().remove(position);
     }
 
-    public void deleteTrack(int trackPosition, int groupPosition) {
+    public boolean deleteTrack(int trackPosition, int groupPosition) {
         Track track = groupContainer.getGrps().get(groupPosition).getTracks().get(trackPosition);
-        DataServiceSingleton.getInstance().removeTrack( track,
+        if (track.getType().equals("assets")) {
+            return false;
+        }
+        DataServiceSingleton.getInstance().removeTrack(track,
                 groupContainer.getGrps().get(groupPosition).getName());
         selectedTracksContainer.removeTrackByName(track.getName());
         groupContainer.getGrps().get(groupPosition).getTracks().remove(trackPosition);
-
+        return true;
     }
 
-    public void deleteGroup(int groupPosition) {
-        DataServiceSingleton.getInstance().removeGroup(
-                groupContainer.getGrps().get(groupPosition).getName());
+    public boolean deleteGroup(int groupPosition) {
         int size = groupContainer.getGrps().get(groupPosition).getTracks().size();
+        for (int i = 0; i < size; i++) {
+            if (groupContainer.getGrps().get(groupPosition).getTracks().get(i).getType().equals("assets")) {
+                return false;
+            }
+        }
         for (int i = 0; i < size; i++) {
             selectedTracksContainer.removeTrackByName(
                     groupContainer.getGrps().get(groupPosition).getTracks().get(i).getName());
         }
+        DataServiceSingleton.getInstance().removeGroup(
+                groupContainer.getGrps().get(groupPosition).getName());
         groupContainer.getGrps().get(groupPosition).getTracks().clear();
         groupContainer.getGrps().remove(groupPosition);
+        return true;
     }
     public void setStartPointTrack(int position, int interval) {
         selectedTracksContainer.getTracks().get(position).setStartPoint(interval);
