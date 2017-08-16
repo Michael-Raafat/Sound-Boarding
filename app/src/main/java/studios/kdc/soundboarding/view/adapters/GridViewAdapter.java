@@ -75,7 +75,7 @@ public class GridViewAdapter extends BaseAdapter   {
         if (!allItemsResourceID.get(position).getName().equals("")) {
             holder.getTextView().setText(allItemsResourceID.get(position).getName());
         }
-        setOnLongClickListener(view, this.cardPosition , holder.getTextView().getText().toString());
+        setOnLongClickListener(view, position, holder.getTextView().getText().toString());
         setOnClickListener(view, holder.getCardView() , allItemsResourceID.get(position).getType() ,allItemsResourceID.get(position).getPath(), context);
         return view;
     }
@@ -121,20 +121,21 @@ public class GridViewAdapter extends BaseAdapter   {
 
     private class ChoiceTouchListener implements View.OnLongClickListener {
         @SuppressLint("NewApi")
-        private int groupPosition;
+        private int position;
         private String name;
         private Context context;
 
         private ChoiceTouchListener(int position, String name, Context context) {
-            this.groupPosition = position;
+            this.position = position;
             this.name = name;
             this.context = context;
         }
 
         @Override
         public boolean onLongClick(View view) {
-            ClipData data = ClipData.newPlainText( String.valueOf(this.groupPosition) + context.getResources().getString(R.string.separator) +  name, "");
+            ClipData data = ClipData.newPlainText( String.valueOf(cardPosition) + context.getResources().getString(R.string.separator) +  name   + context.getResources().getString(R.string.separator) + this.position, "");
             View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
+            view.setTag("track");
             view.startDrag(data, shadowBuilder, view, 0);
             return true;
 

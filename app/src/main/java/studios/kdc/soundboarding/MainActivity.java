@@ -202,7 +202,8 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
                        deleteButton.setImageResource(R.drawable.delete_red);
                         break;
                     case DragEvent.ACTION_DROP:
-                        Log.i("hna" , "");
+                       View view = (View) event.getLocalState();
+                        Log.i("hna" , view.getTag().toString());
                         break;
                     case DragEvent.ACTION_DRAG_EXITED:
                         deleteButton.setImageResource(R.drawable.delete_white);

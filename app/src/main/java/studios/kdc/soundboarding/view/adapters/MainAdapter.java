@@ -112,6 +112,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         public boolean onLongClick(View view) {
             ClipData data = ClipData.newPlainText( String.valueOf(this.groupPosition) , "");
             View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
+            view.setTag("group");
             view.startDrag(data, shadowBuilder, view, 0);
             return true;
 
