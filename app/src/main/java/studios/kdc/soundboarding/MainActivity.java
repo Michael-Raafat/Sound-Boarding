@@ -15,11 +15,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.DragEvent;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -77,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
         this.initializeMixerButton();
         this.initializePauseButton();
         this.initializeDrawer();
+        this.initializeDeleteButton();
         DataController.getInstance().setNotifierListener(this);
     }
 
@@ -185,6 +189,33 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
         });
 
     }
+
+
+
+
+    private void initializeDeleteButton(){
+        ImageButton deleteButton = (ImageButton) findViewById(R.id.delete);
+        deleteButton .setOnDragListener(new View.OnDragListener() {
+            @Override
+            public boolean onDrag(View v, DragEvent event) {
+                switch (event.getAction()) {
+                    case DragEvent.ACTION_DROP:
+                     Log.i("hna" , "dropped");
+                        break;
+                    default:
+                        break;
+                }
+                return true;
+            }
+        });
+    }
+
+
+
+
+
+
+
     private void initializeMixerButton(){
         this.mixer = (FloatingActionButton) findViewById(R.id.mix);
         this.mixer.setOnClickListener(new View.OnClickListener() {

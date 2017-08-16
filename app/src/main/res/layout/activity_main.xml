@@ -12,21 +12,38 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/black">
 
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@color/colorPrimary"
+    android:id="@+id/linear1">
     <SearchView
         android:id="@+id/search_view"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         />
 
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:background="@color/colorPrimary"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:id="@+id/delete"
+        android:src="@drawable/delete"/>
+
+
+</LinearLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_marginTop="15dp"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@id/search_view"/>
+        android:layout_below="@id/linear1"/>
 
     <LinearLayout
         android:layout_width="wrap_content"

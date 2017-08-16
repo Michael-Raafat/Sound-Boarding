@@ -1,6 +1,8 @@
-package studios.kdc.soundboarding.media.playerStrategy;
+package studios.kdc.soundboarding.playerStrategy;
 
 import android.content.Context;
+
+import studios.kdc.soundboarding.media.singlePlayer.MediaPlayerStrategy;
 
 /**
  * Created by Michael on 8/15/2017.
@@ -18,8 +20,8 @@ public class PlayerStrategyFactory {
         this.sdCardPlayer = new SdCardPlayer(context);
     }
 
-    public MediaPlayerStrategy createPlayerStrategy(String path) {
-        switch (path) {
+    public MediaPlayerStrategy createPlayerStrategy(String type) {
+        switch (type) {
             case "assets":
                 return assetsPlayer;
             case "mobile":

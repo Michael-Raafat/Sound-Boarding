@@ -3,10 +3,8 @@ package studios.kdc.soundboarding.models.imp;
 import android.graphics.Color;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import studios.kdc.soundboarding.DataServiceSingleton;
 import studios.kdc.soundboarding.models.Group;
 import studios.kdc.soundboarding.models.Track;
 

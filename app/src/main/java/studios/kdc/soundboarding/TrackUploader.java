@@ -8,7 +8,6 @@ import android.provider.OpenableColumns;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -61,8 +60,7 @@ public class TrackUploader extends AppCompatActivity {
                     Toast.makeText(getApplicationContext() ,"You must choose track to upload" , Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(getApplicationContext() ,"Track is successfully uploaded" , Toast.LENGTH_LONG).show();
-                    Log.i("hna" ,  spinner.getSelectedItem().toString());
-                    DataController.getInstance().createTrack(trackUserName.getText().toString().trim(),
+                    DataController.getInstance().createTrack(getApplicationContext() ,trackUserName.getText().toString().trim(),
                             path, "mobile",  spinner.getSelectedItem().toString());
                     finish();
                 }
