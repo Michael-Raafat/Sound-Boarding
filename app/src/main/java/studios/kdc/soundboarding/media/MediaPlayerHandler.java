@@ -4,9 +4,10 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.util.Log;
 
-import studios.kdc.soundboarding.media.playerStrategy.MediaPlayerStrategy;
-import studios.kdc.soundboarding.media.playerStrategy.PlayerStrategyFactory;
+import studios.kdc.soundboarding.media.singlePlayer.MediaPlayerStrategy;
+import studios.kdc.soundboarding.playerStrategy.PlayerStrategyFactory;
 
 
 /**
@@ -23,7 +24,7 @@ public abstract class MediaPlayerHandler {
     private String trackPath;
     private boolean flag;
     private int currentPosition;
-    PlayerStrategyFactory playerStrategyFactory ;
+    private PlayerStrategyFactory playerStrategyFactory ;
 
     public MediaPlayerHandler(Context context) {
         this.mediaPlayer = new MediaPlayer();

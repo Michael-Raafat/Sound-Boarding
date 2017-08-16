@@ -1,5 +1,7 @@
 package studios.kdc.soundboarding;
 
+import android.content.Context;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -143,10 +145,10 @@ public class DataController {
         DataServiceSingleton.getInstance().addGroup(group);
     }
 
-    public void createTrack(String trackName, String path, String type, String groupName) {
+    public void createTrack(Context context ,String trackName, String path, String type, String groupName) {
         List<String> trackData = new ArrayList<>();
         trackData.add(trackName);
-        trackData.add(String.valueOf(Utils.getTrackDuration(path)));
+        trackData.add(String.valueOf(Utils.getTrackDuration(context ,path)));
         trackData.add(path);
         trackData.add(".mp3");
         trackData.add(type);

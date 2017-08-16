@@ -2,9 +2,9 @@ package studios.kdc.soundboarding.view.timeline;
 
 
 import android.app.Activity;
-import android.content.res.AssetManager;
 import android.graphics.Color;
 import android.support.v7.widget.PopupMenu;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,7 +15,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +24,7 @@ import java.util.Map;
 import rm.com.audiowave.AudioWaveView;
 import studios.kdc.soundboarding.R;
 import studios.kdc.soundboarding.Utils;
+import studios.kdc.soundboarding.playerStrategy.PlayerStrategyFactory;
 import studios.kdc.soundboarding.view.CustomHorizontalSlider;
 import studios.kdc.soundboarding.view.ViewContract;
 
@@ -36,6 +37,7 @@ public class CustomTimelineView  {
     private List<CustomHorizontalSlider> waveFormsListeners;
     private HorizontalScrollView horizontalScrollView;
     private List<ImageButton> optionButtons;
+    private PlayerStrategyFactory factory;
 
     public CustomTimelineView(Activity activity , LinearLayout timelineWaves ,LinearLayout minSecView, HorizontalScrollView horizontalScrollView){
         this.minutesSecondsView = new MinutesSecondsView(activity);
@@ -44,6 +46,7 @@ public class CustomTimelineView  {
         this.waveFormsListeners = new ArrayList<>();
         this.optionButtons = new ArrayList<>();
         this.horizontalScrollView = horizontalScrollView;
+        this.factory = new PlayerStrategyFactory(activity);
         minSecView.addView(minutesSecondsView);
     }
 
@@ -78,18 +81,18 @@ public class CustomTimelineView  {
             int screenWidth = Utils.getScreenWidth(activity);
             FrameLayout frameLayout = new FrameLayout(activity.getApplicationContext());
             TextView name = new TextView(activity.getApplicationContext());
-            //TODO track extension
-            byte[] soundBytes = getWaveFormByteArray(trackInfo.get("grpName") , trackInfo.get("name") , trackInfo.get("extension") );
             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(Integer.parseInt(trackInfo.get("duration")) * Utils.SECOND_PIXEL_RATIO, (int)(screenHeight / 19.2));
             LinearLayout.LayoutParams frameParam = new LinearLayout.LayoutParams(Utils.TIMELINE_LENGTH_LIMIT , ViewGroup.LayoutParams.WRAP_CONTENT);
-            frameParam.setMargins(0,0,0, (screenHeight / 192));
+            frameParam.setMargins((screenHeight / 192), 0 , 0, (screenHeight / 192));
             frameLayout.setLayoutParams(frameParam);
             name.setLayoutParams(params);
             AudioWaveView waveForm = new AudioWaveView(activity.getApplicationContext());
             waveForm.setWaveColor(Color.WHITE);
             waveForm.setExpansionAnimated(false);
             waveForm.setLayoutParams(params);
-            waveForm.setRawData(soundBytes);
+            byte[] soundBytes = getWaveFormByteArray(trackInfo.get("type") , trackInfo.get("path"));
+            if(soundBytes != null)
+              waveForm.setRawData(soundBytes);
             name.setText(trackInfo.get("grpName") + " - " + trackInfo.get("name"));
             name.setTextColor(Color.WHITE);
             ImageButton optionsButton = new ImageButton(activity.getApplicationContext());
@@ -142,15 +145,15 @@ public class CustomTimelineView  {
            }
        });
    }
-    private byte[] getWaveFormByteArray(String grpName , String trackName , String extension) {
-        AssetManager am = activity.getAssets(); //TODO l 7ta deh msh htnf3 lw l path msh assets
+    private byte[] getWaveFormByteArray(String type , String path) {
+
+        InputStream inputStream = factory.createPlayerStrategy(type).getInputStream(path);
         try {
-            InputStream inputStream = am.open(grpName + File.separator + trackName + extension);
             return  Utils.toByteArray(inputStream);
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+         return null;
     }
 
 

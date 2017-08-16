@@ -2,8 +2,11 @@ package studios.kdc.soundboarding;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.util.DisplayMetrics;
+import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -41,11 +44,14 @@ public class Utils {
         return displayMetrics.heightPixels;
     }
 
-    public static int getTrackDuration(String path){
+    public static int getTrackDuration(Context context, String path){
         MediaPlayer mediaPlayer = new MediaPlayer();
         try {
-            mediaPlayer.setDataSource(path);
-            return mediaPlayer.getDuration();
+            mediaPlayer.setDataSource(context ,Uri.parse(path));
+            mediaPlayer.prepare();
+            int duration = (int) Math.ceil((mediaPlayer.getDuration() / 1000));
+            mediaPlayer.release();
+            return duration;
         } catch (IOException e) {
             e.printStackTrace();
         }
