@@ -130,6 +130,14 @@ public class DataController {
         selectedTracksContainer.getTracks().remove(position);
     }
 
+    public void deleteTrack(int trackPosition, int groupPosition) {
+        DataServiceSingleton.getInstance().removeTrack(
+                groupContainer.getGrps().get(groupPosition).getTracks().get(trackPosition),
+                groupContainer.getGrps().get(groupPosition).getName());
+        groupContainer.getGrps().get(groupPosition).getTracks().remove(trackPosition);
+
+    }
+
     public void setStartPointTrack(int position, int interval) {
         selectedTracksContainer.getTracks().get(position).setStartPoint(interval);
     }
