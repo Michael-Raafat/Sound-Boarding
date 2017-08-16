@@ -1,7 +1,6 @@
 package studios.kdc.soundboarding.media.singlePlayer;
 
 import android.content.Context;
-import android.view.View;
 
 import studios.kdc.soundboarding.media.MediaPlayerHandler;
 
@@ -12,13 +11,12 @@ import studios.kdc.soundboarding.media.MediaPlayerHandler;
 
 public class MediaPlayerController implements  MediaPlayerContract.ControllerActions {
 
-    private String name;
+
     private MediaPlayerHandler mediaPlayerHandler;
     private MediaPlayerContract.OnCompletionListener listener;
     private static MediaPlayerController instance;
 
     private MediaPlayerController(Context context) {
-        this.name = "";
         this.mediaPlayerHandler = new PlayerHandler(context);
     }
 
@@ -41,15 +39,6 @@ public class MediaPlayerController implements  MediaPlayerContract.ControllerAct
         this.mediaPlayerHandler.playSong(type, path);
     }
 
-    @Override
-    public boolean checkTrackChanged(View view, int position, String name) {
-        if (!this.name.equals(name)) {
-            mediaPlayerHandler.stop();
-            this.name = name;
-            return true;
-        }
-        return false;
-    }
 
     public void onCompletion(){
         if(this.listener != null)

@@ -48,8 +48,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
            int cardWidth = (int)(Utils.getScreenWidth(context) / 4.32);
            int cardHeight = (int)((Utils.getScreenHeight(context) / 7.68));
             GridViewAdapter gridViewAdapter = new GridViewAdapter(this.context, this.groups.get(position).getTracks(),
-                    this.groups.get(position).getColor() , position,
-                    this.groups.get(position).getName() , cardWidth , cardHeight);
+                    this.groups.get(position).getColor() , position, cardWidth , cardHeight);
             holder.getGridView().setNumColumns(this.groups.get(position).getTracks().size());
             holder.getGridView().setAdapter(gridViewAdapter);
             holder.getGroupName().setText(this.groups.get(position).getName());
