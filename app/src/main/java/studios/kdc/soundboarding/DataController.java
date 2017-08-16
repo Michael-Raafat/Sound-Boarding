@@ -1,7 +1,6 @@
 package studios.kdc.soundboarding;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -146,9 +145,8 @@ public class DataController {
     public boolean deleteGroup(int groupPosition) {
         int size = groupContainer.getGrps().get(groupPosition).getTracks().size();
         for (int i = 0; i < size; i++) {
-            if (groupContainer.getGrps().get(groupPosition).getTracks().get(i).getType().equals("assets")) {
+            if (groupContainer.getGrps().get(groupPosition).getTracks().get(i).getType().equals("assets"))
                 return false;
-            }
         }
         for (int i = 0; i < size; i++) {
             selectedTracksContainer.removeTrackByName(
