@@ -19,7 +19,6 @@ import studios.kdc.soundboarding.view.adapters.MainAdapter;
 /**
  * Created by Michael on 8/4/2017.
  */
-
 public class DataController {
 
     private GroupContainerImp groupContainer;
