@@ -29,6 +29,7 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -202,8 +203,17 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
                        deleteButton.setImageResource(R.drawable.delete_red);
                         break;
                     case DragEvent.ACTION_DROP:
-                       View view = (View) event.getLocalState();
-                        Log.i("hna" , view.getTag().toString());
+                        String tag = ((View) event.getLocalState()).getTag().toString();
+                        String description = event.getClipData().getDescription().getLabel().toString();
+                        String[] s = description.split(getResources().getString(R.string.separator));
+                        if(tag .equals("group")){
+                            if(!DataController.getInstance().deleteGroup(Integer.parseInt(s[0])))
+                                Toast.makeText(getApplicationContext() , "You cannot delete this group !!" , Toast.LENGTH_LONG).show();
+                        } else if(tag.equals("track")) {
+                            if(!DataController.getInstance().deleteTrack(Integer.parseInt(s[2]) , Integer.parseInt(s[0])))
+                                Toast.makeText(getApplicationContext() , "You cannot delete this track !!" , Toast.LENGTH_LONG).show();
+                        }
+                        notifyDataChanged();
                         break;
                     case DragEvent.ACTION_DRAG_EXITED:
                         deleteButton.setImageResource(R.drawable.delete_white);
