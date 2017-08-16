@@ -129,6 +129,7 @@ public class DataServiceSingleton {
 
     public void removeGroup(String groupName) {
         database.execSQL("DROP TABLE " + groupName);
+        database.execSQL("DELETE FROM groups WHERE name = '"+ groupName +"'");
     }
 
     public List<List<String>> getGroupsInDatabase() {
