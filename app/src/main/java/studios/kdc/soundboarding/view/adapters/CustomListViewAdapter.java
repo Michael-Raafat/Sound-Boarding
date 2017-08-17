@@ -32,6 +32,7 @@ public class CustomListViewAdapter extends ArrayAdapter<String> {
        this.icons = new ArrayList<>();
        this.icons.add(R.drawable.upload_black);
        this.icons.add(R.drawable.create);
+       this.icons.add(R.drawable.open);
        this.icons.add(R.drawable.about);
    }
 

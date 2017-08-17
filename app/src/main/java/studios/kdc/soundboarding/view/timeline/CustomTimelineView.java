@@ -75,6 +75,11 @@ public class CustomTimelineView  {
         }
     }
 
+    public void clearTimeline() {
+        for(int i = 0; i < getChildCount(); i++){
+            this.removeWave(i);
+        }
+    }
     public void addWaveFormsToTimeline(Map<String, String> trackInfo){
         try {
             int screenHeight = Utils.getScreenHeight(activity);
@@ -122,7 +127,7 @@ public class CustomTimelineView  {
 
 
 
-    private void  setOnClickListenerToOptionsButton(final ImageButton button) {
+    private void setOnClickListenerToOptionsButton(final ImageButton button) {
        button.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {

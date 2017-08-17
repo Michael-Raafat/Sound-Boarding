@@ -1,6 +1,6 @@
 package studios.kdc.soundboarding;
 
-import android.content.Intent;
+
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -11,7 +11,6 @@ import studios.kdc.soundboarding.models.Group;
 import studios.kdc.soundboarding.models.SelectedTrack;
 import studios.kdc.soundboarding.models.Track;
 
-import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by Michael on 8/2/2017.

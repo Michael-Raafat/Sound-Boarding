@@ -2,12 +2,12 @@
     <string name="app_name">Sound Boarding</string>
     <string name="separator">&amp;&amp;@</string>
     <string name="remove_option">Remove</string>
-    <string name="name">Track Name</string>
     <string name="close">close</string>
     <string name="open">open</string>
     <array name="options">
         <item>Add Track</item>
         <item>Create Group</item>
+        <item>Open Saved</item>
         <item>About</item>
     </array>
     <string name="title_activity_track_uploader">Upload Track</string>
@@ -16,4 +16,5 @@
     <string name="choose_color">Choose Color</string>
     <string name="save">Save</string>
     <string name="title_activity_group_creator">GroupCreator</string>
+    <string name="name">Track Name</string>
 </resources>

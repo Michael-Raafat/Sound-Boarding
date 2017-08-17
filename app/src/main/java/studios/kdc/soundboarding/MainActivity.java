@@ -15,16 +15,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.DragEvent;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.SearchView;
@@ -44,12 +49,14 @@ import studios.kdc.soundboarding.view.timeline.CustomTimelineView;
 import studios.kdc.soundboarding.view.ViewContract;
 
 public class MainActivity extends AppCompatActivity implements ViewContract.ScrollViewListener
-        , ViewContract.SliderListener , ViewContract.mixerProgressChange , ViewContract.waveFormListener , ViewContract.dataChangedNotifier{
+        , ViewContract.SliderListener , ViewContract.mixerProgressChange ,
+        ViewContract.waveFormListener , ViewContract.dataChangedNotifier{
 
     private MainAdapter mainAdapter;
     private CustomTimelineView timelineView;
     private ImageView seekBar;
-    private FloatingActionButton mixer;
+    private FloatingActionButton mix;
+    private FloatingActionButton save;
     private FloatingActionButton pause_resume;
     private int scrollFactor;
     private boolean pauseResume;
@@ -79,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
         this.initializeSearchView();
         this.initializeMixerButton();
         this.initializePauseButton();
+        this.initializeSaveButton();
         this.initializeDrawer();
         this.initializeDeleteButton();
         DataController.getInstance().setNotifierListener(this);
@@ -190,9 +198,56 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
 
     }
 
+    private void initializeSaveButton(){
+        this.save = (FloatingActionButton) findViewById(R.id.save);
+        this.save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                save.setEnabled(false);
+                RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.main);
+                LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+                View customView = inflater.inflate(R.layout.save_layout, null);
+                final PopupWindow  mPopupWindow = new PopupWindow(customView,
+                        (int) (Utils.getScreenWidth(MainActivity.this)/1.5) ,
+                        RelativeLayout.LayoutParams.WRAP_CONTENT
+                );
+                mPopupWindow.setFocusable(true);
+                mPopupWindow.showAtLocation(relativeLayout, Gravity.CENTER ,0,0);
+                Button closeButton = customView.findViewById(R.id.save);
+                final EditText name = customView.findViewById(R.id.saved_track_name);
+                closeButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mPopupWindow.dismiss();
+                        save.setEnabled(true);
+                        if(name.getText().toString().trim().isEmpty())
+                            Toast.makeText(getApplicationContext(),"You must specify track name" , Toast.LENGTH_LONG).show();
+                        else {
+                            Toast.makeText(getApplicationContext(),"Track is saved Successfully" , Toast.LENGTH_LONG).show();
+                            DataController.getInstance().saveMixedTrack(name.getText().toString().trim());
+                        }
+                    }
+                });
+            }
+        });
+    }
 
+    private void initializeMixerButton(){
+        this.mix = (FloatingActionButton) findViewById(R.id.mix);
+        this.mix.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MixerController.getInstance(getApplicationContext() , MainActivity.this).mix();
+                mix.setVisibility(View.GONE);
+                pause_resume.setVisibility(View.VISIBLE);
+                pause_resume.setImageResource(R.drawable.played);
+                seekBarSlider.setEnabled(false);
+                timelineView.controlSlidingOfWaveForms(false);
+                pauseResume = false;
+            }
+        });
 
-
+    }
     private void initializeDeleteButton(){
         final ImageButton deleteButton = (ImageButton) findViewById(R.id.delete);
         deleteButton .setOnDragListener(new View.OnDragListener() {
@@ -227,29 +282,6 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
                 return true;
             }
         });
-    }
-
-
-
-
-
-
-
-    private void initializeMixerButton(){
-        this.mixer = (FloatingActionButton) findViewById(R.id.mix);
-        this.mixer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                MixerController.getInstance(getApplicationContext() , MainActivity.this).mix();
-                mixer.setVisibility(View.GONE);
-                pause_resume.setVisibility(View.VISIBLE);
-                pause_resume.setImageResource(R.drawable.played);
-                seekBarSlider.setEnabled(false);
-                timelineView.controlSlidingOfWaveForms(false);
-                pauseResume = false;
-            }
-        });
-
     }
 
     private void initializeTimeLineView() {
@@ -305,8 +337,9 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
                             Map<String, String> trackInfo = DataController.getInstance().selectTrackToMix(s[1], Integer.parseInt(s[0]));
                             timelineView.addWaveFormsToTimeline(trackInfo);
                             if(timelineView.getChildCount() > 0){
+                                save.setVisibility(View.VISIBLE);
                                 if(pause_resume.getVisibility() == View.GONE)
-                                    mixer.setVisibility(View.VISIBLE);
+                                    mix.setVisibility(View.VISIBLE);
                             }
                         }
                         break;
@@ -362,7 +395,8 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
     @Override
     public void notifyTrackFinished() {
         this.seekBar.setX(this.initialSeekBarPosition);
-        this.mixer.setVisibility(View.VISIBLE);
+        this.mix.setVisibility(View.VISIBLE);
+        this.save.setVisibility(View.VISIBLE);
         this.pause_resume.setVisibility(View.GONE);
         this.pauseResume = true;
         this.seekBarSlider.setEnabled(true);
@@ -375,7 +409,8 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
             DataController.getInstance().removeTrack(position);
             this.timelineView.removeWave(position);
             if (this.timelineView.getChildCount() < 1) {
-                this.mixer.setVisibility(View.GONE);
+                this.mix.setVisibility(View.GONE);
+                this.save.setVisibility(View.GONE);
                 this.pause_resume.setVisibility(View.GONE);
                 this.seekBar.setX(this.initialSeekBarPosition);
             }
@@ -397,7 +432,7 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
             recyclerView.setAdapter(mainAdapter);
             int screenHeight = Utils.getScreenHeight(MainActivity.this);
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT
-                    ,(int) ( screenHeight / 1.6));
+                    , (int)( screenHeight / 1.8));
             params.setMargins(0,(screenHeight / 15), 0, 0);
             recyclerView.setLayoutParams(params);
         }
