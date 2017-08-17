@@ -3,6 +3,7 @@ package studios.kdc.soundboarding.media.mixer;
 
 import android.content.Context;
 import android.os.Handler;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -54,7 +55,7 @@ public class Mixer {
                             selectedTrack.getType(), ((seekBarPosition - selectedTrack.getStartPoint()) * 1000), context);
                     runList.add(temp);
                 }
-                handler.postDelayed(temp, (selectedTrack.getStartPoint() - seekBarPosition) * 1000);
+                handler.postDelayed(temp, (selectedTrack.getStartPoint() - seekBarPosition - 1) * 1000);
             }
         }
     }

@@ -298,13 +298,16 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
             public boolean onDrag(View v, DragEvent event) {
                 switch (event.getAction()) {
                     case DragEvent.ACTION_DROP:
-                        String description = event.getClipData().getDescription().getLabel().toString();
-                        String[] s = description.split(getResources().getString(R.string.separator));
-                        Map<String, String> trackInfo = DataController.getInstance().selectTrackToMix(s[1], Integer.parseInt(s[0]));
-                        timelineView.addWaveFormsToTimeline(trackInfo);
-                        if(timelineView.getChildCount() > 0){
-                            if(pause_resume.getVisibility() == View.GONE)
-                                mixer.setVisibility(View.VISIBLE);
+                        String tag = ((View) event.getLocalState()).getTag().toString();
+                        if(tag.equals("track")){
+                            String description = event.getClipData().getDescription().getLabel().toString();
+                            String[] s = description.split(getResources().getString(R.string.separator));
+                            Map<String, String> trackInfo = DataController.getInstance().selectTrackToMix(s[1], Integer.parseInt(s[0]));
+                            timelineView.addWaveFormsToTimeline(trackInfo);
+                            if(timelineView.getChildCount() > 0){
+                                if(pause_resume.getVisibility() == View.GONE)
+                                    mixer.setVisibility(View.VISIBLE);
+                            }
                         }
                         break;
                     default:
