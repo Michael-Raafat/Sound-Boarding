@@ -4,7 +4,6 @@ package studios.kdc.soundboarding.view.timeline;
 import android.app.Activity;
 import android.graphics.Color;
 import android.support.v7.widget.PopupMenu;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -76,7 +75,7 @@ public class CustomTimelineView  {
     }
 
     public void clearTimeline() {
-        for(int i = 0; i < getChildCount(); i++){
+        for(int i = getChildCount() - 1; i >= 0; i--){
             this.removeWave(i);
         }
     }

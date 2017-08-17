@@ -170,6 +170,7 @@ public class DataController {
         Group group = new GroupImp(name, color);
         groupContainer.addGroup(group);
         DataServiceSingleton.getInstance().addGroup(group);
+        this.notifierListener.notifyDataChanged();
     }
 
     public void createTrack(Context context ,String trackName, String path, String type, String groupName) {

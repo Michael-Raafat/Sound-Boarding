@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.DragEvent;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -234,6 +235,7 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
     }
     private void fillTimelineWithSavedTracks(){
         this.timelineView.clearTimeline();
+        Log.i("hna" , ""+DataController.getInstance().getNoOfSelectedTracks());
         for(int i = 0 ; i< DataController.getInstance().getNoOfSelectedTracks(); i++){
             Map<String, String> trackInfo = DataController.getInstance().getTrackInfo(i);
             this.timelineView.addWaveFormsToTimeline(trackInfo , Integer.parseInt(trackInfo.get("startPoint")));
@@ -248,16 +250,24 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
             public void onClick(View view) {
                 save.setEnabled(false);
                 LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-                View customView = inflater.inflate(R.layout.save_layout, null);
+                View customView = inflater.inflate(R.layout.save_popup_layout, null);
                 final PopupWindow  mPopupWindow = new PopupWindow(customView,
                         (int) (Utils.getScreenWidth(MainActivity.this) / 1.5) ,
                         RelativeLayout.LayoutParams.WRAP_CONTENT
                 );
                 mPopupWindow.setFocusable(true);
                 mPopupWindow.showAtLocation(relativeLayout, Gravity.CENTER ,0,0);
-                Button closeButton = customView.findViewById(R.id.save);
+                Button saveButton = customView.findViewById(R.id.save);
                 final EditText name = customView.findViewById(R.id.saved_track_name);
-                closeButton.setOnClickListener(new View.OnClickListener() {
+                ImageButton close = customView.findViewById(R.id.close);
+                close.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mPopupWindow.dismiss();
+                        save.setEnabled(true);
+                    }
+                });
+                saveButton .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         mPopupWindow.dismiss();
