@@ -1,7 +1,6 @@
 package studios.kdc.soundboarding;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import studios.kdc.soundboarding.models.Group;
+import studios.kdc.soundboarding.models.SelectedTrack;
 import studios.kdc.soundboarding.models.Track;
 import studios.kdc.soundboarding.models.SelectedTracksContainer;
 import studios.kdc.soundboarding.models.imp.GroupContainerImp;
@@ -185,6 +185,32 @@ public class DataController {
         this.groupContainer.getGroupByName(groupName).addTrack(newTrack);
         this.notifierListener.notifyDataChanged();
         DataServiceSingleton.getInstance().addTrack(newTrack, groupName);
+    }
+
+    public void saveMixedTrack(String trackName) {
+        List<SelectedTrack> selectedTrackList = selectedTracksContainer.getTracks();
+        List<String> savedTracksNames = DataServiceSingleton.getInstance().getSavedTracksNamesInDatabase();
+        DataServiceSingleton.getInstance().addSavedGroup();
+        if (savedTracksNames.contains(trackName)) {
+            DataServiceSingleton.getInstance().deleteSavedTrack(trackName);
+        }
+        DataServiceSingleton.getInstance().saveNewTrack(trackName, selectedTrackList);
+    }
+
+    public void loadSavedTrack(String trackName) {
+        List<List<String>> tracks = DataServiceSingleton.getInstance().getSelectedTracksInSavedTracksTable(trackName);
+        List<SelectedTrack> selectedTrackList = new ArrayList<>();
+        for(int j = 0; j < tracks.size(); j++) {
+            SelectedTrack selectedTrack = new SelectedTrackImp(tracks.get(j));
+            selectedTrackList.add(selectedTrack);
+        }
+        selectedTracksContainer.clearAndAddTracks(selectedTrackList);
+        //TODO check this ya mira.
+        this.notifierListener.notifyDataChanged();
+    }
+
+    public List<String> getSavedTracks() {
+        return DataServiceSingleton.getInstance().getSavedTracksNamesInDatabase();
     }
 
 }

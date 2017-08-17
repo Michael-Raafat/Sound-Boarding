@@ -13,7 +13,7 @@ public interface SelectedTracksContainer {
 
     Track removeTrackByName(String name);
 
-    void clearAndAddGroups(List<SelectedTrack> tracks);
+    void clearAndAddTracks(List<SelectedTrack> tracks);
 
     int getNumberOfTracks();
 

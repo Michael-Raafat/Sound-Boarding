@@ -58,7 +58,7 @@ public class SelectedTrackContainerImp implements SelectedTracksContainer {
     }
 
     @Override
-    public void clearAndAddGroups(List<SelectedTrack> tracks) {
+    public void clearAndAddTracks(List<SelectedTrack> tracks) {
         selectedTracks.clear();
         selectedTracks.addAll(tracks);
     }

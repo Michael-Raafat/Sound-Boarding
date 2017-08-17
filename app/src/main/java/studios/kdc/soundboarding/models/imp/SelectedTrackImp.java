@@ -34,6 +34,17 @@ public class SelectedTrackImp implements SelectedTrack {
         this.groupName = groupName;
     }
 
+    public SelectedTrackImp(List<String> data) {
+        this.name = data.get(0);
+        this.trackDuration = Integer.valueOf(data.get(1));
+        this.path = data.get(2);
+        this.extension = data.get(3);
+        this.type = data.get(4);
+        this.startPoint = Integer.valueOf(data.get(5));
+        this.endPoint = Integer.valueOf(data.get(6));
+        this.groupName = data.get(7);
+    }
+
     public SelectedTrackImp(String name, int trackDuration, String path, String extension, String type) {
         this.name = name;
         this.trackDuration = trackDuration;
