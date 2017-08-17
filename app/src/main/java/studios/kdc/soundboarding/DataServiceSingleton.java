@@ -105,7 +105,7 @@ public class DataServiceSingleton {
         database.execSQL("INSERT INTO Cartoon (name, duration, path, extension, type) VALUES" +
                 " ('Tom and Jerry', 24, 'Cartoon/Tom and Jerry.mp3', 'mp3', 'assets')");
 
-
+        this.addSavedGroup();
     }
 
     public void addGroup(Group group) {
@@ -116,7 +116,7 @@ public class DataServiceSingleton {
                 +"')");
     }
 
-    public void addSavedGroup() {
+    private void addSavedGroup() {
         database.execSQL("CREATE TABLE IF NOT EXISTS SavedTracks" +
                 " (name VARCHAR)");
     }
@@ -124,7 +124,7 @@ public class DataServiceSingleton {
     public void saveNewTrack(String trackName, List<SelectedTrack> tracks) {
         database.execSQL("INSERT INTO SavedTracks (name) VALUES ('"+ trackName +
                 "')");
-        database.execSQL("CREATE TABLE IF NOT EXISTS"+ trackName
+        database.execSQL("CREATE TABLE IF NOT EXISTS "+ trackName
                 +" (name VARCHAR, startPoint INTEGER," +
                 " endPoint INTEGER, path VARCHAR, type VARCHAR, groupName VARCHAR, duration INTEGER, extension VARCHAR)");
         for ( SelectedTrack selectedTrack : tracks) {

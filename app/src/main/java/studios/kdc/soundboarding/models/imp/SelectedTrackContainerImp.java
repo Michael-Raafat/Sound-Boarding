@@ -72,4 +72,9 @@ public class SelectedTrackContainerImp implements SelectedTracksContainer {
     public List<SelectedTrack> getTracks() {
         return selectedTracks;
     }
+
+    @Override
+    public SelectedTrack getTrackByIndex(int position) {
+        return this.selectedTracks.get(position);
+    }
 }

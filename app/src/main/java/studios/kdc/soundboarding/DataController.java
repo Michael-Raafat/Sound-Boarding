@@ -133,9 +133,8 @@ public class DataController {
 
     public boolean deleteTrack(int trackPosition, int groupPosition) {
         Track track = groupContainer.getGrps().get(groupPosition).getTracks().get(trackPosition);
-        if (track.getType().equals("assets")) {
+        if (track.getType().equals("assets"))
             return false;
-        }
         DataServiceSingleton.getInstance().removeTrack(track,
                 groupContainer.getGrps().get(groupPosition).getName());
         selectedTracksContainer.removeTrackByName(track.getName());
@@ -189,10 +188,8 @@ public class DataController {
     public void saveMixedTrack(String trackName) {
         List<SelectedTrack> selectedTrackList = selectedTracksContainer.getTracks();
         List<String> savedTracksNames = DataServiceSingleton.getInstance().getSavedTracksNamesInDatabase();
-        DataServiceSingleton.getInstance().addSavedGroup();
-        if (savedTracksNames.contains(trackName)) {
+        if (savedTracksNames.contains(trackName))
             DataServiceSingleton.getInstance().deleteSavedTrack(trackName);
-        }
         DataServiceSingleton.getInstance().saveNewTrack(trackName, selectedTrackList);
     }
 
@@ -204,12 +201,25 @@ public class DataController {
             selectedTrackList.add(selectedTrack);
         }
         selectedTracksContainer.clearAndAddTracks(selectedTrackList);
-        //TODO check this ya mira.
-        this.notifierListener.notifyDataChanged();
     }
 
     public List<String> getSavedTracks() {
         return DataServiceSingleton.getInstance().getSavedTracksNamesInDatabase();
+    }
+    public int getNoOfSelectedTracks(){
+        return this.selectedTracksContainer.getNumberOfTracks();
+    }
+    public Map<String, String> getTrackInfo(int position){
+        SelectedTrack selectedTrack = this.selectedTracksContainer.getTrackByIndex(position);
+        Map<String, String> trackInfo = new HashMap<>();
+        trackInfo.put("name" , selectedTrack.getName());
+        trackInfo.put("path" , selectedTrack.getPath());
+        trackInfo.put("duration" , String.valueOf(selectedTrack.getTrackDuration()));
+        trackInfo.put("extension", selectedTrack.getExtension());
+        trackInfo.put("type", selectedTrack.getType());
+        trackInfo.put("grpName" ,selectedTrack.getGroupName());
+        trackInfo.put("startPoint" ,  String.valueOf(selectedTrack.getStartPoint() * Utils.SECOND_PIXEL_RATIO));
+        return trackInfo;
     }
 
 }

@@ -21,8 +21,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -37,6 +37,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import studios.kdc.soundboarding.media.mixer.MixerController;
@@ -66,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
     private DrawerLayout mDrawerLayout;
     private Handler handler;
     private float initialSeekBarPosition;
+    private RelativeLayout relativeLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
         setContentView(R.layout.activity_main);
         this.seekBarFlag = false;
         this.handler = new Handler();
+        this.relativeLayout = (RelativeLayout) findViewById(R.id.main);
         SharedPreferences sharedPreferences = this.getSharedPreferences("studios.kdc.soundboarding", MODE_PRIVATE);
         SQLiteDatabase tracksDatabase = this.openOrCreateDatabase("Data", MODE_PRIVATE, null);
         DataServiceSingleton.getInstance(tracksDatabase);
@@ -155,15 +158,18 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
 
             Intent i;
             switch (position){
-                case 0:
+                case 0: //create track
                     i = new Intent(getApplicationContext() , TrackUploader.class);
                     startActivity(i);
                     break;
-                case 1:
+                case 1: //create grp
                     i = new Intent(getApplicationContext() , GroupCreator.class);
                     startActivity(i);
                     break;
-                case 2:
+                case 2: //open saved
+                    openSavedTracks();
+                    break;
+                case 3: // about
                     break;
             }
             handler.postDelayed(new Runnable() {
@@ -174,7 +180,36 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
             }, 250);
         }
     }
-
+    private void openSavedTracks() {
+        final List<String> saved = DataController.getInstance().getSavedTracks();
+        if(saved.isEmpty())
+            Toast.makeText(getApplicationContext(),"There is no saved tracks" , Toast.LENGTH_LONG).show();
+        else {
+            LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+            View customView = inflater.inflate(R.layout.saved_list_layout, null);
+            final PopupWindow  mPopupWindow = new PopupWindow(customView, RelativeLayout.LayoutParams.MATCH_PARENT,
+                    RelativeLayout.LayoutParams.MATCH_PARENT);
+            mPopupWindow.setFocusable(true);
+            ListView savedList = customView.findViewById(R.id.saved);
+            ImageButton close = customView.findViewById(R.id.close);
+            close.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mPopupWindow.dismiss();
+                }
+            });
+            savedList.setAdapter(new ArrayAdapter<>(getApplicationContext() , R.layout.saved_text_layout , saved));
+            savedList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    DataController.getInstance().loadSavedTrack(saved.get(i));
+                    mPopupWindow.dismiss();
+                    fillTimelineWithSavedTracks();
+                }
+            });
+            mPopupWindow.showAtLocation(relativeLayout, Gravity.CENTER ,0,0);
+        }
+    }
     private void initializePauseButton(){
         this.pause_resume = (FloatingActionButton) findViewById(R.id.pause_resume);
         this.pause_resume.setOnClickListener(new View.OnClickListener() {
@@ -197,18 +232,25 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
         });
 
     }
-
+    private void fillTimelineWithSavedTracks(){
+        this.timelineView.clearTimeline();
+        for(int i = 0 ; i< DataController.getInstance().getNoOfSelectedTracks(); i++){
+            Map<String, String> trackInfo = DataController.getInstance().getTrackInfo(i);
+            this.timelineView.addWaveFormsToTimeline(trackInfo , Integer.parseInt(trackInfo.get("startPoint")));
+        }
+        this.mix.setVisibility(View.VISIBLE);
+        this.save.setVisibility(View.VISIBLE);
+    }
     private void initializeSaveButton(){
         this.save = (FloatingActionButton) findViewById(R.id.save);
         this.save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 save.setEnabled(false);
-                RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.main);
                 LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
                 View customView = inflater.inflate(R.layout.save_layout, null);
                 final PopupWindow  mPopupWindow = new PopupWindow(customView,
-                        (int) (Utils.getScreenWidth(MainActivity.this)/1.5) ,
+                        (int) (Utils.getScreenWidth(MainActivity.this) / 1.5) ,
                         RelativeLayout.LayoutParams.WRAP_CONTENT
                 );
                 mPopupWindow.setFocusable(true);
@@ -335,7 +377,7 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
                             String description = event.getClipData().getDescription().getLabel().toString();
                             String[] s = description.split(getResources().getString(R.string.separator));
                             Map<String, String> trackInfo = DataController.getInstance().selectTrackToMix(s[1], Integer.parseInt(s[0]));
-                            timelineView.addWaveFormsToTimeline(trackInfo);
+                            timelineView.addWaveFormsToTimeline(trackInfo , 0);
                             if(timelineView.getChildCount() > 0){
                                 save.setVisibility(View.VISIBLE);
                                 if(pause_resume.getVisibility() == View.GONE)

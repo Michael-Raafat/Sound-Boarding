@@ -80,7 +80,7 @@ public class CustomTimelineView  {
             this.removeWave(i);
         }
     }
-    public void addWaveFormsToTimeline(Map<String, String> trackInfo){
+    public void addWaveFormsToTimeline(Map<String, String> trackInfo, int position){
         try {
             int screenHeight = Utils.getScreenHeight(activity);
             int screenWidth = Utils.getScreenWidth(activity);
@@ -108,6 +108,7 @@ public class CustomTimelineView  {
             frameLayout.addView(name);
             frameLayout.addView(optionsButton);
             name.setGravity(Gravity.CENTER_HORIZONTAL);
+            frameLayout.setX(position);
             this.timelineWaves.addView(frameLayout);
             setOnClickListenerToOptionsButton(optionsButton);
             CustomHorizontalSlider slider = new CustomHorizontalSlider(horizontalScrollView,

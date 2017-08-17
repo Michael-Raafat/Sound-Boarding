@@ -19,4 +19,6 @@ public interface SelectedTracksContainer {
 
     List<SelectedTrack> getTracks();
 
+    SelectedTrack getTrackByIndex(int position);
+
 }

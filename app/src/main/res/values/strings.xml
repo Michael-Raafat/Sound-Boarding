@@ -17,4 +17,5 @@
     <string name="save">Save</string>
     <string name="title_activity_group_creator">GroupCreator</string>
     <string name="name">Track Name</string>
+    <string name="saved_list">Saved Tracks</string>
 </resources>
