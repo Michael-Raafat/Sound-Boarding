@@ -49,7 +49,6 @@ public class GroupCreator extends AppCompatActivity {
                     Toast.makeText(getApplicationContext() ,"Name is required" , Toast.LENGTH_LONG).show();
                 }else {
                     Toast.makeText(getApplicationContext() ,"Group is successfully created" , Toast.LENGTH_LONG).show();
-                    Log.i("hna" , chosenColor+"");
                     DataController.getInstance().createGroup(grpName.getText().toString(), chosenColor) ;
                     finish();
                 }

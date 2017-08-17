@@ -235,7 +235,6 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
     }
     private void fillTimelineWithSavedTracks(){
         this.timelineView.clearTimeline();
-        Log.i("hna" , ""+DataController.getInstance().getNoOfSelectedTracks());
         for(int i = 0 ; i< DataController.getInstance().getNoOfSelectedTracks(); i++){
             Map<String, String> trackInfo = DataController.getInstance().getTrackInfo(i);
             this.timelineView.addWaveFormsToTimeline(trackInfo , Integer.parseInt(trackInfo.get("startPoint")));
