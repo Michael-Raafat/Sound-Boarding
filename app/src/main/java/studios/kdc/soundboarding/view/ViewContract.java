@@ -1,6 +1,8 @@
 package studios.kdc.soundboarding.view;
 
 
+import android.widget.ImageButton;
+
 import java.util.List;
 
 public class ViewContract {
@@ -17,14 +19,14 @@ public class ViewContract {
 
         void resumeSeekBar();
         void pauseSeekBar();
-        int getCurrentProgress();
+        int  getCurrentProgress();
         void setProgressChange(double seconds);
         void notifyTrackFinished();
 
     }
     public interface waveFormListener {
         void removeWaveForm(int position);
-
+        void showVolumeSeekBar(ImageButton button , int position);
     }
     public interface dataChangedNotifier {
         void notifyDataChanged();

@@ -1,10 +1,7 @@
 package studios.kdc.soundboarding.models.imp;
 
-import android.support.annotation.NonNull;
 
 import java.util.List;
-
-import studios.kdc.soundboarding.models.Group;
 import studios.kdc.soundboarding.models.Track;
 
 /**
@@ -100,6 +97,7 @@ public class TrackImp implements Track{
     public void setType(String type) {
         this.type = type;
     }
+
 
 
 }

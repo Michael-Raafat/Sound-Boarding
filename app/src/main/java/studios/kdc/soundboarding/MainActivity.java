@@ -37,6 +37,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -154,13 +155,11 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
 
     @Override
     public void notifySelectedWavesRemoved(List<Integer> positions) {
-         //todo sort descindingly
-        for(Integer i : positions){
+        Collections.sort(positions, Collections.reverseOrder());
+        for(Integer i : positions)
             this.timelineView.removeWave(i);
-        }
-        if (this.timelineView.getChildCount() < 1) {
+        if (this.timelineView.getChildCount() < 1)
             afterRemoveChanges();
-        }
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
@@ -247,7 +246,7 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
         this.timelineView.clearTimeline();
         for(int i = 0 ; i< DataController.getInstance().getNoOfSelectedTracks(); i++){
             Map<String, String> trackInfo = DataController.getInstance().getTrackInfo(i);
-            this.timelineView.addWaveFormsToTimeline(trackInfo , Integer.parseInt(trackInfo.get("startPoint")));
+            this.timelineView.addWaveFormsToTimeline(trackInfo , Integer.parseInt(trackInfo.get("startPoint")) * Utils.getSecondPixelRatio(this));
         }
         this.mix.setVisibility(View.VISIBLE);
         this.save.setVisibility(View.VISIBLE);
@@ -337,8 +336,6 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
                     case DragEvent.ACTION_DRAG_ENDED:
                         deleteButton.setImageResource(R.drawable.delete_white);
                         break;
-                    default:
-                        break;
                 }
                 return true;
             }
@@ -412,10 +409,8 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
         });
     }
 
-
     @Override
     public void onScrollChanged(CustomHorizontalScrollView scrollView, int x, int y, int oldX, int oldY) {
-
         int delta = x - oldX;
         int textViewWidth = this.timelineView.getTextViewWidth();
         if((delta > 0) && ((this.scrollFactor + 1 ) *  textViewWidth < x) ) {
@@ -429,7 +424,7 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
 
     @Override
     public void onSlideChanged(int startSeconds, int position) {
-      DataController.getInstance().setStartPointTrack(position , startSeconds);
+      DataController.getInstance().setStartPointTrack(position , startSeconds / Utils.getSecondPixelRatio(this));
     }
 
     @Override
@@ -444,13 +439,13 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
 
     @Override
     public int getCurrentProgress() {
-        return ((int) this.seekBar.getX() / Utils.SECOND_PIXEL_RATIO);
+        return ((int) this.seekBar.getX() / Utils.getSecondPixelRatio(this));
     }
 
     @Override
     public void setProgressChange(double seconds) {
        if (!this.seekBarFlag)
-            this.seekBar.setX((float) (seconds * Utils.SECOND_PIXEL_RATIO));
+            this.seekBar.setX((float) (seconds * Utils.getSecondPixelRatio(this)));
     }
 
     @Override
@@ -469,11 +464,15 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
     public void removeWaveForm(int position) {
             DataController.getInstance().removeTrack(position);
             this.timelineView.removeWave(position);
-            if (this.timelineView.getChildCount() < 1) {
+            if (this.timelineView.getChildCount() < 1)
                afterRemoveChanges();
-            }
+    }
+
+    @Override
+    public void showVolumeSeekBar(ImageButton button, int position) {
 
     }
+
     private void afterRemoveChanges(){
         this.mix.setVisibility(View.GONE);
         this.save.setVisibility(View.GONE);

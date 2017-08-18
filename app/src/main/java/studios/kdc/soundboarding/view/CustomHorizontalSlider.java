@@ -5,8 +5,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 
-import studios.kdc.soundboarding.Utils;
-
 public class CustomHorizontalSlider implements View.OnTouchListener {
 
     private boolean isDragging = false;
@@ -51,7 +49,7 @@ public class CustomHorizontalSlider implements View.OnTouchListener {
                     isDragging = false;
                     if (listener != null) {
                         ViewGroup parent = (ViewGroup) v.getParent();
-                        listener.onSlideChanged((int) (v.getX() / Utils.SECOND_PIXEL_RATIO), parent.indexOfChild(v));
+                        listener.onSlideChanged((int) (v.getX()), parent.indexOfChild(v));
                     }
                     return true;
                 }

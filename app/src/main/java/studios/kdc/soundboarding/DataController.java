@@ -220,7 +220,7 @@ public class DataController {
         trackInfo.put("extension", selectedTrack.getExtension());
         trackInfo.put("type", selectedTrack.getType());
         trackInfo.put("grpName" ,selectedTrack.getGroupName());
-        trackInfo.put("startPoint" ,  String.valueOf(selectedTrack.getStartPoint() * Utils.SECOND_PIXEL_RATIO));
+        trackInfo.put("startPoint" ,  String.valueOf(selectedTrack.getStartPoint()));
         return trackInfo;
     }
 

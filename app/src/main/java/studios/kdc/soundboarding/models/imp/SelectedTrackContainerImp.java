@@ -38,8 +38,8 @@ public class SelectedTrackContainerImp implements SelectedTracksContainer {
     @Override
     public Track getTrackByName(String name) {
         for (int i = 0; i < selectedTracks.size(); i++) {
-            if (selectedTracks.get(i).getName().equals(name)){
-                return selectedTracks.get(i);
+            if (this.selectedTracks.get(i).getName().equals(name)){
+                return this.selectedTracks.get(i);
             }
         }
         return null;
@@ -47,10 +47,10 @@ public class SelectedTrackContainerImp implements SelectedTracksContainer {
 
     @Override
     public Track removeTrackByName(String name) {
-        for (int i = 0; i < selectedTracks.size(); i++) {
-            if (selectedTracks.get(i).getName().equals(name)){
-                Track temp = selectedTracks.get(i);
-                selectedTracks.remove(i);
+        for (int i = 0; i < this.selectedTracks.size(); i++) {
+            if (this.selectedTracks.get(i).getName().equals(name)){
+                Track temp = this.selectedTracks.get(i);
+                this.selectedTracks.remove(i);
                 return temp;
             }
         }
@@ -59,18 +59,18 @@ public class SelectedTrackContainerImp implements SelectedTracksContainer {
 
     @Override
     public void clearAndAddTracks(List<SelectedTrack> tracks) {
-        selectedTracks.clear();
-        selectedTracks.addAll(tracks);
+        this.selectedTracks.clear();
+        this.selectedTracks.addAll(tracks);
     }
 
     @Override
     public int getNumberOfTracks() {
-        return selectedTracks.size();
+        return this.selectedTracks.size();
     }
 
     @Override
     public List<SelectedTrack> getTracks() {
-        return selectedTracks;
+        return this.selectedTracks;
     }
 
     @Override
@@ -81,10 +81,9 @@ public class SelectedTrackContainerImp implements SelectedTracksContainer {
     @Override
     public List<Integer> getTrackPositionsByName(String name) {
         List<Integer> list = new ArrayList<>();
-         for (int i =  selectedTracks.size() - 1; i >= 0; i--) {
-            if (selectedTracks.get(i).getName().equals(name)){
+         for (int i =  this.selectedTracks.size() - 1; i >= 0; i--) {
+            if (this.selectedTracks.get(i).getName().equals(name))
                list.add(i);
-            }
         }
         return list;
     }

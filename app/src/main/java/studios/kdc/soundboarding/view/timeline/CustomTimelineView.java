@@ -3,15 +3,19 @@ package studios.kdc.soundboarding.view.timeline;
 
 import android.app.Activity;
 import android.graphics.Color;
-import android.support.v7.widget.PopupMenu;
+import android.os.Handler;
+import android.util.Log;
 import android.view.Gravity;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -21,11 +25,14 @@ import java.util.List;
 import java.util.Map;
 
 import rm.com.audiowave.AudioWaveView;
+import studios.kdc.soundboarding.MainActivity;
 import studios.kdc.soundboarding.R;
 import studios.kdc.soundboarding.Utils;
 import studios.kdc.soundboarding.playerStrategy.PlayerStrategyFactory;
 import studios.kdc.soundboarding.view.CustomHorizontalSlider;
 import studios.kdc.soundboarding.view.ViewContract;
+
+import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
 
 public class CustomTimelineView  {
@@ -37,7 +44,7 @@ public class CustomTimelineView  {
     private HorizontalScrollView horizontalScrollView;
     private List<ImageButton> optionButtons;
     private PlayerStrategyFactory factory;
-
+    private boolean isTouched;
     public CustomTimelineView(Activity activity , LinearLayout timelineWaves ,LinearLayout minSecView, HorizontalScrollView horizontalScrollView){
         this.minutesSecondsView = new MinutesSecondsView(activity);
         this.timelineWaves = timelineWaves;
@@ -79,14 +86,19 @@ public class CustomTimelineView  {
             this.removeWave(i);
         }
     }
+    private int getTimelineLengthLimit(){
+        return  Utils.getSecondPixelRatio(this.activity) * ((int)(Utils.getScreenWidth(this.activity) / 1.8));
+    }
     public void addWaveFormsToTimeline(Map<String, String> trackInfo, int position){
         try {
-            int screenHeight = Utils.getScreenHeight(activity);
-            int screenWidth = Utils.getScreenWidth(activity);
-            FrameLayout frameLayout = new FrameLayout(activity.getApplicationContext());
-            TextView name = new TextView(activity.getApplicationContext());
-            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(Integer.parseInt(trackInfo.get("duration")) * Utils.SECOND_PIXEL_RATIO, (int)(screenHeight / 19.2));
-            LinearLayout.LayoutParams frameParam = new LinearLayout.LayoutParams(Utils.TIMELINE_LENGTH_LIMIT , ViewGroup.LayoutParams.WRAP_CONTENT);
+            int screenHeight = Utils.getScreenHeight(this.activity);
+            int screenWidth = Utils.getScreenWidth(this.activity);
+            FrameLayout frameLayout = new FrameLayout(this.activity.getApplicationContext());
+            TextView name = new TextView(this.activity.getApplicationContext());
+            int waveWidth = Integer.parseInt(trackInfo.get("duration")) * Utils.getSecondPixelRatio(this.activity);
+            int waveHeight = (int)(screenHeight / 19.2);
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(waveWidth, waveHeight);
+            LinearLayout.LayoutParams frameParam = new LinearLayout.LayoutParams(getTimelineLengthLimit() , ViewGroup.LayoutParams.WRAP_CONTENT);
             frameParam.setMargins((screenHeight / 192), 0 , 0, (screenHeight / 192));
             frameLayout.setLayoutParams(frameParam);
             name.setLayoutParams(params);
@@ -99,22 +111,30 @@ public class CustomTimelineView  {
               waveForm.setRawData(soundBytes);
             name.setText(trackInfo.get("grpName") + " - " + trackInfo.get("name"));
             name.setTextColor(Color.WHITE);
-            ImageButton optionsButton = new ImageButton(activity.getApplicationContext());
-            optionsButton.setBackgroundColor(activity.getResources().getColor(R.color.cyan));
+            ImageButton deleteButton = new ImageButton(activity.getApplicationContext());
+            deleteButton.setImageResource(R.drawable.close_cyan);
             FrameLayout.LayoutParams optionsParams = new FrameLayout.LayoutParams((screenWidth / 36) ,(screenHeight / 64));
-            optionsButton.setLayoutParams(optionsParams);
+            deleteButton.setLayoutParams(optionsParams);
+            ImageButton volumeButton = new ImageButton(activity.getApplicationContext());
+            volumeButton .setImageResource(R.drawable.volume_cyan);
+            FrameLayout.LayoutParams volumeParams = new FrameLayout.LayoutParams((screenWidth / 25) ,(screenHeight / 55));
+            volumeParams.gravity = (Gravity.BOTTOM);
+            volumeParams.setMargins(waveWidth, 0, 0, 0);
+            volumeButton.setLayoutParams(volumeParams);
             frameLayout.addView(waveForm);
             frameLayout.addView(name);
-            frameLayout.addView(optionsButton);
+            frameLayout.addView(deleteButton);
+            frameLayout.addView(volumeButton);
             name.setGravity(Gravity.CENTER_HORIZONTAL);
             frameLayout.setX(position);
             this.timelineWaves.addView(frameLayout);
-            setOnClickListenerToOptionsButton(optionsButton);
-            CustomHorizontalSlider slider = new CustomHorizontalSlider(horizontalScrollView,
+            setOnClickListenerToDeleteButton(deleteButton);
+            setOnClickListenerToVolumeButton(volumeButton);
+            CustomHorizontalSlider slider = new CustomHorizontalSlider(this.horizontalScrollView,
                     frameLayout , (View) frameLayout.getParent().getParent(), (ViewContract.SliderListener)activity);
             waveForm.setOnTouchListener(slider);
             this.waveFormsListeners.add(slider);
-            this.optionButtons.add(optionsButton);
+            this.optionButtons.add(deleteButton);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -125,31 +145,70 @@ public class CustomTimelineView  {
         this.optionButtons.remove(position);
     }
 
-
-
-    private void setOnClickListenerToOptionsButton(final ImageButton button) {
+    private void setOnClickListenerToDeleteButton(final ImageButton button) {
        button.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
-               final FrameLayout frameLayout = (FrameLayout) view.getParent();
-               final PopupMenu popup = new PopupMenu(activity, button);
-               popup.getMenuInflater().inflate(R.menu.delete_menu, popup.getMenu());
-               popup.show();
-               popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                   @Override
-                   public boolean onMenuItemClick(MenuItem item) {
-                       switch (item.getItemId()) {
-                           case R.id.remove:
-                               ((ViewContract.waveFormListener) activity).removeWaveForm(timelineWaves.indexOfChild(frameLayout));
-                               break;
-                       }
-                       return true;
-                   }
-               });
-
+               FrameLayout frameLayout = (FrameLayout) view.getParent();
+               ((ViewContract.waveFormListener) activity).removeWaveForm(timelineWaves.indexOfChild(frameLayout));
            }
        });
    }
+
+    private void setOnClickListenerToVolumeButton(final ImageButton button) {
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                button.setEnabled(false);
+                FrameLayout frameLayout = (FrameLayout) view.getParent();
+               // ((ViewContract.waveFormListener) activity).showVolumeSeekBar(button, timelineWaves.indexOfChild(frameLayout));
+                Handler handler = new Handler();
+                LayoutInflater inflater = (LayoutInflater) activity.getSystemService(LAYOUT_INFLATER_SERVICE);
+                View customView = inflater.inflate(R.layout.volume_control, null);
+                final PopupWindow mPopupWindow = new PopupWindow(customView,
+                        FrameLayout.LayoutParams.WRAP_CONTENT ,
+                        FrameLayout.LayoutParams.WRAP_CONTENT
+                );
+                mPopupWindow.showAsDropDown(button , 30 , -1 * (int)(button.getY()));
+                int width = (int)(Utils.getScreenWidth(activity) / 10.8);
+                final SeekBar volume = customView.findViewById(R.id.volume);
+                isTouched = false;
+                volume.setMax(width);
+                //volume.setProgress();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (!isTouched){
+                            mPopupWindow.dismiss();
+                            button.setEnabled(true);
+                    }
+                    }
+                } , 1000);
+                volume.setOnSeekBarChangeListener (new SeekBar.OnSeekBarChangeListener ( ) {
+
+                    @Override
+                    public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                        //i
+                    }
+
+                    @Override
+                    public void onStartTrackingTouch(SeekBar seekBar) {
+                        isTouched = true;
+                    }
+
+                    @Override
+                    public void onStopTrackingTouch(SeekBar seekBar) {
+                        button.setEnabled(true);
+                        mPopupWindow.dismiss();
+                    }
+                });
+
+            }
+        });
+    }
+
+
+
     private byte[] getWaveFormByteArray(String type , String path) {
 
         InputStream inputStream = factory.createPlayerStrategy(type).getInputStream(path);
