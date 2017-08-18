@@ -46,8 +46,10 @@ public class Mixer {
 
     public void setCurrentVolumeOf(int position , int progress) {
         SelectedTrackContainerImp.getInstance().getTracks().get(position).setVolume(progress);
-        if(!this.runList.isEmpty()) {
-            CustomRunnable runnable = this.runList.get(this.runnableTrackMap.get(position));
+        int runnablePosition = this.runnableTrackMap.get(position , -1);
+        if(!this.runList.isEmpty() && runnablePosition != -1) {
+            CustomRunnable runnable = this.runList.get(runnablePosition);
+            if(runnable != null)
             runnable.setVolume(progress);
         }
     }
