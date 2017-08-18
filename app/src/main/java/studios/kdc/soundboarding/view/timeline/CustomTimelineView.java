@@ -9,6 +9,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
@@ -44,7 +45,6 @@ public class CustomTimelineView  {
     private HorizontalScrollView horizontalScrollView;
     private List<ImageButton> optionButtons;
     private PlayerStrategyFactory factory;
-    private boolean isTouched;
     public CustomTimelineView(Activity activity , LinearLayout timelineWaves ,LinearLayout minSecView, HorizontalScrollView horizontalScrollView){
         this.minutesSecondsView = new MinutesSecondsView(activity);
         this.timelineWaves = timelineWaves;
@@ -129,7 +129,7 @@ public class CustomTimelineView  {
             frameLayout.setX(position);
             this.timelineWaves.addView(frameLayout);
             setOnClickListenerToDeleteButton(deleteButton);
-            setOnClickListenerToVolumeButton(volumeButton);
+            volumeButton.setOnClickListener(new VolumeListener());
             CustomHorizontalSlider slider = new CustomHorizontalSlider(this.horizontalScrollView,
                     frameLayout , (View) frameLayout.getParent().getParent(), (ViewContract.SliderListener)activity);
             waveForm.setOnTouchListener(slider);
@@ -154,61 +154,6 @@ public class CustomTimelineView  {
            }
        });
    }
-
-    private void setOnClickListenerToVolumeButton(final ImageButton button) {
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                button.setEnabled(false);
-                FrameLayout frameLayout = (FrameLayout) view.getParent();
-                final int position = timelineWaves.indexOfChild(frameLayout);
-                Handler handler = new Handler();
-                LayoutInflater inflater = (LayoutInflater) activity.getSystemService(LAYOUT_INFLATER_SERVICE);
-                View customView = inflater.inflate(R.layout.volume_control, null);
-                final PopupWindow mPopupWindow = new PopupWindow(customView,
-                        FrameLayout.LayoutParams.WRAP_CONTENT ,
-                        FrameLayout.LayoutParams.WRAP_CONTENT
-                );
-                mPopupWindow.showAsDropDown(button , 30 , -1 * (int)(button.getY()));
-                int width = (int)(Utils.getScreenWidth(activity) / 10.8);
-                final SeekBar volume = customView.findViewById(R.id.volume);
-                isTouched = false;
-                volume.setMax(width);
-                volume.setProgress(((ViewContract.waveFormListener) activity).getCurrentVolume(position));
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (!isTouched){
-                            mPopupWindow.dismiss();
-                            button.setEnabled(true);
-                    }
-                    }
-                } , 1000);
-                volume.setOnSeekBarChangeListener (new SeekBar.OnSeekBarChangeListener ( ) {
-
-                    @Override
-                    public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                        ((ViewContract.waveFormListener) activity).updateVolume(position , i);
-                    }
-
-                    @Override
-                    public void onStartTrackingTouch(SeekBar seekBar) {
-                        isTouched = true;
-                    }
-
-                    @Override
-                    public void onStopTrackingTouch(SeekBar seekBar) {
-                        button.setEnabled(true);
-                        mPopupWindow.dismiss();
-                    }
-                });
-
-            }
-        });
-    }
-
-
-
     private byte[] getWaveFormByteArray(String type , String path) {
 
         InputStream inputStream = factory.createPlayerStrategy(type).getInputStream(path);
@@ -217,11 +162,71 @@ public class CustomTimelineView  {
         } catch (IOException e) {
             e.printStackTrace();
         }
-         return null;
+        return null;
     }
 
 
+    private class VolumeListener implements  View.OnClickListener {
+        private boolean isTouched;
+        private PopupWindow mPopupWindow;
+        private View customView;
 
+        VolumeListener(){
+            LayoutInflater inflater = (LayoutInflater) activity.getSystemService(LAYOUT_INFLATER_SERVICE);
+            this.customView = inflater.inflate(R.layout.volume_control, null);
+            mPopupWindow = new PopupWindow(customView,
+                    FrameLayout.LayoutParams.WRAP_CONTENT ,
+                    FrameLayout.LayoutParams.WRAP_CONTENT
+            );
+        }
+
+        @Override
+       public void onClick(View view) {
+           final ImageButton button = (ImageButton) view;
+           button.setEnabled(false);
+           FrameLayout frameLayout = (FrameLayout) view.getParent();
+           final int position = timelineWaves.indexOfChild(frameLayout);
+           Handler handler = new Handler();
+           mPopupWindow.showAsDropDown(button , 30 , -1 * (int)(button.getY()));
+           int width = (int)(Utils.getScreenWidth(activity) / 10.8);
+           final SeekBar volume = customView.findViewById(R.id.volume);
+           isTouched = false;
+           volume.setMax(width);
+           volume.setProgress(((ViewContract.waveFormListener) activity).getCurrentVolume(position));
+           setSeekBarListener(volume , position , button);
+           handler.postDelayed(new Runnable() {
+               @Override
+               public void run() {
+                   if (!isTouched){
+                       mPopupWindow.dismiss();
+                       button.setEnabled(true);
+                   }
+               }
+           } , 1000);
+
+       }
+       private void setSeekBarListener (SeekBar volume , final int position , final ImageButton button ){
+           volume.setOnSeekBarChangeListener (new SeekBar.OnSeekBarChangeListener ( ) {
+               @Override
+               public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                   ((ViewContract.waveFormListener) activity).updateVolume(position , i);
+               }
+
+               @Override
+               public void onStartTrackingTouch(SeekBar seekBar) {
+                   isTouched = true;
+               }
+
+               @Override
+               public void onStopTrackingTouch(SeekBar seekBar) {
+                   button.setEnabled(true);
+                   mPopupWindow.dismiss();
+               }
+           });
+
+       }
+
+}
     private class MinutesSecondsView extends LinearLayout {
         private int minutes, seconds;
         private String finalMinSec;

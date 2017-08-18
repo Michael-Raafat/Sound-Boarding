@@ -2,15 +2,13 @@ package studios.kdc.soundboarding.media.mixer;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Handler;
 import android.util.SparseIntArray;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 
 import studios.kdc.soundboarding.media.mixer.runnable.CustomRunnable;
 import studios.kdc.soundboarding.media.mixer.runnable.SeekBarRunnable;
@@ -48,8 +46,10 @@ public class Mixer {
 
     public void setCurrentVolumeOf(int position , int progress) {
         SelectedTrackContainerImp.getInstance().getTracks().get(position).setVolume(progress);
-        CustomRunnable runnable = this.runList.get(this.runnableTrackMap.get(position));
-        runnable.setVolume(progress);
+        if(!this.runList.isEmpty()) {
+            CustomRunnable runnable = this.runList.get(this.runnableTrackMap.get(position));
+            runnable.setVolume(progress);
+        }
     }
 
 
