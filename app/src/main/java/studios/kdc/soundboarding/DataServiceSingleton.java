@@ -126,13 +126,13 @@ public class DataServiceSingleton {
                 "')");
         database.execSQL("CREATE TABLE IF NOT EXISTS "+ trackName
                 +" (name VARCHAR, startPoint INTEGER," +
-                " endPoint INTEGER, path VARCHAR, type VARCHAR, groupName VARCHAR, duration INTEGER, extension VARCHAR)");
+                " endPoint INTEGER, path VARCHAR, type VARCHAR, groupName VARCHAR, duration INTEGER, extension VARCHAR, volume INTEGER)");
         for ( SelectedTrack selectedTrack : tracks) {
             database.execSQL("INSERT INTO "+ trackName
-                    +" (name, startPoint, endPoint, path, type, groupName, duration, extension) VALUES ('"+ selectedTrack.getName() +
+                    +" (name, startPoint, endPoint, path, type, groupName, duration, extension, volume) VALUES ('"+ selectedTrack.getName() +
                     "', " + selectedTrack.getStartPoint() + ", " + selectedTrack.getEndPoint() + ", '"+
                     selectedTrack.getPath() + "', '" + selectedTrack.getType() + "', '"+ selectedTrack.getGroupName()
-                    +"', " + selectedTrack.getTrackDuration() + ", '"+ selectedTrack.getExtension() +"')");
+                    +"', " + selectedTrack.getTrackDuration() + ", '"+ selectedTrack.getExtension() +"', " + selectedTrack.getVolume() +")");
         }
     }
 
@@ -232,6 +232,7 @@ public class DataServiceSingleton {
         int endPointIndex = cursor.getColumnIndex("endPoint");
         int pathIndex = cursor.getColumnIndex("path");
         int typeIndex = cursor.getColumnIndex("type");
+        int volumeIndex = cursor.getColumnIndex("volume");
         int groupNameIndex = cursor.getColumnIndex("groupName");
         cursor.moveToFirst();
         List<List<String>> selectedTracks = new ArrayList<>();
@@ -244,6 +245,7 @@ public class DataServiceSingleton {
             trackInfo.add(cursor.getString(typeIndex));
             trackInfo.add(String.valueOf(cursor.getInt(startPointIndex)));
             trackInfo.add(String.valueOf(cursor.getInt(endPointIndex)));
+            trackInfo.add(String.valueOf(cursor.getInt(volumeIndex)));
             trackInfo.add(cursor.getString(groupNameIndex));
             selectedTracks.add(trackInfo);
             cursor.moveToNext();

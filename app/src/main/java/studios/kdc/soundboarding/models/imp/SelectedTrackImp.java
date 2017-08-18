@@ -20,6 +20,7 @@ public class SelectedTrackImp implements SelectedTrack {
     private int endPoint;
     private String groupName;
     private String type;
+    private  int volume;
 
 
 
@@ -31,6 +32,7 @@ public class SelectedTrackImp implements SelectedTrack {
         this.type = data.get(4);
         this.startPoint = 0;
         this.endPoint = 0;
+        this.volume = 50;
         this.groupName = groupName;
     }
 
@@ -43,6 +45,7 @@ public class SelectedTrackImp implements SelectedTrack {
         this.startPoint = Integer.valueOf(data.get(5));
         this.endPoint = Integer.valueOf(data.get(6));
         this.groupName = data.get(7);
+        this.volume = Integer.valueOf(data.get(8));
     }
 
     public SelectedTrackImp(String name, int trackDuration, String path, String extension, String type) {
@@ -135,6 +138,16 @@ public class SelectedTrackImp implements SelectedTrack {
     @Override
     public void setType(String type) {
         this.type = type;
+    }
+
+    @Override
+    public void setVolume(int vol) {
+        this.volume = vol;
+    }
+
+    @Override
+    public int getVolume() {
+        return volume;
     }
 
 

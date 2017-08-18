@@ -48,4 +48,8 @@ public interface Track {
     String getType();
 
     void setType(String type);
+
+    void setVolume(int vol);
+
+    int getVolume();
 }

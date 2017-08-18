@@ -25,6 +25,8 @@ public class TrackImp implements Track{
 
     private String type;
 
+    private int volume;
+
 
     public TrackImp(List<String> data) {
         this.name = data.get(0);
@@ -32,6 +34,7 @@ public class TrackImp implements Track{
         this.path = data.get(2);
         this.extension = data.get(3);
         this.type = data.get(4);
+        this.volume = 50;
     }
 
     public TrackImp(String name, int trackDuration, String path, String extension, String type) {
@@ -98,6 +101,15 @@ public class TrackImp implements Track{
         this.type = type;
     }
 
+    @Override
+    public void setVolume(int vol) {
+        this.volume = vol;
+    }
+
+    @Override
+    public int getVolume() {
+        return this.volume;
+    }
 
 
 }
