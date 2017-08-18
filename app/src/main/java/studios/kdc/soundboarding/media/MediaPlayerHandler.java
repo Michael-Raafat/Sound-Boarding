@@ -2,9 +2,7 @@ package studios.kdc.soundboarding.media;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.util.Log;
 
 import studios.kdc.soundboarding.media.singlePlayer.MediaPlayerStrategy;
 import studios.kdc.soundboarding.playerStrategy.PlayerStrategyFactory;
@@ -18,9 +16,7 @@ public abstract class MediaPlayerHandler {
 
     protected MediaPlayer mediaPlayer;
     protected Context context;
-    private AudioManager audioManager;
     private int maxVolume;
-    private int curVolume;
     private String trackPath;
     private boolean flag;
     private int currentPosition;
@@ -30,13 +26,10 @@ public abstract class MediaPlayerHandler {
         this.mediaPlayer = new MediaPlayer();
         this.context = context;
         this.setMediaPlayerListener();
-        this.audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-        this.maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-        this.curVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
         this.trackPath = null;
         this.flag = false;
-        playerStrategyFactory = new PlayerStrategyFactory(context);
-
+        this.playerStrategyFactory = new PlayerStrategyFactory(context);
+        this.maxVolume = 100;
     }
 
     public void seekTo(int i) {
@@ -53,10 +46,9 @@ public abstract class MediaPlayerHandler {
     public void pause() {this.mediaPlayer.pause ();}
     public void stop() {this.mediaPlayer.stop ();}
     public void setVolume(int vol) {
-        this.audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, vol, 0);
-
+        float log1=(float)(Math.log(this.maxVolume - vol)/Math.log(this.maxVolume));
+        this.mediaPlayer.setVolume(1 - log1 , 1 - log1);
     }
-
 
     protected abstract void setMediaPlayerListener();
 
@@ -92,8 +84,5 @@ public abstract class MediaPlayerHandler {
         return this.maxVolume;
     }
 
-    public int getCurrentVolume() {
-        return this.curVolume;
-    }
 
 }

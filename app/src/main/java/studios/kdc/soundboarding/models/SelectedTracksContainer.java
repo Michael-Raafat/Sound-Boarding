@@ -7,6 +7,7 @@ import java.util.List;
  */
 
 public interface SelectedTracksContainer {
+
     void addTrack(SelectedTrack track);
 
     Track getTrackByName(String name);

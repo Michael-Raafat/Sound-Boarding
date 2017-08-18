@@ -2,12 +2,15 @@ package studios.kdc.soundboarding.media.mixer;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
-import android.util.Log;
+import android.util.SparseIntArray;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import studios.kdc.soundboarding.media.mixer.runnable.CustomRunnable;
 import studios.kdc.soundboarding.media.mixer.runnable.SeekBarRunnable;
@@ -21,6 +24,7 @@ public class Mixer {
     private ViewContract.mixerProgressChange progressListener;
     private SeekBarRunnable seekBarRunnable;
     private List<CustomRunnable> runList;
+    private SparseIntArray  runnableTrackMap;    //relation between position of selected track && its custom runnable
 
     public Mixer(Context context, ViewContract.mixerProgressChange progressListener) {
         this.handler =new Handler();
@@ -28,6 +32,7 @@ public class Mixer {
         this.progressListener = progressListener;
         this.runList = Collections.synchronizedList(new ArrayList<CustomRunnable>());
         this.seekBarRunnable = new SeekBarRunnable(this.progressListener , this.handler);
+        this.runnableTrackMap = new SparseIntArray();
     }
 
     public void mix() {
@@ -36,10 +41,23 @@ public class Mixer {
         this.assignStartingPointForSlider(selectedTrackList);
 
     }
+    public int getCurrentVolumeOf(int position) {
+        return SelectedTrackContainerImp.getInstance().getTracks().get(position).getVolume();
+    }
+
+
+    public void setCurrentVolumeOf(int position , int progress) {
+        SelectedTrackContainerImp.getInstance().getTracks().get(position).setVolume(progress);
+        CustomRunnable runnable = this.runList.get(this.runnableTrackMap.get(position));
+        runnable.setVolume(progress);
+    }
+
+
 
     private void assignStartingPointsForPlaying(List<SelectedTrack> selectedTrackList, final int seekBarPosition ) {
         int count = 0;
         int size = this.runList.size();
+        this.runnableTrackMap.clear();
         for(final SelectedTrack selectedTrack : selectedTrackList) {
             if ((selectedTrack.getEndPoint() - seekBarPosition) >= 0) {
                 CustomRunnable temp;
@@ -50,12 +68,13 @@ public class Mixer {
                     temp.setSeekPosition(((seekBarPosition - selectedTrack.getStartPoint()) * 1000));
                     count++;
                 } else {
-
                     temp = new CustomRunnable(selectedTrack.getPath(),
-                            selectedTrack.getType(), ((seekBarPosition - selectedTrack.getStartPoint()) * 1000), context);
+                            selectedTrack.getType(), ((seekBarPosition - selectedTrack.getStartPoint()) * 1000)
+                            ,selectedTrack.getVolume(), context);
                     runList.add(temp);
                 }
                 handler.postDelayed(temp, (selectedTrack.getStartPoint() - seekBarPosition - 1) * 1000);
+                runnableTrackMap.append(selectedTrackList.indexOf(selectedTrack) , runList.indexOf(temp));
             }
         }
     }

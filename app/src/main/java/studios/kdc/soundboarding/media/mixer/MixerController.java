@@ -18,9 +18,8 @@ public class MixerController {
     }
 
     public static MixerController getInstance(Context context, ViewContract.mixerProgressChange progressListener) {
-        if (instance == null) {
+        if (instance == null)
             instance = new MixerController(context ,progressListener);
-        }
         return instance;
     }
     public static void deleteInstance() {
@@ -38,4 +37,11 @@ public class MixerController {
         this.mixer.resume();
     }
 
+    public int getCurrentVolumeOf(int position){
+        return this.mixer.getCurrentVolumeOf(position);
+    }
+
+    public void setCurrentVolumeOf(int position , int progress) {
+        this.mixer.setCurrentVolumeOf(position , progress);
+    }
 }

@@ -26,7 +26,8 @@ public class ViewContract {
     }
     public interface waveFormListener {
         void removeWaveForm(int position);
-        void showVolumeSeekBar(ImageButton button , int position);
+        void updateVolume(int position , int progress);
+        int getCurrentVolume(int position);
     }
     public interface dataChangedNotifier {
         void notifyDataChanged();

@@ -161,7 +161,7 @@ public class CustomTimelineView  {
             public void onClick(View view) {
                 button.setEnabled(false);
                 FrameLayout frameLayout = (FrameLayout) view.getParent();
-               // ((ViewContract.waveFormListener) activity).showVolumeSeekBar(button, timelineWaves.indexOfChild(frameLayout));
+                final int position = timelineWaves.indexOfChild(frameLayout);
                 Handler handler = new Handler();
                 LayoutInflater inflater = (LayoutInflater) activity.getSystemService(LAYOUT_INFLATER_SERVICE);
                 View customView = inflater.inflate(R.layout.volume_control, null);
@@ -174,7 +174,7 @@ public class CustomTimelineView  {
                 final SeekBar volume = customView.findViewById(R.id.volume);
                 isTouched = false;
                 volume.setMax(width);
-                //volume.setProgress();
+                volume.setProgress(((ViewContract.waveFormListener) activity).getCurrentVolume(position));
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -188,7 +188,7 @@ public class CustomTimelineView  {
 
                     @Override
                     public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                        //i
+                        ((ViewContract.waveFormListener) activity).updateVolume(position , i);
                     }
 
                     @Override

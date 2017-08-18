@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.DragEvent;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -469,8 +470,13 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
     }
 
     @Override
-    public void showVolumeSeekBar(ImageButton button, int position) {
+    public void updateVolume(int position , int progress) {
+        MixerController.getInstance(getApplicationContext() , MainActivity.this).setCurrentVolumeOf(position, progress);
+    }
 
+    @Override
+    public int getCurrentVolume(int position) {
+       return MixerController.getInstance(getApplicationContext() , MainActivity.this).getCurrentVolumeOf(position);
     }
 
     private void afterRemoveChanges(){
