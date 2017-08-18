@@ -3,7 +3,7 @@
     android:layout_height="match_parent"
     android:layout_below="@+id/timeline"
     android:fillViewport="true"
-    android:background="@drawable/timeline"
+    android:background="@drawable/background2"
     android:id="@+id/table_scroll"
     xmlns:android="http://schemas.android.com/apk/res/android">
 

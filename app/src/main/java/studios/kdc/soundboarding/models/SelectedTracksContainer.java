@@ -21,4 +21,6 @@ public interface SelectedTracksContainer {
 
     SelectedTrack getTrackByIndex(int position);
 
+    List<Integer> getTrackPositionsByName(String name);
+
 }

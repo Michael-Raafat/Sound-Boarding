@@ -15,7 +15,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.DragEvent;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -151,6 +150,17 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
     @Override
     public void notifyDataChanged() {
         this.mainAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void notifySelectedWavesRemoved(List<Integer> positions) {
+         //todo sort descindingly
+        for(Integer i : positions){
+            this.timelineView.removeWave(i);
+        }
+        if (this.timelineView.getChildCount() < 1) {
+            afterRemoveChanges();
+        }
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
@@ -460,12 +470,15 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
             DataController.getInstance().removeTrack(position);
             this.timelineView.removeWave(position);
             if (this.timelineView.getChildCount() < 1) {
-                this.mix.setVisibility(View.GONE);
-                this.save.setVisibility(View.GONE);
-                this.pause_resume.setVisibility(View.GONE);
-                this.seekBar.setX(this.initialSeekBarPosition);
+               afterRemoveChanges();
             }
 
+    }
+    private void afterRemoveChanges(){
+        this.mix.setVisibility(View.GONE);
+        this.save.setVisibility(View.GONE);
+        this.pause_resume.setVisibility(View.GONE);
+        this.seekBar.setX(this.initialSeekBarPosition);
     }
     private class DatabaseGetter extends AsyncTask<Void, Void, Void> {
         @Override

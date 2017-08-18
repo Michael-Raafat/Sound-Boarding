@@ -137,6 +137,7 @@ public class DataController {
             return false;
         DataServiceSingleton.getInstance().removeTrack(track,
                 groupContainer.getGrps().get(groupPosition).getName());
+        this.notifierListener.notifySelectedWavesRemoved(selectedTracksContainer.getTrackPositionsByName(track.getName()));
         selectedTracksContainer.removeTrackByName(track.getName());
         groupContainer.getGrps().get(groupPosition).getTracks().remove(trackPosition);
         return true;

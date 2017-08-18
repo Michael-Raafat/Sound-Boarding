@@ -1,6 +1,8 @@
 package studios.kdc.soundboarding.view;
 
 
+import java.util.List;
+
 public class ViewContract {
 
     public interface ScrollViewListener {
@@ -26,6 +28,7 @@ public class ViewContract {
     }
     public interface dataChangedNotifier {
         void notifyDataChanged();
+        void notifySelectedWavesRemoved(List<Integer> positions);
     }
 
 }

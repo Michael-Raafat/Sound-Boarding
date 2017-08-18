@@ -77,4 +77,17 @@ public class SelectedTrackContainerImp implements SelectedTracksContainer {
     public SelectedTrack getTrackByIndex(int position) {
         return this.selectedTracks.get(position);
     }
+
+    @Override
+    public List<Integer> getTrackPositionsByName(String name) {
+        List<Integer> list = new ArrayList<>();
+         for (int i =  selectedTracks.size() - 1; i >= 0; i--) {
+            if (selectedTracks.get(i).getName().equals(name)){
+               list.add(i);
+            }
+        }
+        return list;
+    }
+
+
 }

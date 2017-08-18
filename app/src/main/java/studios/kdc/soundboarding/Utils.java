@@ -19,16 +19,21 @@ public class Utils {
     public  static final int TIMELINE_LENGTH_LIMIT = (SECOND_PIXEL_RATIO * 600) ;
 
     public static byte[] toByteArray(InputStream in) throws IOException {
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        int read = 0;
-        byte[] buffer = new byte[1024];
-        while (read != -1) {
-            read = in.read(buffer);
-            if (read != -1)
-                out.write(buffer,0,read);
+        try {
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            int read = 0;
+            byte[] buffer = new byte[1024];
+            while (read != -1) {
+                read = in.read(buffer);
+                if (read != -1)
+                    out.write(buffer, 0, read);
+            }
+            out.close();
+            return out.toByteArray();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        out.close();
-        return out.toByteArray();
+      return null;
     }
 
     public static int getScreenWidth(Activity activity) {
