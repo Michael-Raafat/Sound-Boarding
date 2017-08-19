@@ -8,13 +8,11 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -86,7 +84,7 @@ public class CustomTimelineView  {
         }
     }
     private int getTimelineLengthLimit(){
-        return  Utils.getSecondPixelRatio(this.activity) * ((int)(Utils.getScreenWidth(this.activity) / 1.8));
+        return  Utils.getSecondPixelRatio(this.activity) * ((int)(Utils.getScreenWidth(this.activity) / 1.08));
     }
     public void addWaveFormsToTimeline(Map<String, String> trackInfo, int position){
         try {

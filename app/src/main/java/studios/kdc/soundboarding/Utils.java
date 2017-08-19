@@ -50,7 +50,7 @@ public class Utils {
         return displayMetrics.heightPixels;
     }
 
-    public static int getTrackDuration(Context context, String path){
+    public static int getTrackDuration(Context context, String path){  // in seconds
         MediaPlayer mediaPlayer = new MediaPlayer();
         try {
             mediaPlayer.setDataSource(context ,Uri.parse(path));

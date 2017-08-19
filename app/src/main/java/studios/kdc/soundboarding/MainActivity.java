@@ -69,12 +69,15 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
     private Handler handler;
     private float initialSeekBarPosition;
     private RelativeLayout relativeLayout;
+    private boolean isDeleteEnabled;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         this.seekBarFlag = false;
+        this.isDeleteEnabled = true;
+        this.scrollFactor = 0;
         this.handler = new Handler();
         this.relativeLayout = (RelativeLayout) findViewById(R.id.main);
         SharedPreferences sharedPreferences = this.getSharedPreferences("studios.kdc.soundboarding", MODE_PRIVATE);
@@ -85,7 +88,6 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
             sharedPreferences.edit().putBoolean("Start", true).apply();
         }
         new DatabaseGetter().execute();
-        this.scrollFactor = 0;
         this.initializeTimeLineView();
         this.initializeSearchView();
         this.initializeMixerButton();
@@ -230,12 +232,14 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
                     pause_resume.setImageResource((R.drawable.paused));
                     seekBarSlider.setEnabled(true);
                     timelineView.controlSlidingOfWaveForms(true);
+                    isDeleteEnabled = true;
                     pauseResume = true;
                 } else {
                     MixerController.getInstance(getApplicationContext(), MainActivity.this).resume();
                     pause_resume.setImageResource((R.drawable.played));
                     seekBarSlider.setEnabled(false);
                     timelineView.controlSlidingOfWaveForms(false);
+                    isDeleteEnabled = false;
                     pauseResume = false;
                 }
             }
@@ -303,6 +307,7 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
                 pause_resume.setImageResource(R.drawable.played);
                 seekBarSlider.setEnabled(false);
                 timelineView.controlSlidingOfWaveForms(false);
+                isDeleteEnabled = false;
                 pauseResume = false;
             }
         });
@@ -313,29 +318,31 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
         deleteButton .setOnDragListener(new View.OnDragListener() {
             @Override
             public boolean onDrag(View v, DragEvent event) {
-                switch (event.getAction()) {
-                    case DragEvent.ACTION_DRAG_LOCATION:
-                       deleteButton.setImageResource(R.drawable.delete_red);
-                        break;
-                    case DragEvent.ACTION_DROP:
-                        String tag = ((View) event.getLocalState()).getTag().toString();
-                        String description = event.getClipData().getDescription().getLabel().toString();
-                        String[] s = description.split(getResources().getString(R.string.separator));
-                        if(tag .equals("group")){
-                            if(!DataController.getInstance().deleteGroup(Integer.parseInt(s[0])))
-                                Toast.makeText(getApplicationContext() , "You cannot delete this group !!" , Toast.LENGTH_LONG).show();
-                        } else if(tag.equals("track")) {
-                            if(!DataController.getInstance().deleteTrack(Integer.parseInt(s[2]) , Integer.parseInt(s[0])))
-                                Toast.makeText(getApplicationContext() , "You cannot delete this track !!" , Toast.LENGTH_LONG).show();
-                        }
-                        notifyDataChanged();
-                        break;
-                    case DragEvent.ACTION_DRAG_EXITED:
-                        deleteButton.setImageResource(R.drawable.delete_white);
-                        break;
-                    case DragEvent.ACTION_DRAG_ENDED:
-                        deleteButton.setImageResource(R.drawable.delete_white);
-                        break;
+                if(isDeleteEnabled) {
+                    switch (event.getAction()) {
+                        case DragEvent.ACTION_DRAG_LOCATION:
+                           deleteButton.setImageResource(R.drawable.delete_red);
+                            break;
+                        case DragEvent.ACTION_DROP:
+                            String tag = ((View) event.getLocalState()).getTag().toString();
+                            String description = event.getClipData().getDescription().getLabel().toString();
+                            String[] s = description.split(getResources().getString(R.string.separator));
+                            if(tag .equals("group")){
+                                if(!DataController.getInstance().deleteGroup(Integer.parseInt(s[0])))
+                                    Toast.makeText(getApplicationContext() , "You cannot delete this group !!" , Toast.LENGTH_LONG).show();
+                            } else if(tag.equals("track")) {
+                                if(!DataController.getInstance().deleteTrack(Integer.parseInt(s[2]) , Integer.parseInt(s[0])))
+                                    Toast.makeText(getApplicationContext() , "You cannot delete this track !!" , Toast.LENGTH_LONG).show();
+                            }
+                            notifyDataChanged();
+                            break;
+                        case DragEvent.ACTION_DRAG_EXITED:
+                            deleteButton.setImageResource(R.drawable.delete_white);
+                            break;
+                        case DragEvent.ACTION_DRAG_ENDED:
+                            deleteButton.setImageResource(R.drawable.delete_white);
+                            break;
+                    }
                 }
                 return true;
             }
@@ -455,6 +462,7 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
         this.pauseResume = true;
         this.seekBarSlider.setEnabled(true);
         this.timelineView.controlSlidingOfWaveForms(true);
+        this.isDeleteEnabled = true;
         this.seekBarFlag = false;
     }
 

@@ -58,7 +58,10 @@ public class TrackUploader extends AppCompatActivity {
                     Toast.makeText(getApplicationContext() ,"Name is required" , Toast.LENGTH_LONG).show();
                 } else if (trackUploadName.getText().toString().isEmpty()) {
                     Toast.makeText(getApplicationContext() ,"You must choose track to upload" , Toast.LENGTH_LONG).show();
-                } else {
+                } else if(Utils.getTrackDuration(getApplicationContext() , path) > 700) {
+                    Toast.makeText(getApplicationContext() ,"Track is too long to be uploaded" , Toast.LENGTH_LONG).show();
+                } else
+                 {
                     Toast.makeText(getApplicationContext() ,"Track is successfully uploaded" , Toast.LENGTH_LONG).show();
                     DataController.getInstance().createTrack(getApplicationContext() ,trackUserName.getText().toString().trim(),
                             path, "mobile",  spinner.getSelectedItem().toString());
