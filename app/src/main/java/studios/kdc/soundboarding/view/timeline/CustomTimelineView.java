@@ -4,7 +4,6 @@ package studios.kdc.soundboarding.view.timeline;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Handler;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,7 +25,6 @@ import java.util.List;
 import java.util.Map;
 
 import rm.com.audiowave.AudioWaveView;
-import studios.kdc.soundboarding.MainActivity;
 import studios.kdc.soundboarding.R;
 import studios.kdc.soundboarding.Utils;
 import studios.kdc.soundboarding.playerStrategy.PlayerStrategyFactory;
@@ -45,7 +43,8 @@ public class CustomTimelineView  {
     private HorizontalScrollView horizontalScrollView;
     private List<ImageButton> optionButtons;
     private PlayerStrategyFactory factory;
-    public CustomTimelineView(Activity activity , LinearLayout timelineWaves ,LinearLayout minSecView, HorizontalScrollView horizontalScrollView){
+    public CustomTimelineView(Activity activity , LinearLayout timelineWaves
+            ,LinearLayout minSecView, HorizontalScrollView horizontalScrollView){
         this.minutesSecondsView = new MinutesSecondsView(activity);
         this.timelineWaves = timelineWaves;
         this.activity = activity;
@@ -58,7 +57,6 @@ public class CustomTimelineView  {
 
     public void decreaseTimelineView(){
         this.minutesSecondsView.decreaseTimelineView();
-
     }
 
     public void increaseTimelineView(){
@@ -72,6 +70,7 @@ public class CustomTimelineView  {
     public int getTextViewWidth() {
         return this.minutesSecondsView.getTextViewWidth();
     }
+
     public void controlSlidingOfWaveForms(Boolean enabled) {
         for (CustomHorizontalSlider slider : waveFormsListeners){
             slider.setEnabled(enabled);

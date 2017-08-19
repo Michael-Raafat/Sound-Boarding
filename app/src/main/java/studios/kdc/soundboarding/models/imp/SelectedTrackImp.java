@@ -44,8 +44,8 @@ public class SelectedTrackImp implements SelectedTrack {
         this.type = data.get(4);
         this.startPoint = Integer.valueOf(data.get(5));
         this.endPoint = Integer.valueOf(data.get(6));
-        this.groupName = data.get(7);
-        this.volume = Integer.valueOf(data.get(8));
+        this.groupName = data.get(8);
+        this.volume = Integer.valueOf(data.get(7));
     }
 
     public SelectedTrackImp(String name, int trackDuration, String path, String extension, String type) {

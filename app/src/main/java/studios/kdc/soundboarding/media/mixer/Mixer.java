@@ -22,7 +22,7 @@ public class Mixer {
     private ViewContract.mixerProgressChange progressListener;
     private SeekBarRunnable seekBarRunnable;
     private List<CustomRunnable> runList;
-    private SparseIntArray  runnableTrackMap;    //relation between position of selected track && its custom runnable
+    private SparseIntArray  runnableTrackMap;   //relation between position of selected track && its custom runnable
 
     public Mixer(Context context, ViewContract.mixerProgressChange progressListener) {
         this.handler =new Handler();
