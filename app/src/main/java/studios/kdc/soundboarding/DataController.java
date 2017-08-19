@@ -65,6 +65,9 @@ public class DataController {
                 Track track = new TrackImp(tracks.get(j));
                 group.addTrack(track);
             }
+            if (group.getTracks().size() == 0) {
+                groupContainer.removeGroupByName(group.getName());
+            }
         }
     }
 
