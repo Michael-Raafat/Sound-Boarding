@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.DragEvent;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -163,6 +164,7 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
         Collections.sort(positions, Collections.reverseOrder());
         for(Integer i : positions)
             this.timelineView.removeWave(i);
+        Log.i("hna" , "" + this.timelineView.getChildCount());
         if (this.timelineView.getChildCount() < 1)
             afterRemoveChanges();
     }
@@ -458,9 +460,11 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
 
     @Override
     public void notifyTrackFinished() {
+       if (this.timelineView.getChildCount() > 0) {
+           this.mix.setVisibility(View.VISIBLE);
+           this.save.setVisibility(View.VISIBLE);
+       }
         this.seekBar.setX(this.initialSeekBarPosition);
-        this.mix.setVisibility(View.VISIBLE);
-        this.save.setVisibility(View.VISIBLE);
         this.pause_resume.setVisibility(View.GONE);
         this.pauseResume = true;
         this.seekBarSlider.setEnabled(true);
