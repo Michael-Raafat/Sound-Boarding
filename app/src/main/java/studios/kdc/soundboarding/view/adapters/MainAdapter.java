@@ -33,6 +33,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     public void setGroups(List<Group> groups) {
         this.groups = groups;
     }
+
     @Override
     public MainAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
                                                    int viewType) {

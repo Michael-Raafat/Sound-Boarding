@@ -195,11 +195,11 @@ public class DataController {
         List<String> savedTracksNames = DataServiceSingleton.getInstance().getSavedTracksNamesInDatabase();
         if (savedTracksNames.contains(trackName))
             DataServiceSingleton.getInstance().deleteSavedTrack(trackName);
-        DataServiceSingleton.getInstance().saveNewTrack(trackName, selectedTrackList);
+        SavedDataServiceSingleton.getInstance().saveNewTrack(trackName, selectedTrackList);
     }
 
     public void loadSavedTrack(String trackName) {
-        List<List<String>> tracks = DataServiceSingleton.getInstance().getSelectedTracksInSavedTracksTable(trackName);
+        List<List<String>> tracks = SavedDataServiceSingleton.getInstance().getSelectedTracksInSavedTracksTable(trackName);
         List<SelectedTrack> selectedTrackList = new ArrayList<>();
         for(int j = 0; j < tracks.size(); j++) {
             SelectedTrack selectedTrack = new SelectedTrackImp(tracks.get(j));

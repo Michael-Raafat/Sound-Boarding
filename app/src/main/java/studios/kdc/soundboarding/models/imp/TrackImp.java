@@ -34,7 +34,7 @@ public class TrackImp implements Track{
         this.path = data.get(2);
         this.extension = data.get(3);
         this.type = data.get(4);
-        this.volume = 50;
+        this.volume = 100;
     }
 
     public TrackImp(String name, int trackDuration, String path, String extension, String type) {

@@ -32,7 +32,7 @@ public class SelectedTrackImp implements SelectedTrack {
         this.type = data.get(4);
         this.startPoint = 0;
         this.endPoint = 0;
-        this.volume = 50;
+        this.volume = 100;
         this.groupName = groupName;
     }
 

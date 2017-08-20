@@ -84,9 +84,12 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
         this.relativeLayout = (RelativeLayout) findViewById(R.id.main);
         SharedPreferences sharedPreferences = this.getSharedPreferences("studios.kdc.soundboarding", MODE_PRIVATE);
         SQLiteDatabase tracksDatabase = this.openOrCreateDatabase("Data", MODE_PRIVATE, null);
+        SQLiteDatabase SavedtracksDatabase = this.openOrCreateDatabase("SavedData", MODE_PRIVATE, null);
         DataServiceSingleton.getInstance(tracksDatabase);
+        SavedDataServiceSingleton.getInstance(SavedtracksDatabase);
         if (!sharedPreferences.getBoolean("Start", false)) {
             DataServiceSingleton.getInstance(tracksDatabase).loadDefaultDatabase();
+            SavedDataServiceSingleton.getInstance(SavedtracksDatabase).loadDefaultDatabase();
             sharedPreferences.edit().putBoolean("Start", true).apply();
         }
         new DatabaseGetter().execute();
