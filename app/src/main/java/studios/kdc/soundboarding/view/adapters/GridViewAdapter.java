@@ -6,6 +6,7 @@ import android.content.ClipData;
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,8 +71,9 @@ public class GridViewAdapter extends BaseAdapter   {
             GradientDrawable drawable = (GradientDrawable) holder.getColor().getBackground();
             drawable.setColor(this.color);
             view.setTag(holder);
-        } else
+        } else {
             holder = (ViewHolder) view.getTag();
+        }
         if (!allItemsResourceID.get(position).getName().equals("")) {
             holder.getTextView().setText(allItemsResourceID.get(position).getName());
         }
@@ -133,9 +135,9 @@ public class GridViewAdapter extends BaseAdapter   {
 
         @Override
         public boolean onLongClick(View view) {
-            ClipData data = ClipData.newPlainText( String.valueOf(cardPosition) + context.getResources().getString(R.string.separator) +  name   + context.getResources().getString(R.string.separator) + this.position, "");
+            ClipData data = ClipData.newPlainText( String.valueOf(cardPosition) + context.getResources().getString(R.string.separator) +  name   + context.getResources().getString(R.string.separator) + this.position
+                    + context.getResources().getString(R.string.separator) + "track", "");
             View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
-            view.setTag("track");
             view.startDrag(data, shadowBuilder, view, 0);
             return true;
 
@@ -159,7 +161,7 @@ public class GridViewAdapter extends BaseAdapter   {
 
         @Override
         public void onClick(View view) {
-           MediaPlayerController.getInstance(context).singlePlayAndPauseTrack(this.type, this.path, this);
+            MediaPlayerController.getInstance(context).singlePlayAndPauseTrack(this.type, this.path, this);
             this.toggleCardColor();
         }
 
