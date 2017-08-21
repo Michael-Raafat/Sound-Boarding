@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.media.MediaRecorder;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -329,13 +330,12 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
                            deleteButton.setImageResource(R.drawable.delete_red);
                             break;
                         case DragEvent.ACTION_DROP:
-                            String tag = ((View) event.getLocalState()).getTag().toString();
                             String description = event.getClipData().getDescription().getLabel().toString();
                             String[] s = description.split(getResources().getString(R.string.separator));
-                            if(tag .equals("group")){
+                            if(s[s.length - 1] .equals("group")){
                                 if(!DataController.getInstance().deleteGroup(Integer.parseInt(s[0])))
                                     Toast.makeText(getApplicationContext() , "You cannot delete this group !!" , Toast.LENGTH_LONG).show();
-                            } else if(tag.equals("track")) {
+                            } else if(s[s.length - 1] .equals("track")) {
                                 if(!DataController.getInstance().deleteTrack(Integer.parseInt(s[2]) , Integer.parseInt(s[0])))
                                     Toast.makeText(getApplicationContext() , "You cannot delete this track !!" , Toast.LENGTH_LONG).show();
                             }
@@ -400,10 +400,9 @@ public class MainActivity extends AppCompatActivity implements ViewContract.Scro
             public boolean onDrag(View v, DragEvent event) {
                 switch (event.getAction()) {
                     case DragEvent.ACTION_DROP:
-                        String tag = ((View) event.getLocalState()).getTag().toString();
-                        if(tag.equals("track")){
-                            String description = event.getClipData().getDescription().getLabel().toString();
-                            String[] s = description.split(getResources().getString(R.string.separator));
+                        String description = event.getClipData().getDescription().getLabel().toString();
+                        String[] s = description.split(getResources().getString(R.string.separator));
+                        if(s[s.length - 1].equals("track")){
                             Map<String, String> trackInfo = DataController.getInstance().selectTrackToMix(s[1], Integer.parseInt(s[0]));
                             timelineView.addWaveFormsToTimeline(trackInfo , 0);
                             if(timelineView.getChildCount() > 0){
