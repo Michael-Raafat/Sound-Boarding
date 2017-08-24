@@ -6,8 +6,6 @@ import android.content.Context;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.util.DisplayMetrics;
-import android.util.Log;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -57,6 +55,9 @@ public class Utils {
             mediaPlayer.prepare();
             int duration = (int) Math.ceil((mediaPlayer.getDuration() / 1000));
             mediaPlayer.release();
+            if(duration < 1){
+                duration = 1;
+            }
             return duration;
         } catch (IOException e) {
             e.printStackTrace();
