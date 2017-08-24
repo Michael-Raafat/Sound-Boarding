@@ -104,8 +104,6 @@ public class DataServiceSingleton {
                 " ('popcorn', 75, 'Cartoon/popcorn.mp3', 'mp3', 'assets')");
         database.execSQL("INSERT INTO Cartoon (name, duration, path, extension, type) VALUES" +
                 " ('Tom and Jerry', 24, 'Cartoon/Tom and Jerry.mp3', 'mp3', 'assets')");
-
-
     }
 
     public void addGroup(Group group) {
@@ -171,17 +169,7 @@ public class DataServiceSingleton {
         return groups;
     }
 
-    public List<String> getSavedTracksNamesInDatabase() {
-        Cursor cursor = database.rawQuery("SELECT * FROM SavedTracks", null);
-        int nameIndex = cursor.getColumnIndex("name");
-        cursor.moveToFirst();
-        List<String> savedTracks = new ArrayList<>();
-        while (!cursor.isAfterLast()) {
-            savedTracks.add(cursor.getString(nameIndex));
-            cursor.moveToNext();
-        }
-        return savedTracks;
-    }
+
 
     public List<List<String>> getTracksInTable(String tableName) {
         Cursor cursor = database.rawQuery("SELECT * FROM "+ tableName, null);

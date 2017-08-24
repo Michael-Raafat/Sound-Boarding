@@ -192,7 +192,7 @@ public class DataController {
 
     public void saveMixedTrack(String trackName) {
         List<SelectedTrack> selectedTrackList = selectedTracksContainer.getTracks();
-        List<String> savedTracksNames = DataServiceSingleton.getInstance().getSavedTracksNamesInDatabase();
+        List<String> savedTracksNames = SavedDataServiceSingleton.getInstance().getSavedTracksNamesInDatabase();
         if (savedTracksNames.contains(trackName))
             DataServiceSingleton.getInstance().deleteSavedTrack(trackName);
         SavedDataServiceSingleton.getInstance().saveNewTrack(trackName, selectedTrackList);
@@ -209,7 +209,7 @@ public class DataController {
     }
 
     public List<String> getSavedTracks() {
-        return DataServiceSingleton.getInstance().getSavedTracksNamesInDatabase();
+        return SavedDataServiceSingleton.getInstance().getSavedTracksNamesInDatabase();
     }
     public int getNoOfSelectedTracks(){
         return this.selectedTracksContainer.getNumberOfTracks();
