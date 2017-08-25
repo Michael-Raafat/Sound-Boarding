@@ -18,7 +18,6 @@ public class AssetsPlayer implements MediaPlayerStrategy {
 
     @Override
     public void playMedia(MediaPlayer mediaPlayer, String path) {
-        ;
         try {
             AssetFileDescriptor afd = context.getAssets().openFd(path);
             mediaPlayer.setDataSource(afd.getFileDescriptor(),afd.getStartOffset(),afd.getLength());

@@ -1,8 +1,11 @@
 package studios.kdc.soundboarding;
 
 
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,14 +29,21 @@ public class DataServiceSingleton {
      */
     private static SQLiteDatabase database;
 
-    private DataServiceSingleton(SQLiteDatabase database){
+    /**
+     * application context.
+     */
+    private Context context;
+
+
+    private DataServiceSingleton(SQLiteDatabase database, Context context){
 
         this.database = database;
+        this.context = context;
     }
 
-    public static DataServiceSingleton getInstance(SQLiteDatabase database){
+    public static DataServiceSingleton getInstance(SQLiteDatabase database, Context context){
         if (instance == null) {
-            instance = new DataServiceSingleton(database);
+            instance = new DataServiceSingleton(database, context);
         }
         return instance;
     }
@@ -45,49 +55,72 @@ public class DataServiceSingleton {
     public void loadDefaultDatabase() {
 
         database.execSQL("CREATE TABLE IF NOT EXISTS groups (name VARCHAR, color VARCHAR, imagePath VARCHAR)");
-        database.execSQL("INSERT INTO groups (name, color) VALUES ('Car', '#106198')");
-        database.execSQL("INSERT INTO groups (name, color) VALUES ('Nature', '#C9A1A1')");
-        database.execSQL("INSERT INTO groups (name, color) VALUES ('Animal', '#46bde4')");
-        database.execSQL("INSERT INTO groups (name, color) VALUES ('War', '#672543')");
-        database.execSQL("INSERT INTO groups (name, color) VALUES ('Cartoon', '#c8498b')");
+        DataController.getInstance().createDataGroup("Animal_Bird", Color.parseColor("#C9A1A1"));
+        DataController.getInstance().createDataGroup("Cartoon", Color.parseColor("#c8498b"));
+        DataController.getInstance().createDataGroup("Nature", Color.parseColor("#46bde4"));
+        DataController.getInstance().createDataGroup("Sound_Effects", Color.parseColor("#106198"));
+        DataController.getInstance().createDataGroup("War", Color.parseColor("#672543"));
 
-        database.execSQL("CREATE TABLE IF NOT EXISTS War" +
-                " (name VARCHAR, duration INTEGER, path VARCHAR, extension VARCHAR, type VARCHAR)");
-        database.execSQL("INSERT INTO War (name, duration, path, extension, type) VALUES" +
-                " ('explode', 1, 'War/explode.mp3', 'mp3', 'assets')");
-        database.execSQL("INSERT INTO War (name, duration, path, extension, type) VALUES" +
-                " ('bazooka', 1, 'War/bazooka.mp3', 'mp3', 'assets')");
-        database.execSQL("INSERT INTO War (name, duration, path, extension, type) VALUES" +
-                " ('battle', 5, 'War/battle.mp3', 'mp3', 'assets')");
-        database.execSQL("INSERT INTO War (name, duration, path, extension, type) VALUES" +
-                " ('artillery', 1, 'War/artillery.mp3', 'mp3', 'assets')");
-        database.execSQL("INSERT INTO War (name, duration, path, extension, type) VALUES" +
-                " ('chainsaw', 4, 'War/chainsaw.mp3', 'mp3', 'assets')");
-        database.execSQL("INSERT INTO War (name, duration, path, extension, type) VALUES" +
-                " ('bomb', 2, 'War/bomb.mp3', 'mp3', 'assets')");
+        //Animal_Bird
+        DataController.getInstance().createDataTrack(context, "Bat","Animal_Bird/Bat.m4a","assets", "Animal_Bird");
+        DataController.getInstance().createDataTrack(context, "Bird Chirping","Animal_Bird/Bird Chirping.m4a","assets", "Animal_Bird");
+        DataController.getInstance().createDataTrack(context, "Bullfrog","Animal_Bird/Bullfrog.m4a","assets", "Animal_Bird");
+        DataController.getInstance().createDataTrack(context, "Cat","Animal_Bird/Cat.mp3","assets", "Animal_Bird");
+        DataController.getInstance().createDataTrack(context, "Chicken","Animal_Bird/Chicken.m4a","assets", "Animal_Bird");
+        DataController.getInstance().createDataTrack(context, "Dog","Animal_Bird/Dog.mp3","assets", "Animal_Bird");
+        DataController.getInstance().createDataTrack(context, "Dolphin","Animal_Bird/Dolphin.m4a","assets", "Animal_Bird");
+        DataController.getInstance().createDataTrack(context, "Gremlin Growling","Animal_Bird/Gremlin Growling.m4a","assets", "Animal_Bird");
+        DataController.getInstance().createDataTrack(context, "Raven","Animal_Bird/Raven.m4a","assets", "Animal_Bird");
+        DataController.getInstance().createDataTrack(context, "Seagull","Animal_Bird/Seagull.m4a","assets", "Animal_Bird");
+        DataController.getInstance().createDataTrack(context, "Wolf","Animal_Bird/Wolf.m4a","assets", "Animal_Bird");
+        //WAR
+        DataController.getInstance().createDataTrack(context, "Alarm","War/Alarm.m4a","assets", "War");
+        DataController.getInstance().createDataTrack(context, "Artillery","War/Artillery.mp3","assets", "War");
+        DataController.getInstance().createDataTrack(context, "Battle","War/Battle.mp3","assets", "War");
+        DataController.getInstance().createDataTrack(context, "Bazooka","War/Bazooka.mp3","assets", "War");
+        DataController.getInstance().createDataTrack(context, "Bomb","War/Bomb.mp3","assets", "War");
+        DataController.getInstance().createDataTrack(context, "Chainsaw","War/Chainsaw.mp3","assets", "War");
+        DataController.getInstance().createDataTrack(context, "Explode","War/Explode.mp3","assets", "War");
+        DataController.getInstance().createDataTrack(context, "GunShots","War/GunShots.m4a","assets", "War");
+        //Nature
+        DataController.getInstance().createDataTrack(context, "Avalanche","Nature/Avalanche.m4a","assets", "Nature");
+        DataController.getInstance().createDataTrack(context, "Earthquake","Nature/Earthquake.mp3","assets", "Nature");
+        DataController.getInstance().createDataTrack(context, "Hurricane","Nature/Hurricane.mp3","assets", "Nature");
+        DataController.getInstance().createDataTrack(context, "Rain","Nature/Rain.mp3","assets", "Nature");
+        DataController.getInstance().createDataTrack(context, "Thunder","Nature/Thunder.mp3","assets", "Nature");
+        DataController.getInstance().createDataTrack(context, "Water","Nature/Water.mp3","assets", "Nature");
+        DataController.getInstance().createDataTrack(context, "Waterfall","Nature/Waterfall.m4a","assets", "Nature");
+        DataController.getInstance().createDataTrack(context, "Wind","Nature/Wind.mp3","assets", "Nature");
+        //Cartoon
+        DataController.getInstance().createDataTrack(context, "Bomb Drop","Cartoon/Bomb Drop.m4a","assets", "Cartoon");
+        DataController.getInstance().createDataTrack(context, "Bush Baby","Cartoon/Bush Baby.mp3","assets", "Cartoon");
+        DataController.getInstance().createDataTrack(context, "Fight","Cartoon/Fight.m4a","assets", "Cartoon");
+        DataController.getInstance().createDataTrack(context, "Pop corn","Cartoon/Pop corn.mp3","assets", "Cartoon");
+        DataController.getInstance().createDataTrack(context, "Pop Gun","Cartoon/Pop Gun.m4a","assets", "Cartoon");
+        DataController.getInstance().createDataTrack(context, "Scream","Cartoon/Scream.m4a","assets", "Cartoon");
+        DataController.getInstance().createDataTrack(context, "Splat and Spin","Cartoon/Splat and Spin.m4a","assets", "Cartoon");
+        DataController.getInstance().createDataTrack(context, "Sport Whistle","Cartoon/Sport Whistle.m4a","assets", "Cartoon");
+        //Sound Effects
+        DataController.getInstance().createDataTrack(context, "Aaaw","Sound_Effects/Aaaw.m4a","assets", "Sound_Effects");
+        DataController.getInstance().createDataTrack(context, "Bruh","Sound_Effects/Bruh.m4a","assets", "Sound_Effects");
+        DataController.getInstance().createDataTrack(context, "Camera Shutter","Sound_Effects/Camera Shutter.m4a","assets", "Sound_Effects");
+        DataController.getInstance().createDataTrack(context, "Clapping people","Sound_Effects/Clapping people.m4a","assets", "Sound_Effects");
+        DataController.getInstance().createDataTrack(context, "Count Down","Sound_Effects/Count Down.m4a","assets", "Sound_Effects");
+        DataController.getInstance().createDataTrack(context, "Dj Stop","Sound_Effects/Dj Stop.m4a","assets", "Sound_Effects");
+        DataController.getInstance().createDataTrack(context, "DrumRoll","Sound_Effects/DrumRoll.m4a","assets", "Sound_Effects");
+        DataController.getInstance().createDataTrack(context, "Drums","Sound_Effects/Drums.m4a","assets", "Sound_Effects");
+        DataController.getInstance().createDataTrack(context, "FlashBack","Sound_Effects/FlashBack.m4a","assets", "Sound_Effects");
+        DataController.getInstance().createDataTrack(context, "Illuminati","Sound_Effects/Illuminati.m4a","assets", "Sound_Effects");
+        DataController.getInstance().createDataTrack(context, "Kung Fu","Sound_Effects/Kung Fu.m4a","assets", "Sound_Effects");
+        DataController.getInstance().createDataTrack(context, "Ping","Sound_Effects/Ping.m4a","assets", "Sound_Effects");
+        DataController.getInstance().createDataTrack(context, "Punch","Sound_Effects/Punch.m4a","assets", "Sound_Effects");
+        DataController.getInstance().createDataTrack(context, "Pup","Sound_Effects/Pup.m4a","assets", "Sound_Effects");
+        DataController.getInstance().createDataTrack(context, "Sad Trombone","Sound_Effects/Sad Trombone.m4a","assets", "Sound_Effects");
+        DataController.getInstance().createDataTrack(context, "Tape Rewind","Sound_Effects/Tape Rewind.mp3","assets", "Sound_Effects");
+        DataController.getInstance().createDataTrack(context, "Well sound","Sound_Effects/Well sound.m4a","assets", "Sound_Effects");
+        DataController.getInstance().createDataTrack(context, "Wha wha","Sound_Effects/Wha wha.m4a","assets", "Sound_Effects");
 
 
-        database.execSQL("CREATE TABLE IF NOT EXISTS Nature" +
-                " (name VARCHAR, duration INTEGER, path VARCHAR, extension VARCHAR, type VARCHAR)");
-        database.execSQL("INSERT INTO Nature (name, duration, path, extension, type) VALUES" +
-                " ('hurricane', 4, 'Nature/hurricane.mp3', 'mp3', 'assets')");
-        database.execSQL("INSERT INTO Nature (name, duration, path, extension, type) VALUES" +
-                " ('wind01', 9, 'Nature/wind01.mp3', 'mp3', 'assets')");
-        database.execSQL("INSERT INTO Nature (name, duration, path, extension, type) VALUES" +
-                " ('storm-thunder', 3, 'Nature/storm-thunder.mp3', 'mp3', 'assets')");
-        database.execSQL("INSERT INTO Nature (name, duration, path, extension, type) VALUES" +
-                " ('earthquake', 2, 'Nature/earthquake.mp3', 'mp3', 'assets')");
-        database.execSQL("INSERT INTO Nature (name, duration, path, extension, type) VALUES" +
-                " ('rain', 4, 'Nature/rain.mp3', 'mp3', 'assets')");
-        database.execSQL("INSERT INTO Nature (name, duration, path, extension, type) VALUES" +
-                " ('water', 50, 'Nature/water.mp3', 'mp3', 'assets')");
-
-        database.execSQL("CREATE TABLE IF NOT EXISTS Animal" +
-                " (name VARCHAR, duration INTEGER, path VARCHAR, extension VARCHAR, type VARCHAR)");
-        database.execSQL("INSERT INTO Animal (name, duration, path, extension, type) VALUES" +
-                " ('Dog', 47, 'Animal/Dog.mp3', 'mp3', 'assets')");
-        database.execSQL("INSERT INTO Animal (name, duration, path, extension, type) VALUES" +
-                " ('Kitty-noises', 3, 'Animal/Kitty-noises.mp3', 'mp3', 'assets')");
 
         database.execSQL("CREATE TABLE IF NOT EXISTS Car" +
                 " (name VARCHAR, duration INTEGER, path VARCHAR, extension VARCHAR, type VARCHAR)");
@@ -96,14 +129,6 @@ public class DataServiceSingleton {
         database.execSQL("INSERT INTO Car (name, duration, path, extension, type) VALUES" +
                 " ('vehicle165', 6, 'Car/vehicle165.mp3', 'mp3', 'assets')");
 
-        database.execSQL("CREATE TABLE IF NOT EXISTS Cartoon" +
-                " (name VARCHAR, duration INTEGER, path VARCHAR, extension VARCHAR, type VARCHAR)");
-        database.execSQL("INSERT INTO Cartoon (name, duration, path, extension, type) VALUES" +
-                " ('bush_baby', 99, 'Cartoon/bush_baby.mp3', 'mp3', 'assets')");
-        database.execSQL("INSERT INTO Cartoon (name, duration, path, extension, type) VALUES" +
-                " ('popcorn', 75, 'Cartoon/popcorn.mp3', 'mp3', 'assets')");
-        database.execSQL("INSERT INTO Cartoon (name, duration, path, extension, type) VALUES" +
-                " ('Tom and Jerry', 24, 'Cartoon/Tom and Jerry.mp3', 'mp3', 'assets')");
     }
 
     public void addGroup(Group group) {
