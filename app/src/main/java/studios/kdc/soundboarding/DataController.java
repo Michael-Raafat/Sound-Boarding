@@ -75,6 +75,22 @@ public class DataController {
         }
     }
 
+    public void importDatabase(String groupName) {
+        List<List<String>> groups = DataServiceSingleton.getInstance().getGroupsInDatabase();
+        for (int i = 0; i < groups.size(); i++) {
+            Group group = new GroupImp(groups.get(i));
+            groupContainer.addGroup(group);
+            List<List<String>> tracks = DataServiceSingleton.getInstance().getTracksInTable(group.getName());
+            for(int j = 0; j < tracks.size(); j++) {
+                Track track = new TrackImp(tracks.get(j));
+                group.addTrack(track);
+            }
+            if (group.getTracks().size() == 0 && !group.getName().equals(groupName)) {
+                groupContainer.removeGroupByName(group.getName());
+            }
+        }
+    }
+
     public void searchTracksInGroups(String search) {
         if (search.equals("")) {
             groupContainer.getGrps().clear();
@@ -210,6 +226,8 @@ public class DataController {
         trackData.add(".mp3");
         trackData.add(type);
         Track newTrack = new TrackImp(trackData);
+        groupContainer.getGrps().clear();
+        this.importDatabase(groupName);
         this.groupContainer.getGroupByName(groupName).addTrack(newTrack);
         this.notifierListener.notifyDataChanged();
         DataServiceSingleton.getInstance().addTrack(newTrack, groupName);
