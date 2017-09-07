@@ -4,6 +4,7 @@ package studios.kdc.soundboarding.view.timeline;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -104,8 +105,9 @@ public class CustomTimelineView  {
             waveForm.setExpansionAnimated(false);
             waveForm.setLayoutParams(params);
             byte[] soundBytes = getWaveFormByteArray(trackInfo.get("type") , trackInfo.get("path"));
-            if(soundBytes != null)
-              waveForm.setRawData(soundBytes);
+            if(soundBytes != null) {
+                waveForm.setRawData(soundBytes);
+            }
             name.setText(trackInfo.get("grpName") + " - " + trackInfo.get("name"));
             name.setTextColor(Color.WHITE);
             ImageButton deleteButton = new ImageButton(activity.getApplicationContext());
@@ -152,7 +154,7 @@ public class CustomTimelineView  {
        });
    }
     private byte[] getWaveFormByteArray(String type , String path) {
-
+        Log.i("loooo", type);
         InputStream inputStream = factory.createPlayerStrategy(type).getInputStream(path);
         try {
             return  Utils.toByteArray(inputStream);

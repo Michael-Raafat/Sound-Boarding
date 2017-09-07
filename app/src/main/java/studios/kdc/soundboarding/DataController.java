@@ -1,6 +1,8 @@
 package studios.kdc.soundboarding;
 
 import android.content.Context;
+import android.util.Log;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,11 +18,13 @@ import studios.kdc.soundboarding.models.imp.GroupImp;
 import studios.kdc.soundboarding.models.imp.SelectedTrackContainerImp;
 import studios.kdc.soundboarding.models.imp.SelectedTrackImp;
 import studios.kdc.soundboarding.models.imp.TrackImp;
+import studios.kdc.soundboarding.playerStrategy.PlayerStrategyFactory;
 import studios.kdc.soundboarding.view.ViewContract;
 import studios.kdc.soundboarding.view.adapters.MainAdapter;
 
 /**
  * Created by Michael on 8/4/2017.
+ *
  */
 public class DataController {
 
@@ -66,6 +70,22 @@ public class DataController {
                 group.addTrack(track);
             }
             if (group.getTracks().size() == 0) {
+                groupContainer.removeGroupByName(group.getName());
+            }
+        }
+    }
+
+    public void importDatabase(String groupName) {
+        List<List<String>> groups = DataServiceSingleton.getInstance().getGroupsInDatabase();
+        for (int i = 0; i < groups.size(); i++) {
+            Group group = new GroupImp(groups.get(i));
+            groupContainer.addGroup(group);
+            List<List<String>> tracks = DataServiceSingleton.getInstance().getTracksInTable(group.getName());
+            for(int j = 0; j < tracks.size(); j++) {
+                Track track = new TrackImp(tracks.get(j));
+                group.addTrack(track);
+            }
+            if (group.getTracks().size() == 0 && !group.getName().equals(groupName)) {
                 groupContainer.removeGroupByName(group.getName());
             }
         }
@@ -170,14 +190,35 @@ public class DataController {
         return DataServiceSingleton.getInstance().getGroupNamesInDatabase();
     }
 
-    public void createGroup(String name, int color) {
+    public void createGroup(Context context, String name, int color) {
+        List<String> groups = DataServiceSingleton.getInstance().getGroupNamesInDatabase();
+        for (int i = 0; i < groups.size(); i++) {
+            if (groups.get(i).equals(name)) {
+                Toast.makeText(context, "Can't have similar groups", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }
         Group group = new GroupImp(name, color);
         groupContainer.addGroup(group);
         DataServiceSingleton.getInstance().addGroup(group);
         this.notifierListener.notifyDataChanged();
+        Toast.makeText(context ,"Group is successfully created" , Toast.LENGTH_LONG).show();
+    }
+
+    public void createDataGroup(String name, int color) {
+        Group group = new GroupImp(name, color);
+        groupContainer.addGroup(group);
+        DataServiceSingleton.getInstance().addGroup(group);
     }
 
     public void createTrack(Context context ,String trackName, String path, String type, String groupName) {
+        List<List<String>> tracks = DataServiceSingleton.getInstance().getTracksInTable(groupName);
+        for (int i = 0; i < tracks.size(); i++) {
+            if(tracks.get(i).get(0).equals(trackName)) {
+                Toast.makeText(context, "Can't have similar tracks in same group", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }
         List<String> trackData = new ArrayList<>();
         trackData.add(trackName);
         trackData.add(String.valueOf(Utils.getTrackDuration(context ,path)));
@@ -185,16 +226,32 @@ public class DataController {
         trackData.add(".mp3");
         trackData.add(type);
         Track newTrack = new TrackImp(trackData);
+        groupContainer.getGrps().clear();
+        this.importDatabase(groupName);
         this.groupContainer.getGroupByName(groupName).addTrack(newTrack);
         this.notifierListener.notifyDataChanged();
         DataServiceSingleton.getInstance().addTrack(newTrack, groupName);
+        Toast.makeText(context ,"Track is successfully created" , Toast.LENGTH_LONG).show();
     }
+
+    public void createDataTrack(Context context ,String trackName, String path, String type, String groupName) {
+        List<String> trackData = new ArrayList<>();
+        trackData.add(trackName);
+        trackData.add(String.valueOf(Utils.getAssetsTrackDuration(context ,path)));
+        trackData.add(path);
+        trackData.add(".mp3");
+        trackData.add(type);
+        Track newTrack = new TrackImp(trackData);
+        this.groupContainer.getGroupByName(groupName).addTrack(newTrack);
+        DataServiceSingleton.getInstance().addTrack(newTrack, groupName);
+    }
+
 
     public void saveMixedTrack(String trackName) {
         List<SelectedTrack> selectedTrackList = selectedTracksContainer.getTracks();
         List<String> savedTracksNames = SavedDataServiceSingleton.getInstance().getSavedTracksNamesInDatabase();
         if (savedTracksNames.contains(trackName))
-            DataServiceSingleton.getInstance().deleteSavedTrack(trackName);
+            SavedDataServiceSingleton.getInstance().deleteSavedTrack(trackName);
         SavedDataServiceSingleton.getInstance().saveNewTrack(trackName, selectedTrackList);
     }
 
