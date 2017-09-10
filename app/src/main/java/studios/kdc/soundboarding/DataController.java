@@ -207,7 +207,6 @@ public class DataController {
 
     public void createDataGroup(String name, int color) {
         Group group = new GroupImp(name, color);
-        groupContainer.addGroup(group);
         DataServiceSingleton.getInstance().addGroup(group);
     }
 
@@ -242,7 +241,6 @@ public class DataController {
         trackData.add(".mp3");
         trackData.add(type);
         Track newTrack = new TrackImp(trackData);
-        this.groupContainer.getGroupByName(groupName).addTrack(newTrack);
         DataServiceSingleton.getInstance().addTrack(newTrack, groupName);
     }
 

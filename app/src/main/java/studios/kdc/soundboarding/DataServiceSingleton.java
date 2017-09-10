@@ -53,7 +53,6 @@ public class DataServiceSingleton {
     }
 
     public void loadDefaultDatabase() {
-
         database.execSQL("CREATE TABLE IF NOT EXISTS groups (name VARCHAR, color VARCHAR, imagePath VARCHAR)");
         DataController.getInstance().createDataGroup("Animal_Bird", Color.parseColor("#C9A1A1"));
         DataController.getInstance().createDataGroup("Cartoon", Color.parseColor("#c8498b"));
